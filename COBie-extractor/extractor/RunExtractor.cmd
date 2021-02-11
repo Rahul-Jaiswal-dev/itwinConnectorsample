@@ -23,16 +23,16 @@ goto end
 :clean
 	echo cleaning
 	rmdir /s /q output
-	del ..\..\COBie-connector\src\test\assets\*.db
+	del ..\..\COBie-connector\src\assets\*.db
 
 
 goto end
 
 :copyToConnector
 echo copying databases from extractor output to connector assets
-IF NOT EXIST ..\..\COBie-connector\src\test\assets mkdir ..\..\COBie-connector\src\test\assets
-IF NOT EXIST ..\..\COBie-connector\src\test\output mkdir ..\..\COBie-connector\src\test\output
-copy .\output\*.db  ..\..\COBie-connector\src\test\assets\
+IF NOT EXIST ..\..\COBie-connector\src\assets mkdir ..\..\COBie-connector\src\assets
+IF NOT EXIST ..\..\COBie-connector\src\output mkdir ..\..\COBie-connector\src\output
+copy .\output\*.db  ..\..\COBie-connector\src\assets\
 goto end
 
 :usage

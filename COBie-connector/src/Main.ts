@@ -19,16 +19,16 @@ function initOutputFile(fileBaseName: string) {
   return outputFileName;
 }
 
-// const args = yargs(process.argv.slice(2)).usage("Reads the input 'intermediate' snapshot iModel and creates a catalog iModel").options({
-//   input: { type: "string", alias: "i", describe: 'Path to the input "intermediate" .bim file', demandOption: true },
-//   output: { type: "string", alias: "o", describe: 'Name of the output "catalog" .bim file', demandOption: true },
-// }).argv;
-//
+// npm run start -- --output=p.db
+const args = yargs(process.argv.slice(2)).options({
+  output: { type: "string", alias: "o", describe: 'Name of the output "catalog" .bim file', demandOption: true },
+}).argv;
+
 (async () => {
   await IModelHost.startup();
   //const inputBim = "D:\\itwinConnectorSamplegitHub\\COBie-connector\\src\\test\\assets\\intermediary_v1.db";
-  const inputBim = path.join(__dirname  ,  "./test/assets/intermediary_v1.db"); 
-  const outName = initOutputFile("catalog.db");
+  const inputBim = path.join(__dirname  ,  "./assets/intermediary_v1.db"); 
+  const outName = initOutputFile(args.output);
   const outputBim = SnapshotDb.createEmpty(outName, { rootSubject: { name: "COBieConnector" }, createClassViews: true });
   const connector = new COBieConnector();
   const requestContext = new AuthorizedClientRequestContext(AccessToken.fromTokenString("Bearer test"));
