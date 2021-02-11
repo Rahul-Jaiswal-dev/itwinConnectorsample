@@ -31,6 +31,7 @@ goto end
 :copyToConnector
 echo copying databases from extractor output to connector assets
 IF NOT EXIST ..\..\COBie-connector\src\test\assets mkdir ..\..\COBie-connector\src\test\assets
+IF NOT EXIST ..\..\COBie-connector\src\test\output mkdir ..\..\COBie-connector\src\test\output
 copy .\output\*.db  ..\..\COBie-connector\src\test\assets\
 goto end
 

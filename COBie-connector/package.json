@@ -14,7 +14,8 @@
         "clean": "rimraf lib",
         "lint": "tslint --project .",
         "blint": "npm run build && npm run lint",
-        "start": "node ./node_modules/@bentley/imodeljs-backend/lib/iModelBridgeFwkMain.js"
+      
+        "start": "node lib/Main.js"
     },
     "author": {
         "name": "Bentley Systems, Inc.",

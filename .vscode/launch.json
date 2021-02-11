@@ -4,15 +4,13 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}/lib/Main.js",
-            "args": [
-                "--input=./sample-input/SUBSTATION_3D.bim",
-                "--output=outputDemo.bim",
-            ],
+            
             "outFiles": [
                 "${workspaceFolder}/lib/**/*.js"
             ],
@@ -26,9 +24,7 @@
             "type": "pwa-node",
             "request": "launch",
             "runtimeExecutable": "npm",
-            "runtimeArgs": [
-              "test"
-            ],
+           
             "outFiles": [
               "${workspaceFolder}/lib/**/*.js"
             ]
