@@ -20,9 +20,7 @@ function initOutputFile(fileBaseName: string) {
 }
 
 // npm run start -- --output=p.db
-const args = yargs(process.argv.slice(2)).options({
-  output: { type: "string", alias: "o", describe: 'Name of the output "catalog" .bim file', demandOption: true },
-}).argv;
+const args = yargs(process.argv.slice(2)).options({output: { type: "string", demandOption: true },}).argv;
 
 (async () => {
   await IModelHost.startup();
