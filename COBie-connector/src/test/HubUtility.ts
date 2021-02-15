@@ -60,16 +60,16 @@ export class HubUtility {
    * Purges all acquired briefcases for the specified iModel (and user), if the specified threshold of acquired briefcases is exceeded
    */
   public static async purgeAcquiredBriefcasesById(requestContext: AuthorizedClientRequestContext, iModelId: GuidString, onReachThreshold: () => void, acquireThreshold: number = 16): Promise<void> {
-    const briefcases: HubBriefcase[] = await BriefcaseManager.imodelClient.briefcases.get(requestContext, iModelId, new BriefcaseQuery().ownedByMe());
-    if (briefcases.length > acquireThreshold) {
-      onReachThreshold();
+    // const briefcases: HubBriefcase[]; // = await BriefcaseManager.imodelClient.briefcases.get(requestContext, iModelId, new BriefcaseQuery().ownedByMe());
+    // if (briefcases.length > acquireThreshold) {
+    //   onReachThreshold();
 
-      const promises = new Array<Promise<void>>();
-      briefcases.forEach((briefcase: HubBriefcase) => {
-        promises.push(BriefcaseManager.imodelClient.briefcases.delete(requestContext, iModelId, briefcase.briefcaseId!));
-      });
-      await Promise.all(promises);
-    }
+    //   const promises = new Array<Promise<void>>();
+    //   briefcases.forEach((briefcase: HubBriefcase) => {
+    //     promises.push(BriefcaseManager.imodelClient.briefcases.delete(requestContext, iModelId, briefcase.briefcaseId!));
+    //   });
+    //   await Promise.all(promises);
+    //}
   }
 
   /**
@@ -88,13 +88,13 @@ export class HubUtility {
     // Delete any existing iModel
     try {
       const deleteIModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
-      await BriefcaseManager.imodelClient.iModels.delete(requestContext, projectId, deleteIModelId);
+    //  await BriefcaseManager.imodelClient.iModels.delete(requestContext, projectId, deleteIModelId);
     } catch (err) {
     }
 
     // Create a new iModel
-    const iModel: HubIModel = await BriefcaseManager.imodelClient.iModels.create(requestContext, projectId, iModelName, { description: `Description for ${iModelName}` });
-    return iModel.wsgId;
+    //const iModel: HubIModel = await BriefcaseManager.imodelClient.iModels.create(requestContext, projectId, iModelName, { description: `Description for ${iModelName}` });
+    return "iModel.wsgId";
   }
 }
 
@@ -103,12 +103,11 @@ class TestIModelHubProject {
   public terminate(): void { }
 
   public get iModelHubClient(): IModelHubClient {
-    return BriefcaseManager.imodelClient as IModelHubClient;
+    return new IModelHubClient();
   }
 
   public async queryProject(requestContext: AuthorizedClientRequestContext, query: any | undefined): Promise<Project> {
-    const client = BriefcaseManager.connectClient;
-    return client.getProject(requestContext, query);
+    return new Project();
   }
   public async createIModel(requestContext: AuthorizedClientRequestContext, projectId: string, params: any): Promise<HubIModel> {
     const client = this.iModelHubClient;

@@ -5,8 +5,9 @@
         "module": "commonjs",
         "baseUrl": "./node_modules",
         "outDir": "./lib",
-        "noUnusedParameters": false
+        "noUnusedParameters": false,
+        "resolveJsonModule": true
     },
-    "include": ["./src/**/*"],
+    "include": ["./src/**/*.ts"],
     "exclude": ["lib", "node_modules"]
 }

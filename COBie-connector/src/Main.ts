@@ -30,40 +30,31 @@ const args = yargs(process.argv.slice(2)).options({output: { type: "string", dem
   const outputBim = SnapshotDb.createEmpty(outName, { rootSubject: { name: "COBieConnector" }, createClassViews: true });
   const connector = new COBieConnector();
   const requestContext = new AuthorizedClientRequestContext(AccessToken.fromTokenString("Bearer test"));
-    const sync = new Synchronizer(outputBim, false, requestContext);
-    connector.synchronizer = sync;
+  const sync = new Synchronizer(outputBim, false, requestContext);
+  connector.synchronizer = sync;
 
-    const jobSubject = Subject.create(outputBim, IModelDb.rootSubjectId, `COBieConnector:${inputBim}`);
-    jobSubject.insert();
-    connector.jobSubject = jobSubject;
+  const jobSubject = Subject.create(outputBim, IModelDb.rootSubjectId, `COBieConnector:${inputBim}`);
+  jobSubject.insert();
+  connector.jobSubject = jobSubject;
 
-    await connector.openSourceData(inputBim);
-    await connector.onOpenIModel();
+  await connector.openSourceData(inputBim);
+  await connector.onOpenIModel();
+  await connector.importDomainSchema(requestContext);
+  await connector.importDynamicSchema(requestContext);
+  outputBim.saveChanges();
+  await connector.importDefinitions();
+  outputBim.saveChanges();
 
-    await connector.importDomainSchema(requestContext);
-    await connector.importDynamicSchema(requestContext);
-    outputBim.saveChanges();
-
-    await connector.importDefinitions();
-    outputBim.saveChanges();
-
-    await connector.updateExistingData();
-    outputBim.saveChanges();
-    const bridgeJobDef = new BridgeJobDefArgs();
-    bridgeJobDef.sourcePath = inputBim;
-    
-    outputBim.close();
-  // const jsonFilePrefix = args.input.split(".bim");
-  // const jsonFilePath = `${jsonFilePrefix[0]}.json`;
-  // process.stdout.write(`Reading Json file from: ${  jsonFilePath  }\n`);
-  // const reader = new JsonReader(jsonFilePath);
-  // reader.interpretInputJson();
-
-  // const writer = new CatalogWriter(outputBim);
-  // const converter = new CatalogConverter(writer, inputBim, reader);
-  // await converter.doConversion();
-
+  await connector.updateExistingData();
+  outputBim.saveChanges();
+  const bridgeJobDef = new BridgeJobDefArgs();
+  bridgeJobDef.sourcePath = inputBim;  
+  outputBim.close();
   process.stdout.write(`Output is here: ${  outName  }\n`);
+
+  process.stdout.write(`Upload this .bim file to iModelHub\nDo you want to Edit this iModel....Type  node edit`);
+
+ 
 
   //outputBim.close();
  // inputBim.close();
