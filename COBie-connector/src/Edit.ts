@@ -7,13 +7,11 @@ import { BriefcaseDb, BriefcaseManager, ConcurrencyControl, DesktopAuthorization
 import { DesktopAuthorizationClientConfiguration, ElementProps, LocalBriefcaseProps, RequestNewBriefcaseProps } from "@bentley/imodeljs-common";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 
-
 async function signIn(): Promise<AccessToken | undefined> {
-
   const config: DesktopAuthorizationClientConfiguration = {
     clientId: "native-uNj4U1k1tYl7AwgS5E73Yhnvc",
     redirectUri: "http://localhost:3000/signin-callback",
-    scope: "openid email profile organization imodelhub context-registry-service:read-only product-settings-service projectwise-share urlps-third-party" // offline_access",
+    scope: "openid email profile organization imodelhub context-registry-service:read-only product-settings-service projectwise-share urlps-third-party", // offline_access",
   };
 
   const client = new DesktopAuthorizationClient(config);
@@ -29,22 +27,20 @@ async function signIn(): Promise<AccessToken | undefined> {
 export async function main(process: NodeJS.Process): Promise<void> {
   try {
     await IModelHost.startup();
-
     const accessToken: AccessToken | undefined = await signIn();
     if (!accessToken) {
          process.stdout.write("Failed to sign-in\n");
-      return;
+         return;
     }
 
   //  const ABCD = await BriefcaseManager.create(new AuthorizedClientRequestContext(accessToken), "b13edf47-b0ac-427a-b779-0c0488c0b9d1", "NewiModel", { rootSubject: { name: "Rahul-imodel-Electron" } });
     let editJob;
     const fs = require("fs");
-    let json = fs.readFileSync(__dirname+'/test_edits.json','utf8');
+    const json = fs.readFileSync(__dirname + "/test_edits.json','utf8");
     if (json === undefined) {
       process.stdout.write("Must define a json defining edits to make");
       return;
-    }
-    else {
+    } else {
       editJob = JSON.parse(json);
     }
     const url = new URL(editJob.url);
@@ -63,7 +59,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
     let briefcaseProps: LocalBriefcaseProps;
     if (localBriefcases.length > 0) {
       briefcaseProps = localBriefcases[0];
-      process.stdout.write(`Using cached briefcase: \n${briefcaseProps}\n`)
+      process.stdout.write(`Using cached briefcase: \n${briefcaseProps}\n`);
     } else {
       // This will reserve a new briefcase id for the user, there are a limited number of available briefcase ids per user.
       process.stdout.write(`Downloading new briefcase\n`);
@@ -78,14 +74,14 @@ export async function main(process: NodeJS.Process): Promise<void> {
     }
 
     const iModelDb = await BriefcaseDb.open(requestContext, briefcaseProps);
-    requestContext.enter()
+    requestContext.enter();
     process.stdout.write(`Finished opening iModel\n`);
     try {
       // Set optimistic policy so no locking is required.
       iModelDb.concurrencyControl.setPolicy(new ConcurrencyControl.OptimisticPolicy());
 
       // Remove subject channels so that we can edit
-      const subjectChannels: { id: GuidString, json: string }[] = [];
+      const subjectChannels: Array<{ id: GuidString, json: string }> = [];
       iModelDb.withPreparedStatement("select ECInstanceId from bis.subject where json_extract(jsonproperties, '$.Subject.Job') IS NOT NULL", (stmt: ECSqlStatement) => {
         while (stmt.step() === DbResult.BE_SQLITE_ROW) {
           const subject = iModelDb.elements.getElementProps(stmt.getValue(0).getId());

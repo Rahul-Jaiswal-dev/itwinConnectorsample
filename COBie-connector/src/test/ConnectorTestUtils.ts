@@ -7,7 +7,7 @@ import { AuthorizedClientRequestContext, ITwinClientLoggerCategory } from "@bent
 import { BentleyLoggerCategory, Config, DbResult, Id64, Id64String, Logger, LogLevel } from "@bentley/bentleyjs-core";
 import { IModelJsConfig } from "@bentley/config-loader/lib/IModelJsConfig";
 import { ChangeSet, IModelHubClientLoggerCategory } from "@bentley/imodelhub-client";
-import { BackendLoggerCategory, BriefcaseManager, ECSqlStatement, ExternalSourceAspect, IModelDb, IModelHost, IModelHostConfiguration, IModelJsFs, NativeLoggerCategory, PhysicalPartition, Subject } from "@bentley/imodeljs-backend";
+import { BackendLoggerCategory,  ECSqlStatement, ExternalSourceAspect, IModelDb, IModelHost, IModelHostConfiguration, IModelJsFs, NativeLoggerCategory, PhysicalPartition, Subject } from "@bentley/imodeljs-backend";
 import { BridgeJobDefArgs } from "@bentley/imodel-bridge";
 import * as path from "path";
 import { assert } from "chai";

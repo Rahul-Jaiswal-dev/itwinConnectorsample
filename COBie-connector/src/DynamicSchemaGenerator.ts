@@ -21,9 +21,9 @@ export class DynamicSchemaGenerator {
 
   public async synchronizeSchema(imodel: IModelDb): Promise<SchemaSyncResults> {
     const createBaseClasses = async (editor: SchemaContextEditor, schema: Schema) => {
-      for (const entityProp of COBieBaseEntityProps) {
-        const baseInsertResult = await editor.entities.createFromProps(schema.schemaKey, entityProp);
-      }
+      // for (const entityProp of COBieBaseEntityProps) {
+      //  // const baseInsertResult = await editor.entities.createFromProps(schema.schemaKey, entityProp);
+      // }
     };
 
     const createProperties = async (editor: SchemaContextEditor, table: any, entityInsertResult: any) => {
@@ -31,13 +31,13 @@ export class DynamicSchemaGenerator {
       for (const col of cols) {
         const propertyName: string = PropertyRenameMap.hasOwnProperty(col.name) ? PropertyRenameMap[col.name] : col.name;
         const propertyType: any = PropertyTypeMap.hasOwnProperty(propertyName) ? PropertyTypeMap[propertyName] : { typeName: "string", typeValue: PrimitiveType.String };
-        const property = { name: propertyName, type: "PrimitiveProperty", typeName: propertyType.typeName };
-        const propertyInsertResult = await editor.entities.createPrimitivePropertyFromProps(
-          entityInsertResult.itemKey!,
-          propertyName,
-          propertyType.typeValue,
-          property,
-        );
+      //  const property = { name: propertyName, type: "PrimitiveProperty", typeName: propertyType.typeName };
+      //  const propertyInsertResult = await editor.entities.createPrimitivePropertyFromProps(
+        //  entityInsertResult.itemKey!,
+          // propertyName,
+          // propertyType.typeValue,
+          // property,
+        // );
       }
     };
 

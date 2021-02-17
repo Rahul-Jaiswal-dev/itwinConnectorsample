@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { Id64String } from "@bentley/bentleyjs-core";
-import { Code, CodeSpec, Placement3d, AxisAlignedBox3d, RelatedElement } from "@bentley/imodeljs-common";
+import { Code, CodeSpec, Placement3d, AxisAlignedBox3d } from "@bentley/imodeljs-common";
 import { IModelDb, SpatialCategory, DrawingCategory } from "@bentley/imodeljs-backend";
 import { ItemState, SourceItem, ChangeResults, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
 import * as COBieElements from "./COBieElements";

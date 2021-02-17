@@ -6,7 +6,6 @@ import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-clie
 import { Synchronizer } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { BridgeJobDefArgs } from "@bentley/imodel-bridge";
 
-
 function initOutputFile(fileBaseName: string) {
   const outputDirName = path.join(__dirname, "output");
   if (!IModelJsFs.existsSync(outputDirName)) {
@@ -20,23 +19,20 @@ function initOutputFile(fileBaseName: string) {
 }
 
 // npm run start -- --output=p.db
-const args = yargs(process.argv.slice(2)).options({output: { type: "string", demandOption: true },}).argv;
+const args = yargs(process.argv.slice(2)).options({output: { type: "string", demandOption: true }}).argv;
 
 (async () => {
   await IModelHost.startup();
-  //const inputBim = "D:\\itwinConnectorSamplegitHub\\COBie-connector\\src\\test\\assets\\intermediary_v1.db";
-  const inputBim = path.join(__dirname  ,  "./assets/intermediary_v1.db"); 
+  const inputBim = path.join(__dirname  , "./assets/intermediary_v1.db");
   const outName = initOutputFile(args.output);
   const outputBim = SnapshotDb.createEmpty(outName, { rootSubject: { name: "COBieConnector" }, createClassViews: true });
   const connector = new COBieConnector();
   const requestContext = new AuthorizedClientRequestContext(AccessToken.fromTokenString("Bearer test"));
   const sync = new Synchronizer(outputBim, false, requestContext);
   connector.synchronizer = sync;
-
   const jobSubject = Subject.create(outputBim, IModelDb.rootSubjectId, `COBieConnector:${inputBim}`);
   jobSubject.insert();
   connector.jobSubject = jobSubject;
-
   await connector.openSourceData(inputBim);
   await connector.onOpenIModel();
   await connector.importDomainSchema(requestContext);
@@ -44,20 +40,13 @@ const args = yargs(process.argv.slice(2)).options({output: { type: "string", dem
   outputBim.saveChanges();
   await connector.importDefinitions();
   outputBim.saveChanges();
-
   await connector.updateExistingData();
   outputBim.saveChanges();
   const bridgeJobDef = new BridgeJobDefArgs();
-  bridgeJobDef.sourcePath = inputBim;  
+  bridgeJobDef.sourcePath = inputBim;
   outputBim.close();
   process.stdout.write(`Output is here: ${  outName  }\n`);
-
   process.stdout.write(`Upload this .bim file to iModelHub\nDo you want to Edit this iModel....Type  node edit`);
-
- 
-
-  //outputBim.close();
- // inputBim.close();
   await IModelHost.shutdown();
 })().catch((error) => {
   process.stdout.write(`${error.message}\n${error.stack}\n`);

@@ -3,7 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, FunctionalElement, ElementMultiAspect, Document as BisCoreDocument, ElementAspect, GeometricModel3d, PhysicalElement, SpatialElement, GeometricElement3d } from "@bentley/imodeljs-backend";
+import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument,  PhysicalElement, SpatialElement } from "@bentley/imodeljs-backend";
 import { Code, Placement3d } from "@bentley/imodeljs-common";
 import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";

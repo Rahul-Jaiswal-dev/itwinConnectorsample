@@ -3,7 +3,6 @@
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
 import { ClassRegistry, Schema, Schemas } from "@bentley/imodeljs-backend";
 import * as elementsModule from "./COBieElements";
 import * as relationshipsModule from "./COBieRelationships";

@@ -5,8 +5,7 @@
 
 import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { GuidString, Logger } from "@bentley/bentleyjs-core";
-import { BriefcaseManager } from "@bentley/imodeljs-backend";
-import { Briefcase as HubBriefcase, BriefcaseQuery, HubIModel, IModelHubClient, IModelQuery } from "@bentley/imodelhub-client";
+import {  HubIModel, IModelHubClient, IModelQuery } from "@bentley/imodelhub-client";
 import { Project } from "@bentley/context-registry-client";
 
 export class HubUtility {
@@ -93,7 +92,7 @@ export class HubUtility {
     }
 
     // Create a new iModel
-    //const iModel: HubIModel = await BriefcaseManager.imodelClient.iModels.create(requestContext, projectId, iModelName, { description: `Description for ${iModelName}` });
+    // const iModel: HubIModel = await BriefcaseManager.imodelClient.iModels.create(requestContext, projectId, iModelName, { description: `Description for ${iModelName}` });
     return "iModel.wsgId";
   }
 }
