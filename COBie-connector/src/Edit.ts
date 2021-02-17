@@ -36,7 +36,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
   //  const ABCD = await BriefcaseManager.create(new AuthorizedClientRequestContext(accessToken), "b13edf47-b0ac-427a-b779-0c0488c0b9d1", "NewiModel", { rootSubject: { name: "Rahul-imodel-Electron" } });
     let editJob;
     const fs = require("fs");
-    const json = fs.readFileSync(__dirname + "/test_edits.json','utf8");
+    const json = fs.readFileSync(__dirname + "/test_edits.json","utf8");
     if (json === undefined) {
       process.stdout.write("Must define a json defining edits to make");
       return;
