@@ -4,8 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { AuthorizedClientRequestContext, ITwinClientLoggerCategory } from "@bentley/itwin-client";
-import { BentleyLoggerCategory, Config, DbResult, Id64, Id64String, Logger, LogLevel } from "@bentley/bentleyjs-core";
-import { IModelJsConfig } from "@bentley/config-loader/lib/IModelJsConfig";
+import { BentleyLoggerCategory, DbResult, Id64, Id64String, Logger, LogLevel } from "@bentley/bentleyjs-core";
 import { ChangeSet, IModelHubClientLoggerCategory } from "@bentley/imodelhub-client";
 import { BackendLoggerCategory,  ECSqlStatement, ExternalSourceAspect, IModelDb, IModelHost, IModelHostConfiguration, IModelJsFs, NativeLoggerCategory, PhysicalPartition, Subject } from "@bentley/imodeljs-backend";
 import { BridgeJobDefArgs } from "@bentley/imodel-bridge";
@@ -111,7 +110,7 @@ export class ConnectorTestUtils {
   }
 
   public static async startBackend(clientArgs?: IModelBankArgs): Promise<void> {
-    const result = IModelJsConfig.init(true /* suppress exception */, false /* suppress error message */, Config.App);
+  //  const result = IModelJsConfig.init(true /* suppress exception */, false /* suppress error message */, Config.App);
     const config = new IModelHostConfiguration();
     config.concurrentQuery.concurrent = 4; // for test restrict this to two threads. Making closing connection faster
     config.cacheDir = KnownTestLocations.outputDir;

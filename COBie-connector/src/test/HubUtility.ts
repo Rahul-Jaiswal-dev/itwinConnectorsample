@@ -68,7 +68,7 @@ export class HubUtility {
     //     promises.push(BriefcaseManager.imodelClient.briefcases.delete(requestContext, iModelId, briefcase.briefcaseId!));
     //   });
     //   await Promise.all(promises);
-    //}
+    // }
   }
 
   /**

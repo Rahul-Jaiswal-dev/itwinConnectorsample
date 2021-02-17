@@ -4,13 +4,13 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { IModelDb } from "@bentley/imodeljs-backend";
-import { Schema, PrimitiveType, SchemaContextEditor, SchemaContext, SchemaComparer, ISchemaCompareReporter, SchemaChanges, ISchemaChanges, AnyDiagnostic } from "@bentley/ecschema-metadata";
+import { Schema,  SchemaContextEditor, SchemaContext, SchemaComparer, ISchemaCompareReporter, SchemaChanges, ISchemaChanges, AnyDiagnostic } from "@bentley/ecschema-metadata";
 import { IModelSchemaLoader } from "@bentley/imodeljs-backend/lib/IModelSchemaLoader";
 import { MutableSchema } from "@bentley/ecschema-metadata/lib/Metadata/Schema";
 import { ItemState } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { DOMParser, XMLSerializer } from "xmldom";
 import { DataFetcher } from "./DataFetcher";
-import { PropertyRenameMap, PropertyTypeMap, COBieBaseEntityProps, COBieEntityPropMap, COBieRelationshipProps } from "./schema/COBieSchemaConfig";
+import { COBieEntityPropMap, COBieRelationshipProps } from "./schema/COBieSchemaConfig";
 
 export class DynamicSchemaGenerator {
   public dataFetcher: DataFetcher;
@@ -27,10 +27,10 @@ export class DynamicSchemaGenerator {
     };
 
     const createProperties = async (editor: SchemaContextEditor, table: any, entityInsertResult: any) => {
-      const cols = await this.dataFetcher.fetchColumns(table.name);
-      for (const col of cols) {
-        const propertyName: string = PropertyRenameMap.hasOwnProperty(col.name) ? PropertyRenameMap[col.name] : col.name;
-        const propertyType: any = PropertyTypeMap.hasOwnProperty(propertyName) ? PropertyTypeMap[propertyName] : { typeName: "string", typeValue: PrimitiveType.String };
+     // const cols = await this.dataFetcher.fetchColumns(table.name);
+     // for (const col of cols) {
+       // const propertyName: string = PropertyRenameMap.hasOwnProperty(col.name) ? PropertyRenameMap[col.name] : col.name;
+      //  const propertyType: any = PropertyTypeMap.hasOwnProperty(propertyName) ? PropertyTypeMap[propertyName] : { typeName: "string", typeValue: PrimitiveType.String };
       //  const property = { name: propertyName, type: "PrimitiveProperty", typeName: propertyType.typeName };
       //  const propertyInsertResult = await editor.entities.createPrimitivePropertyFromProps(
         //  entityInsertResult.itemKey!,
@@ -38,7 +38,7 @@ export class DynamicSchemaGenerator {
           // propertyType.typeValue,
           // property,
         // );
-      }
+    //  }
     };
 
     const createEntityclasses = async (editor: SchemaContextEditor, schema: Schema) => {
@@ -53,8 +53,8 @@ export class DynamicSchemaGenerator {
 
     const createRelationshipClasses = async (editor: SchemaContextEditor, schema: Schema) => {
       for (const relationshipClassProps of COBieRelationshipProps) {
-        const relationshipInsertResult = await editor.relationships.createFromProps(schema.schemaKey, relationshipClassProps);
-      }
+      const relationshipInsertResult = await editor.relationships.createFromProps(schema.schemaKey, relationshipClassProps);
+     }
     };
 
     const createSchema = async (increaseVersion: boolean) => {

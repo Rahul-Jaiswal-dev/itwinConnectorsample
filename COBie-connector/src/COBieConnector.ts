@@ -5,7 +5,7 @@
 
 import { BentleyStatus, ClientRequestContext, IModelStatus, Logger } from "@bentley/bentleyjs-core";
 import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { CodeSpec, CodeScopeSpec, IModelError } from "@bentley/imodeljs-common";
+import { IModelError } from "@bentley/imodeljs-common";
 import { IModelBridge, loggerCategory } from "@bentley/imodel-bridge";
 import { IModelDb, IModelJsFs } from "@bentley/imodeljs-backend";
 import { Schema } from "@bentley/ecschema-metadata";

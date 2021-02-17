@@ -120,8 +120,8 @@ export class DataAligner {
         if (!sourceId || !targetId) continue;
         const relationship = this.imodel.relationships.tryGetInstance(relationshipClass.ref.classFullName, { sourceId, targetId });
         if (relationship) continue;
-        const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
-        const relationshipId = this.imodel.relationships.insertInstance(relationshipProps);
+        // const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
+       //  const relationshipId = this.imodel.relationships.insertInstance(relationshipProps);
       }
     }
   }
