@@ -5,7 +5,7 @@
 
 import { BentleyStatus, ClientRequestContext, IModelStatus, Logger } from "@bentley/bentleyjs-core";
 import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { IModelError } from "@bentley/imodeljs-common";
+import { CodeSpec, CodeScopeSpec, IModelError } from "@bentley/imodeljs-common";
 import { IModelBridge, loggerCategory } from "@bentley/imodel-bridge";
 import { IModelDb, IModelJsFs } from "@bentley/imodeljs-backend";
 import { Schema } from "@bentley/ecschema-metadata";
@@ -78,8 +78,8 @@ export class COBieConnector extends IModelBridge {
   public insertCodeSpecs() {
     const insert = (codeSpec: CodeSpecs) => {
       if (this.synchronizer.imodel.codeSpecs.hasName(codeSpec)) return;
-    //  const newCodeSpec = CodeSpec.create(this.synchronizer.imodel, codeSpec, CodeScopeSpec.Type.Model);
-    //  const codeSpecId = this.synchronizer.imodel.codeSpecs.insert(newCodeSpec);
+      const newCodeSpec = CodeSpec.create(this.synchronizer.imodel, codeSpec, CodeScopeSpec.Type.Model);
+      this.synchronizer.imodel.codeSpecs.insert(newCodeSpec);
     };
     insert(CodeSpecs.COBie);
   }
