@@ -32,7 +32,7 @@ describe("COBie Sample Connector Integration Test (Online)", () => {
       IModelJsFs.mkdirSync(KnownTestLocations.outputDir);
 
     try {
-      requestContext = await TestUtility.getAuthorizedClientRequestContext(TestUsers.regular);
+   //   requestContext = await TestUtility.getAuthorizedClientRequestContext(TestUsers.regular);
     } catch (error) {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
@@ -54,6 +54,7 @@ describe("COBie Sample Connector Integration Test (Online)", () => {
 
   const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerArgs, isUpdate: boolean = false, isSchemaUpdate: boolean = false) => {
     const runner = new BridgeRunner(bridgeJobDef, serverArgs);
+    console.log(isUpdate.toString()+ isSchemaUpdate);
     const status = await runner.synchronize();
     expect(status === BentleyStatus.SUCCESS);
    // const briefcases = BriefcaseManager.getBriefcases();

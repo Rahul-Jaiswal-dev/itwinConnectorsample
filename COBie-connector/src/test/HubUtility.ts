@@ -69,6 +69,7 @@ export class HubUtility {
     //   });
     //   await Promise.all(promises);
     // }
+    console.log(requestContext+iModelId+ onReachThreshold+acquireThreshold );
   }
 
   /**
@@ -106,6 +107,7 @@ class TestIModelHubProject {
   }
 
   public async queryProject(requestContext: AuthorizedClientRequestContext, query: any | undefined): Promise<Project> {
+    console.log(requestContext+query );
     return new Project();
   }
   public async createIModel(requestContext: AuthorizedClientRequestContext, projectId: string, params: any): Promise<HubIModel> {

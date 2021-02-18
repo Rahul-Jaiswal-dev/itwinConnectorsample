@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/COBie-connector/lib/Main.js",
              "args": [  "-- --output=debug.bim"],
             "outFiles": [
-                "${workspaceFolder}/COBie-connectorlib/**/*.js"
+                "${workspaceFolder}/COBie-connector/lib/**/*.js"
             ],
             "skipFiles": [
                 "<node_internals>/**"
@@ -24,7 +24,9 @@
             "type": "pwa-node",
             "request": "launch",
             "runtimeExecutable": "npm",
-           
+            "runtimeArgs": [
+                "test"
+              ],
             "outFiles": [
               "${workspaceFolder}/COBie-connector/lib/**/*.js"
             ]

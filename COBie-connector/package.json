@@ -2,8 +2,7 @@
     "name": "@bentley/cobie-connector",
     "version": "1.0.12",
     "description": "iModel Connector to push Sample COBie Data to iModelHub",
-    "main": "./lib/Main.js",
-    "typings": "./lib/Main",
+ 
     "scripts": {
         "copyFiles": "npx babel src --out-dir lib --copy-files",
         "pretest": "cpx ./src/test/logging.config.json ./lib/test",
@@ -12,11 +11,18 @@
         "test:integration": "npm run pretest && betools test --testDir=\"./lib/test/integration\"",
         "build": "tsc && npm run copyFiles",
         "clean": "rimraf lib",
-        "lint": "tslint --project .",
+        "lint": "eslint ./src/**/*.ts 1>&2",
         "blint": "npm run build && npm run lint",
         "start": "node lib/Main.js",
         "edit": "node lib/edit.js"
     },
+    "eslintConfig": {
+        "extends": "./node_modules/@bentley/build-tools/.eslintrc.js",
+        "ignorePatterns": [
+            "*.d.ts"
+        ]
+    },
+    "repository": {},
     "author": {
         "name": "Bentley Systems, Inc.",
         "url": "http://www.bentley.com"
@@ -48,6 +54,7 @@
         "sqlite": "^4.0.12",
         "sqlite3": "^5.0.0",
         "three": "^0.116.1",
+        "ts-node": "^9.1.1",
         "username": "^5.1.0",
         "xmldom": "^0.3.0"
     },
