@@ -15,9 +15,11 @@ export class ComponentAssemblesComponents extends PhysicalElementAssemblesElemen
   public static get classFullName(): string { return "COBieConnectorDynamic:ComponentAssemblesComponents"; }
   public static addRelatedElement(parentComponentElement: COBieElements.Component, childComponentElement: COBieElements.Component, relatedElement: COBieRelatedElements.ComponentAssemblesComponents) {
     (childComponentElement as any).parent = relatedElement;
+    console.log(parentComponentElement);
     return childComponentElement;
   }
   constructor(parentId: Id64String, childId: Id64String, relClassName: string) {
+    console.log(childId);
     super(parentId, relClassName);
   }
 }
@@ -28,9 +30,11 @@ export class FloorComposesSpaces extends RelatedElement {
   public static get classFullName(): string { return "COBieConnectorDynamic:FloorComposesSpaces"; }
   public static addRelatedElement(floorElement: COBieElements.Floor, spaceElement: COBieElements.Space, relatedElement: COBieRelatedElements.FloorComposesSpaces) {
     (spaceElement as any).composingElement = relatedElement;
+    console.log(floorElement);
     return spaceElement;
   }
   constructor(sourceId: Id64String, targetId: Id64String, relClassName: string) {
+    console.log(targetId);
     super({ id: sourceId, relClassName } as RelatedElementProps);
   }
 }

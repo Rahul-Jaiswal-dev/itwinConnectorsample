@@ -79,7 +79,7 @@ export class COBieConnector extends IModelBridge {
     const insert = (codeSpec: CodeSpecs) => {
       if (this.synchronizer.imodel.codeSpecs.hasName(codeSpec)) return;
       const newCodeSpec = CodeSpec.create(this.synchronizer.imodel, codeSpec, CodeScopeSpec.Type.Model);
-      const codeSpecId = this.synchronizer.imodel.codeSpecs.insert(newCodeSpec);
+      this.synchronizer.imodel.codeSpecs.insert(newCodeSpec);
     };
     insert(CodeSpecs.COBie);
   }

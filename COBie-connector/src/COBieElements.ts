@@ -3,7 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, FunctionalElement, ElementMultiAspect, Document as BisCoreDocument, ElementAspect, GeometricModel3d, PhysicalElement, SpatialElement, GeometricElement3d } from "@bentley/imodeljs-backend";
+import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument,  PhysicalElement, SpatialElement } from "@bentley/imodeljs-backend";
 import { Code, Placement3d } from "@bentley/imodeljs-common";
 import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";
@@ -39,6 +39,7 @@ export class Component extends PhysicalElement {
       classFullName: this.classFullName,
     };
     addPlacement(props, elementData);
+    console.log(elementClass);
     return props;
   }
 }
@@ -60,6 +61,7 @@ export class Space extends SpatialElement {
       classFullName: this.classFullName,
     };
     addPlacement(props, elementData);
+    console.log(elementClass);
     props.footprintArea = elementData["Space.grossarea"];
     return props;
   }
@@ -78,6 +80,7 @@ export class Floor extends SpatialElement {
       classFullName: this.classFullName,
     };
     addPlacement(props, elementData);
+    console.log(elementClass);
     return props;
   }
 }
@@ -95,6 +98,7 @@ export class Facility extends SpatialElement {
       classFullName: this.classFullName,
     };
     addPlacement(props, elementData);
+    console.log(elementClass);
     return props;
   }
 }
@@ -121,6 +125,7 @@ export class Type extends PhysicalType {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -143,6 +148,7 @@ export class Zone extends GroupInformationElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -161,6 +167,7 @@ export class System extends GroupInformationElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -180,6 +187,7 @@ export class Connection extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -195,6 +203,7 @@ export class Assembly extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -210,6 +219,7 @@ export class Attribute extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -225,6 +235,7 @@ export class Contact extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -240,6 +251,7 @@ export class Impact extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -255,6 +267,7 @@ export class Issue extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -270,6 +283,7 @@ export class Spare extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -285,6 +299,7 @@ export class Job extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -300,6 +315,7 @@ export class Resource extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
     return props;
   }
 }
@@ -321,6 +337,8 @@ export class Document extends BisCoreDocument {
       model: modelId,
       classFullName: this.classFullName,
     };
+    console.log(elementClass+ categoryId);
+    
     return props;
   }
 }

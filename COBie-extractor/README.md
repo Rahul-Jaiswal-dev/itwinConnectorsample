@@ -4,11 +4,22 @@ A Python script that dumps COBie Excel data into an intermediary SQLite database
 
 ## Instructions
 
-1. run "pip install -r requirements.txt" to install dependencies
-2. run "make all" to create all intermediary databases
-3. Linux / WSL: run "sh transferdb.sh" to move the newly created to COBie-connector folder as the input for COBie connector. Other OS: manually move the intermediary databases to COBie-connector/test/assets/.
+1. Requires Python 3 (e.g. 3.9.1) [Python Downloads](https://www.python.org/downloads/)
+2. run "pip install -r requirements.txt" to install dependencies
+3. Create all intermediary databases
 
-## Allowed Schema Changes
+        a. Windows cmd shell: RunExtractor.cmd --all
 
-1. Add New Column
-2. Add New Table
+        b. Linux / WSL: run "make all"
+
+        c. Other OS: manually run python commands
+
+4. Move the newly created to COBie-connector folder as the input for COBie connector.
+
+        a. Windows: RunExtractor.cmd --copy
+
+        b. Linux / WSL: run "sh transferdb.sh"
+
+        c. Other OS: manually move the intermediary databases to COBie-connector/test/assets/
+
+

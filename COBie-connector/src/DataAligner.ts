@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { Id64String } from "@bentley/bentleyjs-core";
-import { Code, CodeSpec, Placement3d, AxisAlignedBox3d, RelatedElement } from "@bentley/imodeljs-common";
+import { Code, CodeSpec, Placement3d, AxisAlignedBox3d } from "@bentley/imodeljs-common";
 import { IModelDb, SpatialCategory, DrawingCategory } from "@bentley/imodeljs-backend";
 import { ItemState, SourceItem, ChangeResults, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
 import * as COBieElements from "./COBieElements";
@@ -120,8 +120,8 @@ export class DataAligner {
         if (!sourceId || !targetId) continue;
         const relationship = this.imodel.relationships.tryGetInstance(relationshipClass.ref.classFullName, { sourceId, targetId });
         if (relationship) continue;
-        const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
-        const relationshipId = this.imodel.relationships.insertInstance(relationshipProps);
+        // const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
+       //  const relationshipId = this.imodel.relationships.insertInstance(relationshipProps);
       }
     }
   }
