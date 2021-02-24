@@ -23,7 +23,7 @@ const args = yargs(process.argv.slice(2)).options({output: { type: "string", dem
 
 (async () => {
   await IModelHost.startup();
-  const inputBim = path.join(__dirname  , "./assets/intermediary_v1.db");
+  const inputBim = path.join(__dirname  , "./assets/samplesheet.db");
   const outName = initOutputFile(args.output);
   const outputBim = SnapshotDb.createEmpty(outName, { rootSubject: { name: "COBieConnector" }, createClassViews: true });
   const connector = new COBieConnector();

@@ -123,53 +123,21 @@ export class ConnectorTestUtils {
   }
 
   public static verifyIModel(imodel: IModelDb, bridgeJobDef: BridgeJobDefArgs, isUpdate: boolean = false, isSchemaUpdate: boolean = false) {
-    assert.isDefined(imodel.getMetaData("COBieConnectorDynamic:Contact"), "Schema is imported.");
-    assert.equal(isUpdate ? 56 : 58, getCount(imodel, "COBieConnectorDynamic:Contact"));
-    assert.equal(1, getCount(imodel, "COBieConnectorDynamic:Facility"));
-    assert.equal(4, getCount(imodel, "COBieConnectorDynamic:Floor"));
-    assert.equal(22, getCount(imodel, "COBieConnectorDynamic:Space"));
-    assert.equal(20, getCount(imodel, "COBieConnectorDynamic:Zone"));
-    assert.equal(43, getCount(imodel, "COBieConnectorDynamic:Type"));
-    assert.equal(isUpdate ? 233 : 232, getCount(imodel, "COBieConnectorDynamic:Component"));
-    assert.equal(36, getCount(imodel, "COBieConnectorDynamic:System"));
-    assert.equal(3, getCount(imodel, "COBieConnectorDynamic:Spare"));
-    assert.equal(10, getCount(imodel, "COBieConnectorDynamic:Resource"));
-    assert.equal(94, getCount(imodel, "COBieConnectorDynamic:Job"));
-    assert.equal(0, getCount(imodel, "COBieConnectorDynamic:Impact"));
-    assert.equal(48, getCount(imodel, "COBieConnectorDynamic:Document"));
-    assert.equal(94, getCount(imodel, "COBieConnectorDynamic:Attribute"));
-    assert.equal(0, getCount(imodel, "COBieConnectorDynamic:Issue"));
-    assert.equal(1, getCount(imodel, "BisCore:SpatialCategory"));
-    assert.equal(22, getCount(imodel, "COBieConnectorDynamic:FloorComposesSpaces"));
-    assert.equal(36, getCount(imodel, "COBieConnectorDynamic:SystemGroupsComponents"));
-    assert.equal(20, getCount(imodel, "COBieConnectorDynamic:ZoneIncludesSpaces"));
-    assert.equal(2, getCount(imodel, "COBieConnectorDynamic:Connection"));
-    assert.equal(2, getCount(imodel, "COBieConnectorDynamic:ComponentConnectsToComponent"));
-    assert.equal(2, getCount(imodel, "COBieConnectorDynamic:Assembly"));
-    assert.equal(2, getCount(imodel, "COBieConnectorDynamic:ComponentAssemblesComponents"));
-    // assert.equal(704, getCount(imodel, "BisCore:ExternalSourceAspect"));
-
-    assert.isTrue(imodel.codeSpecs.hasName(COBieElement.CodeSpecs.COBie));
-    const jobSubjectName = `COBieConnector:${bridgeJobDef.sourcePath!}`;
+    console.log(imodel.toString()+bridgeJobDef+isUpdate+isSchemaUpdate);
+     assert.equal(5, getCount(imodel, "COBieConnectorDynamic:Device"));
+     assert.isTrue(imodel.codeSpecs.hasName(COBieElement.CodeSpecs.COBie));
+     const jobSubjectName = `COBieConnector:${bridgeJobDef.sourcePath!}`;
     const subjectId: Id64String = imodel.elements.queryElementIdByCode(Subject.createCode(imodel, IModel.rootSubjectId, jobSubjectName))!;
     assert.isTrue(Id64.isValidId64(subjectId));
 
-    const spatialLocationModel = imodel.elements.queryElementIdByCode(PhysicalPartition.createCode(imodel, subjectId, "SpatialLocationModel1"));
-    assert.isTrue(spatialLocationModel !== undefined);
-    assert.isTrue(Id64.isValidId64(spatialLocationModel!));
+    const informationRecordModel = imodel.elements.queryElementIdByCode(PhysicalPartition.createCode(imodel, subjectId, "InformationRecordModel1"));
+    assert.isTrue(informationRecordModel !== undefined);
+    assert.isTrue(Id64.isValidId64(informationRecordModel!));
 
-    const ids = ExternalSourceAspect.findBySource(imodel, spatialLocationModel!, "Space", "SpaceSite");
+    const ids = ExternalSourceAspect.findBySource(imodel, informationRecordModel!, "Device", "Device1");
     assert.isTrue(Id64.isValidId64(ids.aspectId!));
     assert.isTrue(Id64.isValidId64(ids.elementId!));
-    const spaceElement = imodel.elements.getElement(ids.elementId!);
-    assert.equal((spaceElement as any).floorname, isUpdate ? "Level 2" : "Level 1", "Floorname was updated.");
-
-    if (isSchemaUpdate) {
-      const ids = ExternalSourceAspect.findBySource(imodel, spatialLocationModel!, "Floor", "FloorLevel 1");
-      assert.isTrue(Id64.isValidId64(ids.aspectId!));
-      assert.isTrue(Id64.isValidId64(ids.elementId!));
-      const floorElement = imodel.elements.getElement(ids.elementId!);
-      assert.equal((floorElement as any).buildingname, "B1");
-    }
+    const deviceElement = imodel.elements.getElement(ids.elementId!);
+    assert.equal((deviceElement as any).devicetype, "Device 1");
   }
 }

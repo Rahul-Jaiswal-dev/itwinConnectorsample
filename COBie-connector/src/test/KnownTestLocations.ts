@@ -12,7 +12,7 @@ export class KnownTestLocations {
   public static get assetsDir(): string {
     const imodeljsMobile = Platform.imodeljsMobile;
     if (imodeljsMobile !== undefined) {
-      return path.join(process.execPath!, "Assets", "assets");
+      return path.join(__dirname  , "./assets/samplesheet.db");
     }
 
     // Assume that we are running in nodejs

@@ -13,7 +13,7 @@ goto usage
 	IF NOT DEFINED pythonCmd Set pythonCmd=python.exe
 	echo extracting all
 	IF NOT EXIST output mkdir output
-	%pythonCmd% extractor.py input/COBieSampleSheetV1.xlsx output/intermediary_v1.db # create
+	%pythonCmd% extractor.py input/samplesheet.xlsx output/samplesheet.db # create
 	%pythonCmd% extractor.py input/COBieSampleSheetV2.xlsx output/intermediary_v2.db # data change
 	%pythonCmd% extractor.py input/COBieSampleSheetV3.xlsx output/intermediary_v3.db # schema change (addition)
 	%pythonCmd% extractor.py input/COBieSampleSheetV4.xlsx output/intermediary_v4.db # schema change (deletion)
@@ -24,6 +24,8 @@ goto end
 	echo cleaning
 	rmdir /s /q output
 	del ..\..\COBie-connector\src\assets\*.db
+	del ..\..\COBie-connector\src\test\assets\*.db
+	del ..\..\COBie-connector\src\test\output\*.db
 
 
 goto end
@@ -32,7 +34,10 @@ goto end
 echo copying databases from extractor output to connector assets
 IF NOT EXIST ..\..\COBie-connector\src\assets mkdir ..\..\COBie-connector\src\assets
 IF NOT EXIST ..\..\COBie-connector\src\output mkdir ..\..\COBie-connector\src\output
+IF NOT EXIST ..\..\COBie-connector\src\test\assets mkdir ..\..\COBie-connector\src\test\assets
+IF NOT EXIST ..\..\COBie-connector\src\test\output mkdir ..\..\COBie-connector\src\test\output
 copy .\output\*.db  ..\..\COBie-connector\src\assets\
+copy .\output\*.db  ..\..\COBie-connector\src\test\assets\
 goto end
 
 :usage

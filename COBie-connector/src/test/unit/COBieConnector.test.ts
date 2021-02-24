@@ -33,7 +33,7 @@ describe("COBie Sample Connector Unit Tests", () => {
   });
 
   it("Should create empty snapshot and synchronize source data", async () => {
-    const sourcePath = path.join(KnownTestLocations.assetsDir, "intermediary_v1.db");
+    const sourcePath = path.join(KnownTestLocations.assetsDir, "samplesheet.db");
     const targetPath = path.join(KnownTestLocations.outputDir, "final.db");
     if (IModelJsFs.existsSync(targetPath)) IModelJsFs.unlinkSync(targetPath);
 

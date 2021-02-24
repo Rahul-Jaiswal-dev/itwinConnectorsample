@@ -45,6 +45,57 @@ relationshipClasses: {
 }
 
 */
+export const SAMPLE_ELEMENT_TREE3: any={
+  subjects: {
+    Subject1: {
+      ref: Subject,
+      partitions: {
+        InformationRecordPartition1: {
+          ref: InformationRecordPartition,
+          models: {
+            InformationRecordModel1: {
+              ref: InformationRecordModel,
+              elementClasses: {
+                Device: {
+                  ref: COBieElements.Device,
+                },
+              
+              },
+            },
+          },
+        },
+      },
+    },
+}
+};
+
+// export const SAMPLE_ELEMENT_TREE2: any = {
+//   subjects: {
+//     Subject1: {
+//       ref: Subject,
+//       partitions: {
+//         DefinitionPartition1: {
+//           ref: DefinitionPartition,
+//           models: {
+//             DefinitionModel1: {
+//               ref: DefinitionModel,
+//               elements: {
+//                 SpatialCategory1: {
+//                   ref: SpatialCategory,
+//                 },
+//               },
+//               elementClasses: {
+//                 Type: {
+//                   ref: MyElements.Sheet1,
+//                 },
+//               },
+//             },
+//           },
+//         },
+//       }
+//     }
+//   }
+// };
 
 export const SAMPLE_ELEMENT_TREE: any = {
   subjects: {

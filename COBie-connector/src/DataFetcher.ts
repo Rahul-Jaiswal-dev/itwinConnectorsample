@@ -79,40 +79,32 @@ export class DataFetcher {
 
   public getTablePrimaryKey(tableName: string) {
     switch (tableName) {
-      case "Contact":
-        return "email";
-      case "Facility":
-      case "Floor":
-      case "Space":
-      case "Type":
-      case "Component":
-      case "Spare":
-      case "Resource":
-        return "name";
+    //  case "Device":
+      //    return "deviceid";
       default:
         return "id";
     }
   }
-
 }
 
+
 const TABLE_JOIN_MAP: any = {
-  Component: {
-    name: {
-      tableName: "Coordinate",
-      colName: "name",
-    },
-  },
-  Space: {
-    name: {
-      tableName: "Coordinate",
-      colName: "name",
-    },
-  },
-  Floor: {
-    name: {
-      tableName: "Coordinate",
-      colName: "name",
-    },
-  },
-};
+  // Component: {
+  //   name: {
+  //     tableName: "Coordinate",
+  //     colName: "name",
+  //   },
+  // },
+  // Space: {
+  //   name: {
+  //     tableName: "Coordinate",
+  //     colName: "name",
+  //   },
+  // },
+  // Floor: {
+  //   name: {
+  //     tableName: "Coordinate",
+  //     colName: "name",
+  //   },
+  // },
+}

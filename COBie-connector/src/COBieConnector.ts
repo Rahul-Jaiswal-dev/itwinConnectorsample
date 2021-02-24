@@ -12,7 +12,7 @@ import { Schema } from "@bentley/ecschema-metadata";
 import { ItemState, SourceItem, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { DataFetcher } from "./DataFetcher";
 import { DataAligner } from "./DataAligner";
-import { SAMPLE_ELEMENT_TREE } from "./COBieElementTree";
+import { SAMPLE_ELEMENT_TREE3 } from "./COBieElementTree";
 import { DynamicSchemaGenerator, SchemaSyncResults } from "./DynamicSchemaGenerator";
 import { CodeSpecs } from "./COBieElements";
 import { COBieSchema } from "./COBieSchema";
@@ -71,7 +71,7 @@ export class COBieConnector extends IModelBridge {
     if (!this.schemaGenerator) throw new Error("No DynamicSchemaGenerator available for DataAligner.");
 
     const aligner = new DataAligner(this);
-    await aligner.align(SAMPLE_ELEMENT_TREE);
+    await aligner.align(SAMPLE_ELEMENT_TREE3);
     this.dataFetcher.close();
   }
 

@@ -20,15 +20,15 @@
         },
         {
             "name": "Debug Tests",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/COBie-connector/src/test/unit/",
             "type": "pwa-node",
             "request": "launch",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "test"
-              ],
+              "test"
+            ],
             "outFiles": [
-              "${workspaceFolder}/COBie-connector/lib/**/*.js"
+              "${workspaceFolder}/lib/**/*.js"
             ]
         },       
     ]
