@@ -144,7 +144,7 @@ export class DataAligner {
         continue;
       }
 
-      const props = elementClass.ref.createProps(modelId, code, elementClass, elementData, categoryId);
+      const props = elementClass.ref.createProps(modelId, code,  elementData);
       this.addForeignProps(props, elementClass, elementData);
       if (props.placement) this.updateExtent(props.placement);
 

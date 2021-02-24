@@ -180,14 +180,13 @@ export class Device extends InformationRecordElement {
   public static get className(): string { return "Device"; }
   public static get tableName(): string { return "Device"; }
   public static get classFullName(): string { return "COBieConnectorDynamic:Device"; }
-  public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
+  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
     const props: any = {
       code,
       userLabel: elementData[`${this.className}.name`],
       model: modelId,
       classFullName: this.classFullName,
     };
-     console.log(elementClass+ categoryId);
     return props;
   }
 }

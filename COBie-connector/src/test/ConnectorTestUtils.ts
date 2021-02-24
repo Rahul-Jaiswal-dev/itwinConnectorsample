@@ -122,13 +122,12 @@ export class ConnectorTestUtils {
     await IModelHost.shutdown();
   }
 
-  public static verifyIModel(imodel: IModelDb, bridgeJobDef: BridgeJobDefArgs, isUpdate: boolean = false, isSchemaUpdate: boolean = false) {
-    console.log(imodel.toString()+bridgeJobDef+isUpdate+isSchemaUpdate);
+  public static verifyIModel(imodel: IModelDb, bridgeJobDef: BridgeJobDefArgs) {
      assert.equal(5, getCount(imodel, "COBieConnectorDynamic:Device"));
      assert.isTrue(imodel.codeSpecs.hasName(COBieElement.CodeSpecs.COBie));
      const jobSubjectName = `COBieConnector:${bridgeJobDef.sourcePath!}`;
-    const subjectId: Id64String = imodel.elements.queryElementIdByCode(Subject.createCode(imodel, IModel.rootSubjectId, jobSubjectName))!;
-    assert.isTrue(Id64.isValidId64(subjectId));
+     const subjectId: Id64String = imodel.elements.queryElementIdByCode(Subject.createCode(imodel, IModel.rootSubjectId, jobSubjectName))!;
+     assert.isTrue(Id64.isValidId64(subjectId));
 
     const informationRecordModel = imodel.elements.queryElementIdByCode(PhysicalPartition.createCode(imodel, subjectId, "InformationRecordModel1"));
     assert.isTrue(informationRecordModel !== undefined);
