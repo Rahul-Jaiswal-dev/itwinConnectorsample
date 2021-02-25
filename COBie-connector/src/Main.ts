@@ -46,7 +46,6 @@ const args = yargs(process.argv.slice(2)).options({output: { type: "string", dem
   bridgeJobDef.sourcePath = inputBim;
   outputBim.close();
   process.stdout.write(`Output is here: ${  outName  }\n`);
-  process.stdout.write(`Upload this .bim file to iModelHub\nDo you want to Edit this iModel....Type  node edit`);
   await IModelHost.shutdown();
 })().catch((error) => {
   process.stdout.write(`${error.message}\n${error.stack}\n`);
