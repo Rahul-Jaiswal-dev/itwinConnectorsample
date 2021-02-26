@@ -72,7 +72,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
       };
       briefcaseProps = await BriefcaseManager.downloadBriefcase(requestContext, briefcaseRequest);
       requestContext.enter();
-      process.stdout.write(`Using briefcase: \n${briefcaseProps}\n`);
+      process.stdout.write(`Using briefcase:\n`);
     }
 
     const iModelDb =  await BriefcaseDb.open(requestContext, briefcaseProps);
