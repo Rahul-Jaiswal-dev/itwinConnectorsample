@@ -13,7 +13,8 @@
         "lint": "eslint ./src/**/*.ts 1>&2",
         "blint": "npm run build && npm run lint",
         "start": "node lib/Main.js",
-        "edit": "node lib/edit.js"
+        "edit": "node lib/edit.js",
+        "insert": "node lib/insertElement.js"
     },
     "eslintConfig": {
         "extends": "./node_modules/@bentley/build-tools/.eslintrc.js",
