@@ -5,9 +5,9 @@
 
 import { Subject, DefinitionPartition, DefinitionModel, PhysicalPartition, PhysicalModel, SpatialLocationPartition, SpatialLocationModel, SpatialCategory,
   InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel } from "@bentley/imodeljs-backend";
-import * as COBieElements from "./Elements";
-import * as COBieRelationships from "./Relationships";
-import * as COBieRelatedElements from "./RelatedElements";
+import * as ConnectorElements from "./Elements";
+import * as ConnectorRelationships from "./Relationships";
+import * as ConnectorRelatedElements from "./RelatedElements";
 
 /*
 
@@ -57,7 +57,7 @@ export const SAMPLE_ELEMENT_TREE3: any={
               ref: InformationRecordModel,
               elementClasses: {
                 Device: {
-                  ref: COBieElements.Device,
+                  ref: ConnectorElements.Device,
                 },
               
               },
@@ -114,7 +114,7 @@ export const SAMPLE_ELEMENT_TREE: any = {
               },
               elementClasses: {
                 Type: {
-                  ref: COBieElements.Type,
+                  ref: ConnectorElements.Type,
                 },
               },
             },
@@ -127,10 +127,10 @@ export const SAMPLE_ELEMENT_TREE: any = {
               ref: PhysicalModel,
               elementClasses: {
                 Component: {
-                  ref: COBieElements.Component,
+                  ref: ConnectorElements.Component,
                   categoryName: "SpatialCategory1",
                   typeDefinition: {
-                    ref: COBieElements.Type,
+                    ref: ConnectorElements.Type,
                     modelName: "DefinitionModel1",
                     key: "Component.typename",
                   },
@@ -138,20 +138,20 @@ export const SAMPLE_ELEMENT_TREE: any = {
               },
               relationshipClasses: {
                 ComponentConnectsToComponent: {
-                  ref: COBieRelationships.ComponentConnectsToComponent,
-                  sourceRef: COBieElements.Component,
+                  ref: ConnectorRelationships.ComponentConnectsToComponent,
+                  sourceRef: ConnectorElements.Component,
                   sourceModelName: "PhysicalModel1",
                   sourceKey: "Connection.rowname1",
-                  targetRef: COBieElements.Component,
+                  targetRef: ConnectorElements.Component,
                   targetModelName: "PhysicalModel1",
                   targetKey: "Connection.rowname2",
                 },
                 ComponentAssemblesComponents: {
-                  ref: COBieRelatedElements.ComponentAssemblesComponents,
-                  sourceRef: COBieElements.Component,
+                  ref: ConnectorRelatedElements.ComponentAssemblesComponents,
+                  sourceRef: ConnectorElements.Component,
                   sourceModelName: "PhysicalModel1",
                   sourceKey: "Assembly.parentname",
-                  targetRef: COBieElements.Component,
+                  targetRef: ConnectorElements.Component,
                   targetModelName: "PhysicalModel1",
                   targetKey: "Assembly.childnames",
                 },
@@ -166,25 +166,25 @@ export const SAMPLE_ELEMENT_TREE: any = {
               ref: SpatialLocationModel,
               elementClasses: {
                 Facility: {
-                  ref: COBieElements.Facility,
+                  ref: ConnectorElements.Facility,
                   categoryName: "SpatialCategory1",
                 },
                 Floor: {
-                  ref: COBieElements.Floor,
+                  ref: ConnectorElements.Floor,
                   categoryName: "SpatialCategory1",
                 },
                 Space: {
-                  ref: COBieElements.Space,
+                  ref: ConnectorElements.Space,
                   categoryName: "SpatialCategory1",
                 },
               },
               relationshipClasses: {
                 FloorComposesSpaces: {
-                  ref: COBieRelatedElements.FloorComposesSpaces,
-                  sourceRef: COBieElements.Floor,
+                  ref: ConnectorRelatedElements.FloorComposesSpaces,
+                  sourceRef: ConnectorElements.Floor,
                   sourceModelName: "SpatialLocationModel1",
                   sourceKey: "Space.floorname",
-                  targetRef: COBieElements.Space,
+                  targetRef: ConnectorElements.Space,
                   targetModelName: "SpatialLocationModel1",
                   targetKey: "Space.name",
                 },
@@ -199,31 +199,31 @@ export const SAMPLE_ELEMENT_TREE: any = {
               ref: InformationRecordModel,
               elementClasses: {
                 Assembly: {
-                  ref: COBieElements.Assembly,
+                  ref: ConnectorElements.Assembly,
                 },
                 Attribute: {
-                  ref: COBieElements.Attribute,
+                  ref: ConnectorElements.Attribute,
                 },
                 Contact: {
-                  ref: COBieElements.Contact,
+                  ref: ConnectorElements.Contact,
                 },
                 Connection: {
-                  ref: COBieElements.Connection,
+                  ref: ConnectorElements.Connection,
                 },
                 Resource: {
-                  ref: COBieElements.Resource,
+                  ref: ConnectorElements.Resource,
                 },
                 Spare: {
-                  ref: COBieElements.Spare,
+                  ref: ConnectorElements.Spare,
                 },
                 Job: {
-                  ref: COBieElements.Job,
+                  ref: ConnectorElements.Job,
                 },
                 Issue: {
-                  ref: COBieElements.Issue,
+                  ref: ConnectorElements.Issue,
                 },
                 Impact: {
-                  ref: COBieElements.Impact,
+                  ref: ConnectorElements.Impact,
                 },
               },
             },
@@ -236,28 +236,28 @@ export const SAMPLE_ELEMENT_TREE: any = {
               ref: GroupModel,
               elementClasses: {
                 Zone: {
-                  ref: COBieElements.Zone,
+                  ref: ConnectorElements.Zone,
                 },
                 System: {
-                  ref: COBieElements.System,
+                  ref: ConnectorElements.System,
                 },
               },
               relationshipClasses: {
                 ZoneIncludesSpaces: {
-                  ref: COBieRelationships.ZoneIncludesSpaces,
-                  sourceRef: COBieElements.Zone,
+                  ref: ConnectorRelationships.ZoneIncludesSpaces,
+                  sourceRef: ConnectorElements.Zone,
                   sourceModelName: "GroupInformationModel1",
                   sourceKey: "Zone.id",
-                  targetRef: COBieElements.Space,
+                  targetRef: ConnectorElements.Space,
                   targetModelName: "SpatialLocationModel1",
                   targetKey: "Zone.spacenames",
                 },
                 SystemGroupsComponents: {
-                  ref: COBieRelationships.SystemGroupsComponents,
-                  sourceRef: COBieElements.System,
+                  ref: ConnectorRelationships.SystemGroupsComponents,
+                  sourceRef: ConnectorElements.System,
                   sourceModelName: "GroupInformationModel1",
                   sourceKey: "System.id",
-                  targetRef: COBieElements.Component,
+                  targetRef: ConnectorElements.Component,
                   targetModelName: "PhysicalModel1",
                   targetKey: "System.componentnames",
                 },
@@ -272,7 +272,7 @@ export const SAMPLE_ELEMENT_TREE: any = {
               ref: DocumentListModel,
               elementClasses: {
                 Document: {
-                  ref: COBieElements.Document,
+                  ref: ConnectorElements.Document,
                 },
               },
             },

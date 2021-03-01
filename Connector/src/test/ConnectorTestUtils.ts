@@ -15,7 +15,7 @@ import { IModelBankArgs, IModelBankUtils } from "@bentley/imodel-bridge/lib/IMod
 import { IModelHubUtils } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { HubUtility } from "./HubUtility";
 import { BridgeLoggerCategory } from "@bentley/imodel-bridge/lib/BridgeLoggerCategory";
-import * as COBieElement from "../Elements";
+import * as connectorElement from "../Elements";
 import { IModel } from "@bentley/imodeljs-common";
 
 export class TestIModelInfo {
@@ -123,9 +123,9 @@ export class ConnectorTestUtils {
   }
 
   public static verifyIModel(imodel: IModelDb, bridgeJobDef: BridgeJobDefArgs) {
-     assert.equal(5, getCount(imodel, "COBieConnectorDynamic:Device"));
-     assert.isTrue(imodel.codeSpecs.hasName(COBieElement.CodeSpecs.COBie));
-     const jobSubjectName = `COBieConnector:${bridgeJobDef.sourcePath!}`;
+     assert.equal(5, getCount(imodel, "ConnectorDynamic:Device"));
+     assert.isTrue(imodel.codeSpecs.hasName(connectorElement.CodeSpecs.Connector));
+     const jobSubjectName = `Connector:${bridgeJobDef.sourcePath!}`;
      const subjectId: Id64String = imodel.elements.queryElementIdByCode(Subject.createCode(imodel, IModel.rootSubjectId, jobSubjectName))!;
      assert.isTrue(Id64.isValidId64(subjectId));
 

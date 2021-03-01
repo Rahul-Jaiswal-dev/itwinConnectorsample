@@ -1,7 +1,7 @@
 {
-    "name": "@bentley/cobie-connector",
+    "name": "@bentley/connector",
     "version": "1.0.12",
-    "description": "iModel Connector to push Sample COBie Data to iModelHub",
+    "description": "iModel Connector to push Sample Data to iModelHub",
     "scripts": {
         "copyFiles": "npx babel src --out-dir lib --copy-files",
         "pretest": "cpx ./src/test/logging.config.json ./lib/test",

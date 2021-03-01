@@ -9,7 +9,7 @@ import * as relationshipsModule from "./Relationships";
 
 export class sensorSchema extends Schema {
   public static get schemaName(): string {
-    return "COBieConnectorDynamic";
+    return "ConnectorDynamic";
   }
   public static registerSchema() {
     if (this !== Schemas.getRegisteredSchema(this.schemaName)) {

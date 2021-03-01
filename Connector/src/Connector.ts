@@ -81,7 +81,7 @@ export class Connector extends IModelBridge {
       const newCodeSpec = CodeSpec.create(this.synchronizer.imodel, codeSpec, CodeScopeSpec.Type.Model);
       this.synchronizer.imodel.codeSpecs.insert(newCodeSpec);
     };
-    insert(CodeSpecs.COBie);
+    insert(CodeSpecs.Connector);
   }
 
   public getSourceDataStatus(): SynchronizationResults {
@@ -102,7 +102,7 @@ export class Connector extends IModelBridge {
   }
 
   public getApplicationId(): string {
-    return "Test-Cobie";
+    return "Test-Connector";
   }
 
   public getApplicationVersion(): string {
@@ -110,7 +110,7 @@ export class Connector extends IModelBridge {
   }
 
   public getBridgeName(): string {
-    return "COBieConnector";
+    return "Connector";
   }
 }
 

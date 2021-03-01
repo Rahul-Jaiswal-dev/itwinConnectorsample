@@ -7,7 +7,7 @@
       {
         "operation": "insert",
         "properties": {
-          "classFullName": "COBieConnectorDynamic:Device",
+          "classFullName": "ConnectorDynamic:Device",
           "model": "0x13",
           "value":"myString"
         }

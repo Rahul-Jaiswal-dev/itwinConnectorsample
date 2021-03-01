@@ -73,11 +73,11 @@ function reverseMap(map: {[key: string]: string}) {
   return reverse;
 }
 
-export const PropertyRenameMap: {[propertyName: string]: string} = { id: "rowid", category: "cobiecategory", name: "cobiename" };
+export const PropertyRenameMap: {[propertyName: string]: string} = { id: "rowid", category: "connectorcategory", name: "connectorname" };
 export const PropertyRenameReverseMap = reverseMap(PropertyRenameMap);
 
-export const COBieBaseEntityProps: EntityClassProps[] = [];
-export const COBieEntityPropMap: { [className: string]: EntityClassProps } = {
+export const ConnectorBaseEntityProps: EntityClassProps[] = [];
+export const ConnectorEntityPropMap: { [className: string]: EntityClassProps } = {
   // Assembly: {
   //   name: "Assembly",
   //   baseClass: "BisCore:InformationRecordElement",
@@ -157,105 +157,4 @@ export const COBieEntityPropMap: { [className: string]: EntityClassProps } = {
   },
 };
 
-export const COBieRelationshipProps: RelationshipClassProps[] = [
-  // {
-  //   name: "ComponentConnectsToComponent",
-  //   baseClass: "BisCore:ElementRefersToElements",
-  //   strength: "Referencing",
-  //   strengthDirection: "Forward",
-  //   source: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "From Component",
-  //     abstractConstraint: "BisCore.PhysicalElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Component"],
-  //   },
-  //   target: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "To Component",
-  //     abstractConstraint: "BisCore.PhysicalElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Component"],
-  //   },
-  // },
-  // {
-  //   name: "ComponentAssemblesComponents",
-  //   baseClass: "BisCore:PhysicalElementAssemblesElements",
-  //   strength: "Embedding",
-  //   strengthDirection: "Forward",
-  //   source: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..1)",
-  //     roleLabel: "assmbles",
-  //     abstractConstraint: "BisCore.PhysicalElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Component"],
-  //   },
-  //   target: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "is assembled by",
-  //     abstractConstraint: "BisCore.PhysicalElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Component"],
-  //   },
-  // },
-  // {
-  //   name: "SystemGroupsComponents",
-  //   baseClass: "BisCore:ElementGroupsMembers",
-  //   strength: "Referencing",
-  //   strengthDirection: "Forward",
-  //   source: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "System",
-  //     abstractConstraint: "BisCore.GroupInformationElement",
-  //     constraintClasses: ["COBieConnectorDynamic.System"],
-  //   },
-  //   target: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "Physical Component",
-  //     abstractConstraint: "BisCore.PhysicalElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Component"],
-  //   },
-  // },
-  // {
-  //   name: "ZoneIncludesSpaces",
-  //   baseClass: "BisCore:ElementGroupsMembers",
-  //   strength: "Referencing",
-  //   strengthDirection: "Forward",
-  //   source: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "Zone",
-  //     abstractConstraint: "BisCore.GroupInformationElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Zone"],
-  //   },
-  //   target: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "Spaces",
-  //     abstractConstraint: "BisCore.SpatialLocationElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Space"],
-  //   },
-  // },
-  // {
-  //   name: "FloorComposesSpaces",
-  //   baseClass: "SpatialComposition:CompositeComposesSubComposites",
-  //   strength: "Embedding",
-  //   strengthDirection: "Forward",
-  //   source: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..1)",
-  //     roleLabel: "is composed by",
-  //     abstractConstraint: "SpatialComposition.CompositeElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Floor"],
-  //   },
-  //   target: {
-  //     polymorphic: true,
-  //     multiplicity: "(0..*)",
-  //     roleLabel: "composes",
-  //     abstractConstraint: "SpatialComposition.CompositeElement",
-  //     constraintClasses: ["COBieConnectorDynamic.Space"],
-  //   },
-  // },
-];
+export const ConnectorRelationshipProps: RelationshipClassProps[] = [];

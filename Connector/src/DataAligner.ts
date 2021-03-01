@@ -7,9 +7,9 @@ import { Id64String } from "@bentley/bentleyjs-core";
 import { Code, CodeSpec, Placement3d, AxisAlignedBox3d } from "@bentley/imodeljs-common";
 import { IModelDb, SpatialCategory, DrawingCategory } from "@bentley/imodeljs-backend";
 import { ItemState, SourceItem, ChangeResults, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
-import * as COBieElements from "./Elements";
-import * as COBieRelationships from "./Relationships";
-import * as COBieRelatedElements from "./RelatedElements";
+import * as connectorElements from "./Elements";
+import * as ConnectorRelationships from "./Relationships";
+import * as connectorRelatedElements from "./RelatedElements";
 import { Connector } from "./Connector";
 import { DataFetcher } from "./DataFetcher";
 import { DynamicSchemaGenerator } from "./DynamicSchemaGenerator";
@@ -110,13 +110,13 @@ export class DataAligner {
       const sourceId = this.imodel.elements.queryElementIdByCode(sourceCode)!;
       const targetId = this.imodel.elements.queryElementIdByCode(targetCode)!;
 
-      if (relationshipClass.ref.className in COBieRelatedElements) {
+      if (relationshipClass.ref.className in connectorRelatedElements) {
         const sourceElement = this.imodel.elements.getElement(sourceId);
         const targetElement = this.imodel.elements.getElement(targetId);
         const relatedElement = new relationshipClass.ref(sourceId, targetId, relationshipClass.ref.classFullName);
         const updatedElement = relationshipClass.ref.addRelatedElement(sourceElement, targetElement, relatedElement);
         updatedElement.update();
-      } else if (relationshipClass.ref.className in COBieRelationships) {
+      } else if (relationshipClass.ref.className in ConnectorRelationships) {
         if (!sourceId || !targetId) continue;
         const relationship = this.imodel.relationships.tryGetInstance(relationshipClass.ref.classFullName, { sourceId, targetId });
         if (relationship) continue;
@@ -131,7 +131,7 @@ export class DataAligner {
     const tableData = await this.dataFetcher.fetchTableData(tableName);
     const categoryId = this.categoryCache[elementClass.categoryName];
     const primaryKey = this.dataFetcher.getTablePrimaryKey(tableName);
-    const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(COBieElements.CodeSpecs.COBie);
+    const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
 
     for (const elementData of tableData) {
       const guid = tableName + elementData[`${tableName}.${primaryKey}`];
@@ -189,7 +189,7 @@ export class DataAligner {
 
   public getCode(tableName: string, modelId: Id64String, keyValue: string) {
     const codeValue = `${tableName}${keyValue}`;
-    const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(COBieElements.CodeSpecs.COBie);
+    const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
     return new Code({spec: codeSpec.id, scope: modelId, value: codeValue});
   }
 }

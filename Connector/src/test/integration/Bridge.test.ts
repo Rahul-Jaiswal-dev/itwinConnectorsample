@@ -15,7 +15,7 @@ import { BentleyStatus,  Logger } from "@bentley/bentleyjs-core";
 import { KnownTestLocations } from "../KnownTestLocations";
 import { HubUtility } from "../HubUtility";
 
-describe("COBie Sample Connector Integration Test (Online)", () => {
+describe("Sample Connector Integration Test (Online)", () => {
 
   let testProjectId: string;
   let requestContext: AuthorizedClientRequestContext;

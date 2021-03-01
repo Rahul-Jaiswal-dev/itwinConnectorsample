@@ -25,12 +25,12 @@ const args = yargs(process.argv.slice(2)).options({output: { type: "string", dem
   await IModelHost.startup();
   const inputBim = path.join(__dirname  , "./assets/samplesheet.db");
   const outName = initOutputFile(args.output);
-  const outputBim = SnapshotDb.createEmpty(outName, { rootSubject: { name: "COBieConnector" }, createClassViews: true });
+  const outputBim = SnapshotDb.createEmpty(outName, { rootSubject: { name: "Connector" }, createClassViews: true });
   const connector = new Connector();
   const requestContext = new AuthorizedClientRequestContext(AccessToken.fromTokenString("Bearer test"));
   const sync = new Synchronizer(outputBim, false, requestContext);
   connector.synchronizer = sync;
-  const jobSubject = Subject.create(outputBim, IModelDb.rootSubjectId, `COBieConnector:${inputBim}`);
+  const jobSubject = Subject.create(outputBim, IModelDb.rootSubjectId, `Connector:${inputBim}`);
   jobSubject.insert();
   connector.jobSubject = jobSubject;
   await connector.openSourceData(inputBim);

@@ -6,14 +6,14 @@
 import { PhysicalElementAssemblesElements } from "@bentley/imodeljs-backend";
 import { RelatedElement, RelatedElementProps } from "@bentley/imodeljs-common";
 import { Id64String } from "@bentley/bentleyjs-core";
-import * as COBieElements from "./Elements";
-import * as COBieRelatedElements from "./RelatedElements";
+import * as ConnectorElements from "./Elements";
+import * as ConnectorRelatedElements from "./RelatedElements";
 
 export class ComponentAssemblesComponents extends PhysicalElementAssemblesElements {
   public static get className(): string { return "ComponentAssemblesComponents"; }
   public static get tableName(): string { return "Assembly"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:ComponentAssemblesComponents"; }
-  public static addRelatedElement(parentComponentElement: COBieElements.Component, childComponentElement: COBieElements.Component, relatedElement: COBieRelatedElements.ComponentAssemblesComponents) {
+  public static get classFullName(): string { return "ConnectorDynamic:ComponentAssemblesComponents"; }
+  public static addRelatedElement(parentComponentElement: ConnectorElements.Component, childComponentElement: ConnectorElements.Component, relatedElement: ConnectorRelatedElements.ComponentAssemblesComponents) {
     (childComponentElement as any).parent = relatedElement;
     console.log(parentComponentElement);
     return childComponentElement;
@@ -27,8 +27,8 @@ export class ComponentAssemblesComponents extends PhysicalElementAssemblesElemen
 export class FloorComposesSpaces extends RelatedElement {
   public static get className(): string { return "FloorComposesSpaces"; }
   public static get tableName(): string { return "Space"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:FloorComposesSpaces"; }
-  public static addRelatedElement(floorElement: COBieElements.Floor, spaceElement: COBieElements.Space, relatedElement: COBieRelatedElements.FloorComposesSpaces) {
+  public static get classFullName(): string { return "ConnectorDynamic:FloorComposesSpaces"; }
+  public static addRelatedElement(floorElement: ConnectorElements.Floor, spaceElement: ConnectorElements.Space, relatedElement: ConnectorRelatedElements.FloorComposesSpaces) {
     (spaceElement as any).composingElement = relatedElement;
     console.log(floorElement);
     return spaceElement;

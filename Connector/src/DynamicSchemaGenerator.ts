@@ -10,7 +10,7 @@ import { MutableSchema } from "@bentley/ecschema-metadata/lib/Metadata/Schema";
 import { ItemState } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { DOMParser, XMLSerializer } from "xmldom";
 import { DataFetcher } from "./DataFetcher";
-import { PropertyRenameMap, PropertyTypeMap, COBieBaseEntityProps, COBieEntityPropMap, COBieRelationshipProps } from "./schema/SchemaConfig";
+import { PropertyRenameMap, PropertyTypeMap, ConnectorBaseEntityProps,  ConnectorEntityPropMap, ConnectorRelationshipProps } from "./schema/SchemaConfig";
 
 export class DynamicSchemaGenerator {
   public dataFetcher: DataFetcher;
@@ -21,7 +21,7 @@ export class DynamicSchemaGenerator {
 
   public async synchronizeSchema(imodel: IModelDb): Promise<SchemaSyncResults> {
     const createBaseClasses = async (editor: SchemaContextEditor, schema: Schema) => {
-      for (const entityProp of COBieBaseEntityProps) {
+      for (const entityProp of ConnectorBaseEntityProps) {
         const baseInsertResult = await editor.entities.createFromProps(schema.schemaKey, entityProp);
       }
     };
@@ -44,7 +44,7 @@ export class DynamicSchemaGenerator {
     const createEntityclasses = async (editor: SchemaContextEditor, schema: Schema) => {
       const tables = await this.dataFetcher.fetchTables();
       for (const table of tables) {
-        const entityClassProps = COBieEntityPropMap[table.name];
+        const entityClassProps = ConnectorEntityPropMap[table.name];
         if (!entityClassProps) continue;
         const entityInsertResult = await editor.entities.createFromProps(schema.schemaKey, entityClassProps);
         await createProperties(editor, table, entityInsertResult);
@@ -52,13 +52,13 @@ export class DynamicSchemaGenerator {
     };
 
     const createRelationshipClasses = async (editor: SchemaContextEditor, schema: Schema) => {
-      for (const relationshipClassProps of COBieRelationshipProps) {
+      for (const relationshipClassProps of ConnectorRelationshipProps) {
         const relationshipInsertResult = await editor.relationships.createFromProps(schema.schemaKey, relationshipClassProps);
       }
     };
 
     const createSchema = async (increaseVersion: boolean) => {
-      const schemaVersion = imodel.querySchemaVersion("COBieConnectorDynamic");
+      const schemaVersion = imodel.querySchemaVersion("ConnectorDynamic");
       let [readVersion, writeVersion, minorVersion] = [1, 0, 0];
       if (increaseVersion) {
         [readVersion, writeVersion, minorVersion] = schemaVersion!.split(".").map((version) => parseInt(version, 10));
@@ -67,7 +67,7 @@ export class DynamicSchemaGenerator {
 
       const context = new SchemaContext();
       const editor = new SchemaContextEditor(context);
-      const newSchema = new Schema(context, "COBieConnectorDynamic", "cbd", readVersion, writeVersion, minorVersion);
+      const newSchema = new Schema(context, "ConnectorDynamic", "cbd", readVersion, writeVersion, minorVersion);
 
       const bisSchema = loader.getSchema("BisCore");
       const funcSchema = loader.getSchema("Functional");
@@ -91,7 +91,7 @@ export class DynamicSchemaGenerator {
     };
 
     const loader = new IModelSchemaLoader(imodel);
-    const existingSchema = loader.tryGetSchema("COBieConnectorDynamic");
+    const existingSchema = loader.tryGetSchema("ConnectorDynamic");
     const latestSchema = await createSchema(false);
 
     let schemaState: ItemState = ItemState.New;

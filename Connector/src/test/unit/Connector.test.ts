@@ -12,7 +12,7 @@ import { KnownTestLocations } from "../KnownTestLocations";
 import { Connector } from "../../Connector";
 import { BridgeJobDefArgs } from "@bentley/imodel-bridge";
 
-describe("COBie Sample Connector Unit Tests", () => {
+describe("Sample Connector Unit Tests", () => {
   before(async () => {
     // ConnectorTestUtils.setupLogging();
     // ConnectorTestUtils.setupDebugLogLevels();
@@ -38,12 +38,12 @@ describe("COBie Sample Connector Unit Tests", () => {
     if (IModelJsFs.existsSync(targetPath)) IModelJsFs.unlinkSync(targetPath);
 
     const connector = new Connector();
-    const targetDb = SnapshotDb.createEmpty(targetPath, { rootSubject: { name: "COBieConnector" }});
+    const targetDb = SnapshotDb.createEmpty(targetPath, { rootSubject: { name: "Connector" }});
     const requestContext = new AuthorizedClientRequestContext(AccessToken.fromTokenString("Bearer test"));
     const sync = new Synchronizer(targetDb, false, requestContext);
     connector.synchronizer = sync;
 
-    const jobSubject = Subject.create(targetDb, IModelDb.rootSubjectId, `COBieConnector:${sourcePath}`);
+    const jobSubject = Subject.create(targetDb, IModelDb.rootSubjectId, `Connector:${sourcePath}`);
     jobSubject.insert();
     connector.jobSubject = jobSubject;
 

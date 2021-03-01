@@ -9,7 +9,7 @@ import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";
 
 export enum CodeSpecs {
-  COBie = "COBieConnectorDynamicCOBie",
+  Connector = "ConnectorDynamic",
 }
 
 function addPlacement(props: any, elementData: any) {
@@ -29,7 +29,7 @@ function addPlacement(props: any, elementData: any) {
 export class Component extends PhysicalElement {
   public static get className(): string { return "Component"; }
   public static get tableName(): string { return "Component"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Component"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Component"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -51,7 +51,7 @@ export class Component extends PhysicalElement {
 export class Space extends SpatialElement {
   public static get className(): string { return "Space"; }
   public static get tableName(): string { return "Space"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Space"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Space"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -70,7 +70,7 @@ export class Space extends SpatialElement {
 export class Floor extends SpatialElement {
   public static get className(): string { return "Floor"; }
   public static get tableName(): string { return "Floor"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Floor"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Floor"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -88,7 +88,7 @@ export class Floor extends SpatialElement {
 export class Facility extends SpatialElement {
   public static get className(): string { return "Facility"; }
   public static get tableName(): string { return "Facility"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Facility"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Facility"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -114,7 +114,7 @@ export class Facility extends SpatialElement {
 export class Type extends PhysicalType {
   public static get className(): string { return "Type"; }
   public static get tableName(): string { return "Type"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Type"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Type"; }
   public constructor(props: any, iModel: IModelDb) {
     super(props, iModel);
   }
@@ -137,7 +137,7 @@ export class Type extends PhysicalType {
 export class Zone extends GroupInformationElement {
   public static get className(): string { return "Zone"; }
   public static get tableName(): string { return "Zone"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Zone"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Zone"; }
   public constructor(props: any, iModel: IModelDb) {
     super(props, iModel);
   }
@@ -156,7 +156,7 @@ export class Zone extends GroupInformationElement {
 export class System extends GroupInformationElement {
   public static get className(): string { return "System"; }
   public static get tableName(): string { return "System"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:System"; }
+  public static get classFullName(): string { return "ConnectorDynamic:System"; }
   public constructor(props: any, iModel: IModelDb) {
     super(props, iModel);
   }
@@ -179,7 +179,7 @@ export class System extends GroupInformationElement {
 export class Device extends InformationRecordElement {
   public static get className(): string { return "Device"; }
   public static get tableName(): string { return "Device"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Device"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Device"; }
   public static createProps(modelId: Id64String, code: Code,  elementData: any) {
     const props: any = {
       code,
@@ -193,7 +193,7 @@ export class Device extends InformationRecordElement {
 export class Connection extends InformationRecordElement {
   public static get className(): string { return "Connection"; }
   public static get tableName(): string { return "Connection"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Connection"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Connection"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -209,7 +209,7 @@ export class Connection extends InformationRecordElement {
 export class Assembly extends InformationRecordElement {
   public static get className(): string { return "Assembly"; }
   public static get tableName(): string { return "Assembly"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Assembly"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Assembly"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -225,7 +225,7 @@ export class Assembly extends InformationRecordElement {
 export class Attribute extends InformationRecordElement {
   public static get className(): string { return "Attribute"; }
   public static get tableName(): string { return "Attribute"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Attribute"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Attribute"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -241,7 +241,7 @@ export class Attribute extends InformationRecordElement {
 export class Contact extends InformationRecordElement {
   public static get className(): string { return "Contact"; }
   public static get tableName(): string { return "Contact"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Contact"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Contact"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -257,7 +257,7 @@ export class Contact extends InformationRecordElement {
 export class Impact extends InformationRecordElement {
   public static get className(): string { return "Impact"; }
   public static get tableName(): string { return "Impact"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Impact"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Impact"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -273,7 +273,7 @@ export class Impact extends InformationRecordElement {
 export class Issue extends InformationRecordElement {
   public static get className(): string { return "Issue"; }
   public static get tableName(): string { return "Issue"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Issue"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Issue"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -289,7 +289,7 @@ export class Issue extends InformationRecordElement {
 export class Spare extends InformationRecordElement {
   public static get className(): string { return "Spare"; }
   public static get tableName(): string { return "Spare"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Spare"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Spare"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -305,7 +305,7 @@ export class Spare extends InformationRecordElement {
 export class Job extends InformationRecordElement {
   public static get className(): string { return "Job"; }
   public static get tableName(): string { return "Job"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Job"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Job"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -321,7 +321,7 @@ export class Job extends InformationRecordElement {
 export class Resource extends InformationRecordElement {
   public static get className(): string { return "Resource"; }
   public static get tableName(): string { return "Resource"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Resource"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Resource"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
@@ -340,7 +340,7 @@ export class Resource extends InformationRecordElement {
 export class Document extends BisCoreDocument {
   public static get className(): string { return "Document"; }
   public static get tableName(): string { return "Document"; }
-  public static get classFullName(): string { return "COBieConnectorDynamic:Document"; }
+  public static get classFullName(): string { return "ConnectorDynamic:Document"; }
   public constructor(props: any, iModel: IModelDb) {
     super(props, iModel);
   }

@@ -3,7 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 import { ClientRequestContext, DbResult, GuidString } from "@bentley/bentleyjs-core";
-import { BriefcaseDb, BriefcaseManager, ConcurrencyControl, DesktopAuthorizationClient, ECSqlStatement, IModelHost } from "@bentley/imodeljs-backend";
+import { BriefcaseDb, BriefcaseManager, CodeSpecs, ConcurrencyControl, DesktopAuthorizationClient, ECSqlStatement, IModelHost } from "@bentley/imodeljs-backend";
 import { Code , DesktopAuthorizationClientConfiguration, ElementProps, LocalBriefcaseProps, RequestNewBriefcaseProps } from "@bentley/imodeljs-common";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 
@@ -97,7 +97,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
       const elementEdits = editJob?.edits?.elements;
       if (elementEdits) {
         for (const elEdit of elementEdits) {
-          const cod = new Code({ spec: iModelDb.codeSpecs.getByName('COBieConnectorDynamicCOBie').id, scope: elEdit.properties.model, value: elEdit.properties.value });
+          const cod = new Code({ spec: iModelDb.codeSpecs.getByName("ConnectorDynamic").id, scope: elEdit.properties.model, value: elEdit.properties.value });
           const newElement = {model: elEdit.properties.model, code: cod, classFullName:  elEdit.properties.classFullName};
           iModelDb.elements.insertElement(newElement);
         }
