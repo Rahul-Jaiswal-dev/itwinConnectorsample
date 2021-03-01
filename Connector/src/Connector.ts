@@ -12,13 +12,13 @@ import { Schema } from "@bentley/ecschema-metadata";
 import { ItemState, SourceItem, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { DataFetcher } from "./DataFetcher";
 import { DataAligner } from "./DataAligner";
-import { SAMPLE_ELEMENT_TREE3 } from "./COBieElementTree";
+import { SAMPLE_ELEMENT_TREE3 } from "./ElementTree";
 import { DynamicSchemaGenerator, SchemaSyncResults } from "./DynamicSchemaGenerator";
-import { CodeSpecs } from "./COBieElements";
-import { COBieSchema } from "./COBieSchema";
+import { CodeSpecs } from "./Elements";
+import { sensorSchema } from "./Schema";
 import * as path from "path";
 
-export class COBieConnector extends IModelBridge {
+export class Connector extends IModelBridge {
   public sourceDataState: ItemState = ItemState.New;
   public sourceDataPath?: string;
   public dataFetcher?: DataFetcher;
@@ -49,7 +49,7 @@ export class COBieConnector extends IModelBridge {
 
   public async importDynamicSchema(requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
     if (this.sourceDataState === ItemState.Unchanged) return;
-    if (this.sourceDataState === ItemState.New) COBieSchema.registerSchema();
+    if (this.sourceDataState === ItemState.New) sensorSchema.registerSchema();
 
     const schemaGenerator = new DynamicSchemaGenerator(this.dataFetcher!);
     this.schemaGenerator = schemaGenerator;
@@ -115,5 +115,5 @@ export class COBieConnector extends IModelBridge {
 }
 
 export function getBridgeInstance() {
-  return new COBieConnector();
+  return new Connector();
 }

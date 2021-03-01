@@ -7,19 +7,19 @@ import { Id64String } from "@bentley/bentleyjs-core";
 import { Code, CodeSpec, Placement3d, AxisAlignedBox3d } from "@bentley/imodeljs-common";
 import { IModelDb, SpatialCategory, DrawingCategory } from "@bentley/imodeljs-backend";
 import { ItemState, SourceItem, ChangeResults, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
-import * as COBieElements from "./COBieElements";
-import * as COBieRelationships from "./COBieRelationships";
-import * as COBieRelatedElements from "./COBieRelatedElements";
-import { COBieConnector } from "./COBieConnector";
+import * as COBieElements from "./Elements";
+import * as COBieRelationships from "./Relationships";
+import * as COBieRelatedElements from "./RelatedElements";
+import { Connector } from "./Connector";
 import { DataFetcher } from "./DataFetcher";
 import { DynamicSchemaGenerator } from "./DynamicSchemaGenerator";
 import * as hash from "object-hash";
-import { PropertyRenameReverseMap } from "./schema/COBieSchemaConfig";
+import { PropertyRenameReverseMap } from "./schema/SchemaConfig";
 
 export class DataAligner {
 
   public imodel: IModelDb;
-  public connector: COBieConnector;
+  public connector: Connector;
   public dataFetcher: DataFetcher;
   public schemaGenerator: DynamicSchemaGenerator;
   public schemaItems: {[className: string]: any};
@@ -27,7 +27,7 @@ export class DataAligner {
   public modelCache: {[modelName: string]: Id64String};
   public elementCache: {[identifier: string]: Id64String};
 
-  constructor(connector: COBieConnector) {
+  constructor(connector: Connector) {
     this.connector = connector;
     this.dataFetcher = connector.dataFetcher!;
     this.imodel = connector.synchronizer.imodel;

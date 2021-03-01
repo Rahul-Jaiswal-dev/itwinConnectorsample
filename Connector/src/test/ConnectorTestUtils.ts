@@ -15,7 +15,7 @@ import { IModelBankArgs, IModelBankUtils } from "@bentley/imodel-bridge/lib/IMod
 import { IModelHubUtils } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { HubUtility } from "./HubUtility";
 import { BridgeLoggerCategory } from "@bentley/imodel-bridge/lib/BridgeLoggerCategory";
-import * as COBieElement from "../COBieElements";
+import * as COBieElement from "../Elements";
 import { IModel } from "@bentley/imodeljs-common";
 
 export class TestIModelInfo {

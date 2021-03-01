@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { ClassRegistry, Schema, Schemas } from "@bentley/imodeljs-backend";
-import * as elementsModule from "./COBieElements";
-import * as relationshipsModule from "./COBieRelationships";
+import * as elementsModule from "./Elements";
+import * as relationshipsModule from "./Relationships";
 
-export class COBieSchema extends Schema {
+export class sensorSchema extends Schema {
   public static get schemaName(): string {
     return "COBieConnectorDynamic";
   }

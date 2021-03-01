@@ -10,7 +10,7 @@ import { MutableSchema } from "@bentley/ecschema-metadata/lib/Metadata/Schema";
 import { ItemState } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { DOMParser, XMLSerializer } from "xmldom";
 import { DataFetcher } from "./DataFetcher";
-import { PropertyRenameMap, PropertyTypeMap, COBieBaseEntityProps, COBieEntityPropMap, COBieRelationshipProps } from "./schema/COBieSchemaConfig";
+import { PropertyRenameMap, PropertyTypeMap, COBieBaseEntityProps, COBieEntityPropMap, COBieRelationshipProps } from "./schema/SchemaConfig";
 
 export class DynamicSchemaGenerator {
   public dataFetcher: DataFetcher;

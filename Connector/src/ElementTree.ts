@@ -5,9 +5,9 @@
 
 import { Subject, DefinitionPartition, DefinitionModel, PhysicalPartition, PhysicalModel, SpatialLocationPartition, SpatialLocationModel, SpatialCategory,
   InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel } from "@bentley/imodeljs-backend";
-import * as COBieElements from "./COBieElements";
-import * as COBieRelationships from "./COBieRelationships";
-import * as COBieRelatedElements from "./COBieRelatedElements";
+import * as COBieElements from "./Elements";
+import * as COBieRelationships from "./Relationships";
+import * as COBieRelatedElements from "./RelatedElements";
 
 /*
 

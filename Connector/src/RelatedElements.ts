@@ -6,8 +6,8 @@
 import { PhysicalElementAssemblesElements } from "@bentley/imodeljs-backend";
 import { RelatedElement, RelatedElementProps } from "@bentley/imodeljs-common";
 import { Id64String } from "@bentley/bentleyjs-core";
-import * as COBieElements from "./COBieElements";
-import * as COBieRelatedElements from "./COBieRelatedElements";
+import * as COBieElements from "./Elements";
+import * as COBieRelatedElements from "./RelatedElements";
 
 export class ComponentAssemblesComponents extends PhysicalElementAssemblesElements {
   public static get className(): string { return "ComponentAssemblesComponents"; }

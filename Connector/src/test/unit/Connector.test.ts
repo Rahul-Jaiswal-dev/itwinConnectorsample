@@ -9,7 +9,7 @@ import { Synchronizer } from "@bentley/imodel-bridge/lib/Synchronizer";
 import * as path from "path";
 import { ConnectorTestUtils } from "../ConnectorTestUtils";
 import { KnownTestLocations } from "../KnownTestLocations";
-import { COBieConnector } from "../../COBieConnector";
+import { Connector } from "../../Connector";
 import { BridgeJobDefArgs } from "@bentley/imodel-bridge";
 
 describe("COBie Sample Connector Unit Tests", () => {
@@ -37,7 +37,7 @@ describe("COBie Sample Connector Unit Tests", () => {
     const targetPath = path.join(KnownTestLocations.outputDir, "final.db");
     if (IModelJsFs.existsSync(targetPath)) IModelJsFs.unlinkSync(targetPath);
 
-    const connector = new COBieConnector();
+    const connector = new Connector();
     const targetDb = SnapshotDb.createEmpty(targetPath, { rootSubject: { name: "COBieConnector" }});
     const requestContext = new AuthorizedClientRequestContext(AccessToken.fromTokenString("Bearer test"));
     const sync = new Synchronizer(targetDb, false, requestContext);

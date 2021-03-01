@@ -1,7 +1,7 @@
 import { IModelDb, IModelHost, IModelJsFs, SnapshotDb, Subject } from "@bentley/imodeljs-backend";
 import * as yargs from "yargs";
 import * as path from "path";
-import { COBieConnector } from "./COBieConnector";
+import { Connector } from "./Connector";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { Synchronizer } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { BridgeJobDefArgs } from "@bentley/imodel-bridge";
@@ -26,7 +26,7 @@ const args = yargs(process.argv.slice(2)).options({output: { type: "string", dem
   const inputBim = path.join(__dirname  , "./assets/samplesheet.db");
   const outName = initOutputFile(args.output);
   const outputBim = SnapshotDb.createEmpty(outName, { rootSubject: { name: "COBieConnector" }, createClassViews: true });
-  const connector = new COBieConnector();
+  const connector = new Connector();
   const requestContext = new AuthorizedClientRequestContext(AccessToken.fromTokenString("Bearer test"));
   const sync = new Synchronizer(outputBim, false, requestContext);
   connector.synchronizer = sync;
