@@ -9,10 +9,10 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/COBie-connector/lib/Main.js",
+            "program": "${workspaceFolder}/Connector/lib/Main.js",
              "args": [  "-- --output=debug.bim"],
             "outFiles": [
-                "${workspaceFolder}/COBie-connector/lib/**/*.js"
+                "${workspaceFolder}/Connector/lib/**/*.js"
             ],
             "skipFiles": [
                 "<node_internals>/**"
@@ -20,7 +20,7 @@
         },
         {
             "name": "Debug Tests",
-            "cwd": "${workspaceFolder}/COBie-connector/src/test/unit/",
+            "cwd": "${workspaceFolder}/Connector/src/test/unit/",
             "type": "pwa-node",
             "request": "launch",
             "runtimeExecutable": "npm",
