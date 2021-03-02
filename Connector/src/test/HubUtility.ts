@@ -7,6 +7,7 @@ import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { GuidString, Logger } from "@bentley/bentleyjs-core";
 import {  HubIModel, IModelHubClient, IModelQuery } from "@bentley/imodelhub-client";
 import { Project } from "@bentley/context-registry-client";
+import { BriefcaseManager } from "@bentley/imodeljs-backend";
 
 export class HubUtility {
   public static logCategory = "HubUtility";
@@ -87,14 +88,15 @@ export class HubUtility {
   public static async recreateIModel(requestContext: AuthorizedClientRequestContext, projectId: GuidString, iModelName: string): Promise<GuidString> {
     // Delete any existing iModel
     try {
+    //  console.log(projectId);
       const deleteIModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
-    //  await BriefcaseManager.imodelClient.iModels.delete(requestContext, projectId, deleteIModelId);
+   //   await BriefcaseManager.deleteAllBriefcases(requestContext, projectId, deleteIModelId);
     } catch (err) {
     }
 
-    // Create a new iModel
-    // const iModel: HubIModel = await BriefcaseManager.imodelClient.iModels.create(requestContext, projectId, iModelName, { description: `Description for ${iModelName}` });
-    return "iModel.wsgId";
+    // Create a new iModel  // make sure we delete  iModel from iModelHub ,otherwise exception is going to be thrown
+     const iModel = await BriefcaseManager.create(requestContext, projectId, iModelName, { rootSubject: {name: `Description for ${iModelName}` }});
+    return iModel;
   }
 }
 
