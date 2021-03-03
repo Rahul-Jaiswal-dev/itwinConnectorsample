@@ -60,13 +60,12 @@ export class HubUtility {
    * Purges all acquired briefcases for the specified iModel (and user), if the specified threshold of acquired briefcases is exceeded
    */
   public static async purgeAcquiredBriefcasesById(requestContext: AuthorizedClientRequestContext, iModelId: GuidString, onReachThreshold: () => void, acquireThreshold: number = 16): Promise<void> {
-    const briefcases  = await IModelHost.iModelClient.briefcases.get(requestContext, iModelId, new BriefcaseQuery().ownedByMe());
-    if (briefcases.length > acquireThreshold) {
+    const briefcases = await BriefcaseManager.imodelClient.briefcases.get(requestContext, iModelId, new BriefcaseQuery().ownedByMe()); if (briefcases.length > acquireThreshold) {
       onReachThreshold();
 
       const promises = new Array<Promise<void>>();
       briefcases.forEach((briefcase: Briefcase ) => {
-        promises.push(IModelHost.iModelClient.briefcases.delete(requestContext, iModelId, briefcase.briefcaseId!));
+        promises.push( BriefcaseManager.imodelClient.briefcases.delete(requestContext, iModelId, briefcase.briefcaseId!));
       });
       await Promise.all(promises);
     }
@@ -91,7 +90,7 @@ export class HubUtility {
     // Delete any existing iModel
     try {
       const deleteIModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
-      await IModelHost.iModelClient.iModels.delete(requestContext, projectId, deleteIModelId);
+      await BriefcaseManager.imodelClient.iModels.delete(requestContext, projectId, deleteIModelId);
     } catch (err) {
     }
 

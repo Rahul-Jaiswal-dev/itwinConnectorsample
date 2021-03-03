@@ -28,14 +28,14 @@ export class Connector extends IModelBridge {
   public initialize(_params: any) {}
   public async initializeJob(): Promise<void> {}
 
-  public async openSourceData(sourcePath: string): Promise<void> {
+  public async openSourceData(sourcePath: string): Promise<BentleyStatus> {
     this.sourceDataPath = sourcePath;
     const sourceDataStatus = this.getSourceDataStatus();
     this.sourceDataState = sourceDataStatus.itemState;
-    if (this.sourceDataState === ItemState.Unchanged) return ;
+    if (this.sourceDataState === ItemState.Unchanged) return BentleyStatus.ERROR;
     this.dataFetcher = new DataFetcher(sourcePath);
     await this.dataFetcher.initialize();
-   // return BentleyStatus.SUCCESS;
+    return BentleyStatus.SUCCESS;
   }
 
   public async importDomainSchema(_requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {

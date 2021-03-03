@@ -2,17 +2,18 @@
 * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
-import { ClientRequestContext, DbResult, GuidString, Logger } from "@bentley/bentleyjs-core";
+import { ClientRequestContext, DbResult, GuidString, Logger, OpenMode } from "@bentley/bentleyjs-core";
 import { BridgeJobDefArgs, BridgeRunner } from "@bentley/imodel-bridge";
 import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { BriefcaseDb, BriefcaseManager, ConcurrencyControl, DesktopAuthorizationClient, ECSqlStatement, IModelHost, IModelJsFs } from "@bentley/imodeljs-backend";
-import { DesktopAuthorizationClientConfiguration, ElementProps, LocalBriefcaseProps, RequestNewBriefcaseProps } from "@bentley/imodeljs-common";
+import { DesktopAuthorizationClientConfiguration,  } from "@bentley/imodeljs-common";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { ConnectorTestUtils, TestIModelInfo } from "./test/ConnectorTestUtils";
 import { HubUtility } from "./test/HubUtility";
 import { KnownTestLocations } from "./test/KnownTestLocations";
 import * as path from "path";
 import dotenv = require("dotenv");
+import { expect } from "chai";
 dotenv.config();
 
 async function signIn(): Promise<AccessToken | undefined> {
@@ -67,7 +68,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
 
       const iModelName = process.env.iModelName;
       // console.log(`iModelName: ${iModelName}`);
-      // await HubUtility.recreateIModel(requestContext, testProjectId!,  iModelName!);
+     //  await HubUtility.recreateIModel(requestContext, testProjectId!,  iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId!, iModelName!);
 
@@ -85,9 +86,9 @@ export async function main(process: NodeJS.Process): Promise<void> {
   } catch (error) {
     process.stdout.write(error.message + "\n" + error.stack);
   } finally {
-    // await ConnectorTestUtils.shutdownBackend();
-    // IModelJsFs.purgeDirSync(KnownTestLocations.outputDir);
-    // IModelJsFs.unlinkSync(path.join(KnownTestLocations.assetsDir, "test.db"));
+    await ConnectorTestUtils.shutdownBackend();
+    IModelJsFs.purgeDirSync(KnownTestLocations.outputDir);
+    IModelJsFs.unlinkSync(path.join(KnownTestLocations.assetsDir, "test.db"));
     process.exit();
   }
 }
@@ -102,15 +103,15 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   const runner = new BridgeRunner(bridgeJobDef, serverArgs);
   console.log(`Executing BridgeRunner synchronize...`);
   const status = await runner.synchronize();
-  // expect(status === BentleyStatus.SUCCESS);
-  // const briefcases = BriefcaseManager.getBriefcases();
-  // const briefcaseEntry = BriefcaseManager.findBriefcaseByKey(briefcases[0].key);
-  // expect(briefcaseEntry !== undefined);
-  // let imodel: BriefcaseDb;
-  // imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
+ // expect(status === BentleyStatus.SUCCESS);
+  const briefcases = BriefcaseManager.getBriefcases();
+  const briefcaseEntry = BriefcaseManager.findBriefcaseByKey(briefcases[0].key);
+  expect(briefcaseEntry !== undefined);
+  let imodel: BriefcaseDb;
+   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
   // ConnectorTestUtils.verifyIModel(imodel, bridgeJobDef, isUpdate, isSchemaUpdate);
-  // briefcaseEntry!.openMode = OpenMode.ReadWrite;
-  //  imodel.close();
+   briefcaseEntry!.openMode = OpenMode.ReadWrite;
+   imodel.close();
 };
 
 const getEnv = async (testProjectId: string, sampleIModel: TestIModelInfo) => {
