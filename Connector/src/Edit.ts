@@ -16,14 +16,15 @@ import dotenv = require("dotenv");
 dotenv.config();
 
 async function signIn(): Promise<AccessToken | undefined> {
+  console.log(`Executing signIn...`);
   const config: DesktopAuthorizationClientConfiguration = {
     clientId: process.env.clientId!,
     redirectUri: process.env.redirectUri!,
     scope: process.env.scope!,
   };
-  console.log(`clientId: ${process.env.clientId}`);
-  console.log(`redirectUri: ${process.env.redirectUri}`);
-  console.log(`scope: ${process.env.scope}`);
+  // console.log(`clientId: ${process.env.clientId}`);
+  // console.log(`redirectUri: ${process.env.redirectUri}`);
+  // console.log(`scope: ${process.env.scope}`);
 
   const client = new DesktopAuthorizationClient(config);
   const requestContext = new ClientRequestContext();
@@ -36,6 +37,7 @@ async function signIn(): Promise<AccessToken | undefined> {
 }
 
 export async function main(process: NodeJS.Process): Promise<void> {
+  console.log(`Executing main...`);
   try {
     let testProjectId: string | undefined;
     let requestContext: AuthorizedClientRequestContext | undefined;
@@ -56,22 +58,26 @@ export async function main(process: NodeJS.Process): Promise<void> {
     }
     if (requestContext) {
       const projectName = process.env.projectName;
-      console.log(`projectName: ${projectName}`);
-      testProjectId = await HubUtility.queryProjectIdByName(requestContext, projectName!);
-      if (!testProjectId) {
-        testProjectId = process.env.testProjectId;
-        console.log(`testProjectId: ${testProjectId}`);
-      }
+      // console.log(`projectName: ${projectName}`);
+      // testProjectId = await HubUtility.queryProjectIdByName(requestContext, projectName!);
+      // if (!testProjectId) {
+      testProjectId = process.env.testProjectId;
+      // console.log(`testProjectId: ${testProjectId}`);
+      // }
 
       const iModelName = process.env.iModelName;
-      console.log(`iModelName: ${iModelName}`);
+      // console.log(`iModelName: ${iModelName}`);
       // await HubUtility.recreateIModel(requestContext, testProjectId!,  iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId!, iModelName!);
 
+       // Purge briefcases that are close to reaching the acquire limit
+      // const managerRequestContext = await TestUtility.getAuthorizedClientRequestContext(TestUsers.manager);
+      // await HubUtility.purgeAcquiredBriefcases(requestContext, testProjectId!, iModelName!);
+
       const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(testProjectId!, sampleIModel);
       const intermediaryDb = process.env.intermediaryDb;
-      console.log(`intermediaryDb: ${intermediaryDb}`);
+      // console.log(`intermediaryDb: ${intermediaryDb}`);
       const sourcePath = path.join(KnownTestLocations.assetsDir, intermediaryDb!);
       IModelJsFs.copySync(sourcePath, testSourcePath, { overwrite: true });
       await runConnector(bridgeJobDef, serverArgs, false, false);
@@ -79,6 +85,9 @@ export async function main(process: NodeJS.Process): Promise<void> {
   } catch (error) {
     process.stdout.write(error.message + "\n" + error.stack);
   } finally {
+    // await ConnectorTestUtils.shutdownBackend();
+    // IModelJsFs.purgeDirSync(KnownTestLocations.outputDir);
+    // IModelJsFs.unlinkSync(path.join(KnownTestLocations.assetsDir, "test.db"));
     process.exit();
   }
 }
@@ -88,9 +97,10 @@ if (require.main === module) {
   main(process);
 }
 
-const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerArgs, isUpdate: boolean = false, isSchemaUpdate: boolean = false) => {
+const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerArgs, _isUpdate: boolean = false, _isSchemaUpdate: boolean = false) => {
+  console.log(`Starting BridgeRunner...`);
   const runner = new BridgeRunner(bridgeJobDef, serverArgs);
-  console.log(isUpdate.toString() + isSchemaUpdate);
+  console.log(`Executing BridgeRunner synchronize...`);
   const status = await runner.synchronize();
   // expect(status === BentleyStatus.SUCCESS);
   // const briefcases = BriefcaseManager.getBriefcases();
@@ -107,9 +117,9 @@ const getEnv = async (testProjectId: string, sampleIModel: TestIModelInfo) => {
   const bridgeJobDef = new BridgeJobDefArgs();
   const testSourcePath = path.join(KnownTestLocations.assetsDir, "test.db");
   bridgeJobDef.sourcePath = testSourcePath;
-  console.log(`_dirname: ${__dirname}`);
+  // console.log(`_dirname: ${__dirname}`);
   bridgeJobDef.bridgeModule = path.join(__dirname  , "./Connector.js");
-  console.log(`bridgeJobDef.bridgeModule: ${bridgeJobDef.bridgeModule}`);
+  // console.log(`bridgeJobDef.bridgeModule: ${bridgeJobDef.bridgeModule}`);
   // "D:\\Work\\iot\\source-code\\Rahul\\itwinConnectorsample\\Connector\\lib\\Connector.js";
   const serverArgs = new ServerArgs();
   serverArgs.contextId = testProjectId;

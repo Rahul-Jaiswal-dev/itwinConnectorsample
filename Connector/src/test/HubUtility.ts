@@ -76,7 +76,10 @@ export class HubUtility {
    * Purges all acquired briefcases for the specified iModel (and user), if the specified threshold of acquired briefcases is exceeded
    */
   public static async purgeAcquiredBriefcases(requestContext: AuthorizedClientRequestContext, projectName: string, iModelName: string, acquireThreshold: number = 16): Promise<void> {
-    const projectId: string = await HubUtility.queryProjectIdByName(requestContext, projectName);
+    // const projectId: string = await HubUtility.queryProjectIdByName(requestContext, projectName);
+
+    const projectId = process.env.testProjectId!;
+
     const iModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
 
     return this.purgeAcquiredBriefcasesById(requestContext, iModelId, () => {
