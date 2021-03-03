@@ -1,13 +1,35 @@
-# Steps
+# Steps to run Connector
 
-A. First run Cobie-extractor to generate intermediary .db files.(Follow Readme in Cobie-extractor).
+A. First run Extractor to generate intermediary .db files.(Follow Readme in Extractor).
 
-B. Follow these steps now in Connector Code
+B. Create a .env file at the project root with the following:
+
+```sh
+
+###############################################################################
+# This file contains secrets - don't commit or share it!
+###############################################################################
+
+testProjectId = ""
+
+projectName = ""
+
+iModelName = ""
+
+intermediaryDb = ""
+
+clientId = ""
+
+redirectUri = ""
+
+scope = "openid email profile organization imodelhub context-registry-service:read-only product-settings-service projectwise-share urlps-third-party"
+
+C. Follow these steps now in Connector Code
 
 1. npm install
 2. npm run build
 3. npm run start -- --output=filename (The iModel will be created in lib/output directory).
 
-Run Unit Test
+# Steps to run Connector tests
 
-1. npm run test:unit
+npm run test:unit

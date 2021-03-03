@@ -44,6 +44,7 @@
         "@bentley/logger-config": "2.11.0",
         "@bentley/rbac-client": "2.11.0",
         "@bentley/telemetry-client": "2.11.0",
+        "@types/dotenv": "^8.2.0",
         "@types/sqlite3": "^3.1.6",
         "@types/xmldom": "^0.1.30",
         "bunyan": "^1.8.13",

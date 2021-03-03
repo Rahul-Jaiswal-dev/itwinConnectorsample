@@ -12,13 +12,18 @@ import { ConnectorTestUtils, TestIModelInfo } from "./test/ConnectorTestUtils";
 import { HubUtility } from "./test/HubUtility";
 import { KnownTestLocations } from "./test/KnownTestLocations";
 import * as path from "path";
+import dotenv = require("dotenv");
+dotenv.config();
 
 async function signIn(): Promise<AccessToken | undefined> {
   const config: DesktopAuthorizationClientConfiguration = {
-    clientId: "native-uNj4U1k1tYl7AwgS5E73Yhnvc",
-    redirectUri: "http://localhost:3000/signin-callback",
-    scope: "openid email profile organization imodelhub context-registry-service:read-only product-settings-service projectwise-share urlps-third-party", // offline_access",
+    clientId: process.env.clientId!,
+    redirectUri: process.env.redirectUri!,
+    scope: process.env.scope!,
   };
+  console.log(`clientId: ${process.env.clientId}`);
+  console.log(`redirectUri: ${process.env.redirectUri}`);
+  console.log(`scope: ${process.env.scope}`);
 
   const client = new DesktopAuthorizationClient(config);
   const requestContext = new ClientRequestContext();
@@ -32,7 +37,7 @@ async function signIn(): Promise<AccessToken | undefined> {
 
 export async function main(process: NodeJS.Process): Promise<void> {
   try {
-    let testProjectId: string;
+    let testProjectId: string | undefined;
     let requestContext: AuthorizedClientRequestContext | undefined;
     let sampleIModel: TestIModelInfo;
     await ConnectorTestUtils.startBackend();
@@ -50,15 +55,23 @@ export async function main(process: NodeJS.Process): Promise<void> {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
     if (requestContext) {
-      testProjectId = await HubUtility.queryProjectIdByName(requestContext, "TestProjects");
-      if (!testProjectId)
-        testProjectId = "8e348f52-d923-4ccc-a14c-721d7ca850ae";   // Put your Context id"
-      const iModelName = "MyConnector13";
-      // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
-      sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId, iModelName);
+      const projectName = process.env.projectName;
+      console.log(`projectName: ${projectName}`);
+      testProjectId = await HubUtility.queryProjectIdByName(requestContext, projectName!);
+      if (!testProjectId) {
+        testProjectId = process.env.testProjectId;
+        console.log(`testProjectId: ${testProjectId}`);
+      }
 
-      const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(testProjectId, sampleIModel);
-      const sourcePath = path.join(KnownTestLocations.assetsDir, "samplesheet.db");
+      const iModelName = process.env.iModelName;
+      console.log(`iModelName: ${iModelName}`);
+      // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
+      sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId!, iModelName!);
+
+      const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(testProjectId!, sampleIModel);
+      const intermediaryDb = process.env.intermediaryDb;
+      console.log(`intermediaryDb: ${intermediaryDb}`);
+      const sourcePath = path.join(KnownTestLocations.assetsDir, intermediaryDb!);
       IModelJsFs.copySync(sourcePath, testSourcePath, { overwrite: true });
       await runConnector(bridgeJobDef, serverArgs, false, false);
     }
@@ -89,13 +102,14 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   //  imodel.close();
 };
 
-
-
 const getEnv = async (testProjectId: string, sampleIModel: TestIModelInfo) => {
   const bridgeJobDef = new BridgeJobDefArgs();
   const testSourcePath = path.join(KnownTestLocations.assetsDir, "test.db");
   bridgeJobDef.sourcePath = testSourcePath;
-  bridgeJobDef.bridgeModule = "D:\\Work\\iot\\source-code\\Rahul\\itwinConnectorsample\\Connector\\lib\\Connector.js";
+  console.log(`_dirname: ${__dirname}`);
+  bridgeJobDef.bridgeModule = path.join(__dirname  , "./Connector.js");
+  console.log(`bridgeJobDef.bridgeModule: ${bridgeJobDef.bridgeModule}`);
+  // "D:\\Work\\iot\\source-code\\Rahul\\itwinConnectorsample\\Connector\\lib\\Connector.js";
   const serverArgs = new ServerArgs();
   serverArgs.contextId = testProjectId;
   serverArgs.iModelId = sampleIModel.id;
