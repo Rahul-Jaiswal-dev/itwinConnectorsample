@@ -65,6 +65,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
 
       const iModelName = process.env.iModelName;
       console.log(`iModelName: ${iModelName}`);
+      // await HubUtility.recreateIModel(requestContext, testProjectId!,  iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId!, iModelName!);
 

@@ -5,9 +5,9 @@
 
 import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { GuidString, Logger } from "@bentley/bentleyjs-core";
-import {  HubIModel, IModelHubClient, IModelQuery } from "@bentley/imodelhub-client";
+import {  Briefcase, BriefcaseQuery, HubIModel, IModelHubClient, IModelQuery } from "@bentley/imodelhub-client";
 import { Project } from "@bentley/context-registry-client";
-import { BriefcaseManager } from "@bentley/imodeljs-backend";
+import { BriefcaseManager, IModelHost } from "@bentley/imodeljs-backend";
 
 export class HubUtility {
   public static logCategory = "HubUtility";
@@ -60,17 +60,16 @@ export class HubUtility {
    * Purges all acquired briefcases for the specified iModel (and user), if the specified threshold of acquired briefcases is exceeded
    */
   public static async purgeAcquiredBriefcasesById(requestContext: AuthorizedClientRequestContext, iModelId: GuidString, onReachThreshold: () => void, acquireThreshold: number = 16): Promise<void> {
-    // const briefcases: HubBriefcase[]; // = await BriefcaseManager.imodelClient.briefcases.get(requestContext, iModelId, new BriefcaseQuery().ownedByMe());
-    // if (briefcases.length > acquireThreshold) {
-    //   onReachThreshold();
+    const briefcases  = await IModelHost.iModelClient.briefcases.get(requestContext, iModelId, new BriefcaseQuery().ownedByMe());
+    if (briefcases.length > acquireThreshold) {
+      onReachThreshold();
 
-    //   const promises = new Array<Promise<void>>();
-    //   briefcases.forEach((briefcase: HubBriefcase) => {
-    //     promises.push(BriefcaseManager.imodelClient.briefcases.delete(requestContext, iModelId, briefcase.briefcaseId!));
-    //   });
-    //   await Promise.all(promises);
-    // }
-    console.log(requestContext+iModelId+ onReachThreshold+acquireThreshold );
+      const promises = new Array<Promise<void>>();
+      briefcases.forEach((briefcase: Briefcase ) => {
+        promises.push(IModelHost.iModelClient.briefcases.delete(requestContext, iModelId, briefcase.briefcaseId!));
+      });
+      await Promise.all(promises);
+    }
   }
 
   /**
@@ -88,15 +87,14 @@ export class HubUtility {
   public static async recreateIModel(requestContext: AuthorizedClientRequestContext, projectId: GuidString, iModelName: string): Promise<GuidString> {
     // Delete any existing iModel
     try {
-    //  console.log(projectId);
       const deleteIModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
-   //   await BriefcaseManager.deleteAllBriefcases(requestContext, projectId, deleteIModelId);
+      await IModelHost.iModelClient.iModels.delete(requestContext, projectId, deleteIModelId);
     } catch (err) {
     }
 
     // Create a new iModel  // make sure we delete  iModel from iModelHub ,otherwise exception is going to be thrown
      const iModel = await BriefcaseManager.create(requestContext, projectId, iModelName, { rootSubject: {name: `Description for ${iModelName}` }});
-    return iModel;
+     return iModel;
   }
 }
 
