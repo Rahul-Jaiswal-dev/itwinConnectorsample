@@ -86,7 +86,7 @@ export class HubUtility {
     }, acquireThreshold);
   }
   /** Create  */
-  public static async recreateIModel(requestContext: AuthorizedClientRequestContext, projectId: GuidString, iModelName: string): Promise<void> {
+  public static async createIModel(requestContext: AuthorizedClientRequestContext, projectId: GuidString, iModelName: string): Promise<void> {
     // Delete any existing iModel
     try {
       var existingiModel = false;
