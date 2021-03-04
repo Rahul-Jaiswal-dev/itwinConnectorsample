@@ -37,7 +37,7 @@ describe("Sample Connector Integration Test (Online)", () => {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
     testProjectId = await HubUtility.queryProjectIdByName(requestContext, "imodeljs_sampleConnector_test");
-    const targetIModelId = await HubUtility.recreateIModel(requestContext, testProjectId, "TestSampleConnector");
+    const targetIModelId = await HubUtility.createIModel(requestContext, testProjectId, "TestSampleConnector");
     expect(undefined !== targetIModelId);
     sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId, "TestSampleConnector");
 
