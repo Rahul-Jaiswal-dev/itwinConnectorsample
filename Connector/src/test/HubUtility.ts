@@ -1,11 +1,11 @@
 /*---------------------------------------------------------------------------------------------
-* Copyright (c) Bentley Systems, Incorporated. All rights reserved.
-* See LICENSE.md in the project root for license terms and full copyright notice.
-*--------------------------------------------------------------------------------------------*/
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
 
 import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { GuidString, Logger } from "@bentley/bentleyjs-core";
-import {  Briefcase, BriefcaseQuery, HubIModel, IModelHubClient, IModelQuery } from "@bentley/imodelhub-client";
+import { Briefcase, BriefcaseQuery, HubIModel, IModelHubClient, IModelQuery } from "@bentley/imodelhub-client";
 import { Project } from "@bentley/context-registry-client";
 import { BriefcaseManager, IModelHost } from "@bentley/imodeljs-backend";
 
@@ -15,10 +15,10 @@ export class HubUtility {
   public static async queryIModelByName(requestContext: AuthorizedClientRequestContext, projectId: string, iModelName: string): Promise<HubIModel | undefined> {
     const iModels = await getIModelProjectAbstraction().queryIModels(requestContext, projectId, new IModelQuery().byName(iModelName));
     if (iModels.length === 0)
-      return undefined;
-    if (iModels.length > 1)
-      throw new Error(`Too many iModels with name ${iModelName} found`);
-    return iModels[0];
+    return undefined;
+  if (iModels.length > 1)
+    throw new Error(`Too many iModels with name ${iModelName} found`);
+  return iModels[0];
   }
 
   /**
@@ -44,9 +44,9 @@ export class HubUtility {
   public static async queryIModelIdByName(requestContext: AuthorizedClientRequestContext, projectId: string, iModelName: string): Promise<GuidString> {
     const iModel: HubIModel | undefined = await HubUtility.queryIModelByName(requestContext, projectId, iModelName);
     if (!iModel || !iModel.id)
-      throw new Error(`IModel ${iModelName} not found`);
-    return iModel.id!;
-  }
+    throw new Error(`IModel ${iModelName} not found`);
+  return iModel.id!;
+}
 
   private static async queryProjectByName(requestContext: AuthorizedClientRequestContext, projectName: string): Promise<Project | undefined> {
     const project: Project = await getIModelProjectAbstraction().queryProject(requestContext, {
@@ -86,17 +86,19 @@ export class HubUtility {
     }, acquireThreshold);
   }
   /** Create  */
-  public static async recreateIModel(requestContext: AuthorizedClientRequestContext, projectId: GuidString, iModelName: string): Promise<GuidString> {
+  public static async recreateIModel(requestContext: AuthorizedClientRequestContext, projectId: GuidString, iModelName: string): Promise<void> {
     // Delete any existing iModel
     try {
-      const deleteIModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
-      await BriefcaseManager.imodelClient.iModels.delete(requestContext, projectId, deleteIModelId);
-    } catch (err) {
-    }
-
-    // Create a new iModel  // make sure we delete  iModel from iModelHub ,otherwise exception is going to be thrown
-     const iModel = await BriefcaseManager.create(requestContext, projectId, iModelName, { rootSubject: {name: `Description for ${iModelName}` }});
-     return iModel;
+      var existingiModel = false;
+      const iModelsIniModelHub = await BriefcaseManager.imodelClient.iModels.get(requestContext, projectId);
+      iModelsIniModelHub.forEach((value) => {
+        if (value.name == iModelName) 
+        existingiModel = true;
+      });
+      if(!existingiModel){
+        await BriefcaseManager.create(requestContext, projectId, iModelName, { rootSubject: { name: `Description for ${iModelName}` } });
+      }
+    } catch (err) { }
   }
 }
 

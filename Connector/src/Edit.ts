@@ -1,12 +1,12 @@
 /*---------------------------------------------------------------------------------------------
-* Copyright (c) Bentley Systems, Incorporated. All rights reserved.
-* See LICENSE.md in the project root for license terms and full copyright notice.
-*--------------------------------------------------------------------------------------------*/
+ * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
+ * See LICENSE.md in the project root for license terms and full copyright notice.
+ *--------------------------------------------------------------------------------------------*/
 import { ClientRequestContext, DbResult, GuidString, Logger, OpenMode } from "@bentley/bentleyjs-core";
 import { BridgeJobDefArgs, BridgeRunner } from "@bentley/imodel-bridge";
 import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { BriefcaseDb, BriefcaseManager, ConcurrencyControl, DesktopAuthorizationClient, ECSqlStatement, IModelHost, IModelJsFs } from "@bentley/imodeljs-backend";
-import { DesktopAuthorizationClientConfiguration,  } from "@bentley/imodeljs-common";
+import { DesktopAuthorizationClientConfiguration } from "@bentley/imodeljs-common";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { ConnectorTestUtils, TestIModelInfo } from "./test/ConnectorTestUtils";
 import { HubUtility } from "./test/HubUtility";
@@ -49,15 +49,15 @@ export async function main(process: NodeJS.Process): Promise<void> {
     const accessToken: AccessToken | undefined = await signIn();
     dd.a = accessToken;
     if (!IModelJsFs.existsSync(KnownTestLocations.outputDir))
-      IModelJsFs.mkdirSync(KnownTestLocations.outputDir);
+    IModelJsFs.mkdirSync(KnownTestLocations.outputDir);
 
-    try {
-      if (accessToken)
-        requestContext = await new AuthorizedClientRequestContext(accessToken);
-    } catch (error) {
-      Logger.logError("Error", `Failed with error: ${error}`);
-    }
-    if (requestContext) {
+  try {
+    if (accessToken)
+      requestContext = await new AuthorizedClientRequestContext(accessToken);
+  } catch (error) {
+    Logger.logError("Error", `Failed with error: ${error}`);
+  }
+  if (requestContext) {
       const projectName = process.env.projectName;
       // console.log(`projectName: ${projectName}`);
       // testProjectId = await HubUtility.queryProjectIdByName(requestContext, projectName!);
@@ -68,11 +68,11 @@ export async function main(process: NodeJS.Process): Promise<void> {
 
       const iModelName = process.env.iModelName;
       // console.log(`iModelName: ${iModelName}`);
-     //  await HubUtility.recreateIModel(requestContext, testProjectId!,  iModelName!);
+      await HubUtility.recreateIModel(requestContext, testProjectId!, iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId!, iModelName!);
 
-       // Purge briefcases that are close to reaching the acquire limit
+      // Purge briefcases that are close to reaching the acquire limit
       // const managerRequestContext = await TestUtility.getAuthorizedClientRequestContext(TestUsers.manager);
       // await HubUtility.purgeAcquiredBriefcases(requestContext, testProjectId!, iModelName!);
 
@@ -103,15 +103,15 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   const runner = new BridgeRunner(bridgeJobDef, serverArgs);
   console.log(`Executing BridgeRunner synchronize...`);
   const status = await runner.synchronize();
- // expect(status === BentleyStatus.SUCCESS);
+  // expect(status === BentleyStatus.SUCCESS);
   const briefcases = BriefcaseManager.getBriefcases();
   const briefcaseEntry = BriefcaseManager.findBriefcaseByKey(briefcases[0].key);
   expect(briefcaseEntry !== undefined);
   let imodel: BriefcaseDb;
-   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
+  imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
   // ConnectorTestUtils.verifyIModel(imodel, bridgeJobDef, isUpdate, isSchemaUpdate);
-   briefcaseEntry!.openMode = OpenMode.ReadWrite;
-   imodel.close();
+  briefcaseEntry!.openMode = OpenMode.ReadWrite;
+  imodel.close();
 };
 
 const getEnv = async (testProjectId: string, sampleIModel: TestIModelInfo) => {
@@ -119,7 +119,7 @@ const getEnv = async (testProjectId: string, sampleIModel: TestIModelInfo) => {
   const testSourcePath = path.join(KnownTestLocations.assetsDir, "test.db");
   bridgeJobDef.sourcePath = testSourcePath;
   // console.log(`_dirname: ${__dirname}`);
-  bridgeJobDef.bridgeModule = path.join(__dirname  , "./Connector.js");
+  bridgeJobDef.bridgeModule = path.join(__dirname, "./Connector.js");
   // console.log(`bridgeJobDef.bridgeModule: ${bridgeJobDef.bridgeModule}`);
   // "D:\\Work\\iot\\source-code\\Rahul\\itwinConnectorsample\\Connector\\lib\\Connector.js";
   const serverArgs = new ServerArgs();
