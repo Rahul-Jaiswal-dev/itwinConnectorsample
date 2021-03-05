@@ -158,8 +158,9 @@ export class DataAligner {
 
       if (elementClass.typeDefinition && changeResults.state === ItemState.New)
         this.updateTypeDefinition(element, elementClass.typeDefinition, elementData);
-
+      
     }
+    this.connector.synchronizer.detectDeletedElements();
   }
 
   public addForeignProps(props: any, elementClass: any, elementData: any) {
