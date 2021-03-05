@@ -15,7 +15,7 @@ import { DataAligner } from "./DataAligner";
 import { SAMPLE_ELEMENT_TREE3 } from "./ElementTree";
 import { DynamicSchemaGenerator, SchemaSyncResults } from "./DynamicSchemaGenerator";
 import { CodeSpecs } from "./Elements";
-import { sensorSchema } from "./Schema";
+import { SensorSchema } from "./Schema";
 import * as path from "path";
 
 export class Connector extends IModelBridge {
@@ -48,9 +48,15 @@ export class Connector extends IModelBridge {
   }
 
   public async importDynamicSchema(requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
+    if (this.sourceDataState === ItemState.Unchanged) {
+      console.log(`The state of the given SourceItem against the iModelDb is unchanged.`);
+      return;
+    }
+    if (this.sourceDataState === ItemState.New) {
+      console.log(`The state of the given SourceItem against the iModelDb is changed.`);
+      SensorSchema.registerSchema();
+    }
     console.log(`Started importing dynamic schema...`);
-    if (this.sourceDataState === ItemState.Unchanged) return;
-    if (this.sourceDataState === ItemState.New) sensorSchema.registerSchema();
 
     const schemaGenerator = new DynamicSchemaGenerator(this.dataFetcher!);
     console.log(` DynamicSchemaGenerator object created.`);

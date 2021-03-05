@@ -7,7 +7,7 @@ import { ClassRegistry, Schema, Schemas } from "@bentley/imodeljs-backend";
 import * as elementsModule from "./Elements";
 import * as relationshipsModule from "./Relationships";
 
-export class sensorSchema extends Schema {
+export class SensorSchema extends Schema {
   public static get schemaName(): string {
     return "ConnectorDynamic";
   }

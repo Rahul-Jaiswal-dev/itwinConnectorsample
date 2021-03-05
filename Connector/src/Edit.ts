@@ -38,6 +38,8 @@ async function signIn(): Promise<AccessToken | undefined> {
 }
 
 export async function main(process: NodeJS.Process): Promise<void> {
+  console.log(`\n`);
+  console.log(`Running Connector now...`);
   console.log(`Started main...`);
   try {
     let testProjectId: string | undefined;
@@ -111,6 +113,10 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
   // ConnectorTestUtils.verifyIModel(imodel, bridgeJobDef, isUpdate, isSchemaUpdate);
   briefcaseEntry!.openMode = OpenMode.ReadWrite;
+  console.log(`Executing query: SELECT devicetype FROM cbd.Device`);
+  for await (const row of imodel.query(`SELECT devicetype FROM cbd.Device`)) {
+    console.log(row);
+  }
   imodel.close();
 };
 
