@@ -39,20 +39,24 @@ export class DataAligner {
   }
 
   public async align(elementTree: any) {
+    console.log(`Executing DataAligner align...`);
     const partitions = elementTree.subjects.Subject1.partitions;
     const partitionNames = partitions ? Object.keys(partitions) : [];
     for (const partitionName of partitionNames) {
+      console.log(` partitionName: ${partitionName}`);
       const partition = partitions[partitionName];
       const models = partition.models;
       const modelNames = models ? Object.keys(models) : [];
 
       for (const modelName of modelNames) {
+        console.log(`   modelName: ${modelName}`);
         const model = models[modelName];
         const modelId = this.updateModel(partition, model, modelName);
 
         const elements = model.elements;
         const elementNames = elements ? Object.keys(elements) : [];
         for (const elementName of elementNames) {
+          console.log(`     elementName: ${elementName}`);
           const element = elements[elementName];
           this.updateElement(modelId, element, elementName);
         }
@@ -60,6 +64,7 @@ export class DataAligner {
         const elementClasses = model.elementClasses;
         const elementClassNames = elementClasses ? Object.keys(elementClasses) : [];
         for (const elementClassName of elementClassNames) {
+          console.log(`     elementClassName: ${elementClassName}`);
           const elementClass = elementClasses[elementClassName];
           await this.updateElementClass(modelId, elementClass);
         }
@@ -67,6 +72,7 @@ export class DataAligner {
         const relationshipClasses = model.relationshipClasses;
         const relationshipClassNames = relationshipClasses ? Object.keys(relationshipClasses) : [];
         for (const relationshipClassName of relationshipClassNames) {
+          console.log(`     relationshipClassName: ${relationshipClassName}`);
           const relationshipClass = relationshipClasses[relationshipClassName];
           await this.updateRelationshipClass(relationshipClass);
         }
@@ -75,6 +81,7 @@ export class DataAligner {
   }
 
   public updateModel(partition: any, model: any, modelName: string) {
+    console.log(`   Executing DataAligner updateModel...`);
     const jobSubjectId = this.connector.jobSubject.id;
     const existingModelId = this.imodel.elements.queryElementIdByCode(partition.ref.createCode(this.imodel, jobSubjectId, modelName));
     if (existingModelId) {
@@ -87,6 +94,7 @@ export class DataAligner {
   }
 
   public updateElement(modelId: any, element: any, elementName: string) {
+    console.log(`     Executing DataAligner updateElement...`);
     if (element.ref === SpatialCategory || element.ref === DrawingCategory) {
       const existingCategoryId = element.ref.queryCategoryIdByName(this.imodel, modelId, elementName);
       if (existingCategoryId) {
@@ -100,6 +108,7 @@ export class DataAligner {
   }
 
   public async updateRelationshipClass(relationshipClass: any) {
+    console.log(`     Executing DataAligner updateRelationshipClass...`);
     const tableName = relationshipClass.ref.tableName;
     const tableData = await this.dataFetcher.fetchTableData(tableName);
     for (const elementData of tableData) {
@@ -127,6 +136,7 @@ export class DataAligner {
   }
 
   public async updateElementClass(modelId: any, elementClass: any) {
+    console.log(`     Executing DataAligner updateElementClass...`);
     const tableName = elementClass.ref.tableName;
     const tableData = await this.dataFetcher.fetchTableData(tableName);
     const categoryId = this.categoryCache[elementClass.categoryName];
@@ -158,9 +168,8 @@ export class DataAligner {
 
       if (elementClass.typeDefinition && changeResults.state === ItemState.New)
         this.updateTypeDefinition(element, elementClass.typeDefinition, elementData);
-      
     }
-    this.connector.synchronizer.detectDeletedElements();
+    // this.connector.synchronizer.detectDeletedElements();
   }
 
   public addForeignProps(props: any, elementClass: any, elementData: any) {

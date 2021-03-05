@@ -59,7 +59,6 @@ export const SAMPLE_ELEMENT_TREE3: any={
                 Device: {
                   ref: ConnectorElements.Device,
                 },
-              
               },
             },
           },

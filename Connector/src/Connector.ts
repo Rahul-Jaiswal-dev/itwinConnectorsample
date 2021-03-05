@@ -48,10 +48,12 @@ export class Connector extends IModelBridge {
   }
 
   public async importDynamicSchema(requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
+    console.log(`Started importing dynamic schema...`);
     if (this.sourceDataState === ItemState.Unchanged) return;
     if (this.sourceDataState === ItemState.New) sensorSchema.registerSchema();
 
     const schemaGenerator = new DynamicSchemaGenerator(this.dataFetcher!);
+    console.log(` DynamicSchemaGenerator object created.`);
     this.schemaGenerator = schemaGenerator;
     const results: SchemaSyncResults = await schemaGenerator.synchronizeSchema(this.synchronizer.imodel);
     if (results.schemaState !== ItemState.Unchanged) {
@@ -71,6 +73,7 @@ export class Connector extends IModelBridge {
     if (!this.schemaGenerator) throw new Error("No DynamicSchemaGenerator available for DataAligner.");
 
     const aligner = new DataAligner(this);
+    console.log(`Started DataAligner...`);
     await aligner.align(SAMPLE_ELEMENT_TREE3);
     this.dataFetcher.close();
   }

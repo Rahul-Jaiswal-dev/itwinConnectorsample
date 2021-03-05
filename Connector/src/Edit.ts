@@ -30,7 +30,7 @@ async function signIn(): Promise<AccessToken | undefined> {
   const client = new DesktopAuthorizationClient(config);
   const requestContext = new ClientRequestContext();
   await client.initialize(requestContext);
-
+  // console.log(`Executing signIn ended...`);
   return new Promise<AccessToken | undefined>((resolve, _reject) => {
     client.onUserStateChanged.addListener((token: AccessToken | undefined) => resolve(token));
     client.signIn(requestContext);
@@ -38,7 +38,7 @@ async function signIn(): Promise<AccessToken | undefined> {
 }
 
 export async function main(process: NodeJS.Process): Promise<void> {
-  console.log(`Executing main...`);
+  console.log(`Started main...`);
   try {
     let testProjectId: string | undefined;
     let requestContext: AuthorizedClientRequestContext | undefined;
@@ -49,15 +49,15 @@ export async function main(process: NodeJS.Process): Promise<void> {
     const accessToken: AccessToken | undefined = await signIn();
     dd.a = accessToken;
     if (!IModelJsFs.existsSync(KnownTestLocations.outputDir))
-    IModelJsFs.mkdirSync(KnownTestLocations.outputDir);
+      IModelJsFs.mkdirSync(KnownTestLocations.outputDir);
 
-  try {
-    if (accessToken)
-      requestContext = await new AuthorizedClientRequestContext(accessToken);
-  } catch (error) {
-    Logger.logError("Error", `Failed with error: ${error}`);
-  }
-  if (requestContext) {
+    try {
+      if (accessToken)
+        requestContext = await new AuthorizedClientRequestContext(accessToken);
+    } catch (error) {
+      Logger.logError("Error", `Failed with error: ${error}`);
+    }
+    if (requestContext) {
       const projectName = process.env.projectName;
       // console.log(`projectName: ${projectName}`);
       // testProjectId = await HubUtility.queryProjectIdByName(requestContext, projectName!);
@@ -68,7 +68,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
 
       const iModelName = process.env.iModelName;
       // console.log(`iModelName: ${iModelName}`);
-      await HubUtility.createIModel(requestContext, testProjectId!, iModelName!);
+      // await HubUtility.createIModel(requestContext, testProjectId!, iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId!, iModelName!);
 
@@ -99,7 +99,7 @@ if (require.main === module) {
 }
 
 const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerArgs, _isUpdate: boolean = false, _isSchemaUpdate: boolean = false) => {
-  console.log(`Starting BridgeRunner...`);
+  console.log(`Started BridgeRunner...`);
   const runner = new BridgeRunner(bridgeJobDef, serverArgs);
   console.log(`Executing BridgeRunner synchronize...`);
   const status = await runner.synchronize();

@@ -28,11 +28,13 @@ export class DataFetcher {
 
   public async fetchTables() {
     const tables = await this.sourceDb.all("select * from sqlite_master where type='table'");
+    console.log(`Fetching Tables in DataFetcher...`);
     return tables;
   }
 
   public async fetchColumns(tableName: string) {
     const cols = await this.sourceDb.all(`PRAGMA table_info(${tableName})`);
+    // console.log(`Fetching Columns in DataFetcher...`);
     return cols;
   }
 
@@ -64,7 +66,7 @@ export class DataFetcher {
     queryBuilder.push(`group by "${tableName}.id"`);
 
     const query = queryBuilder.join(" ");
-    const tableData = await this.sourceDb.all(query);
+    const tableData = await this.sourceDb.all(query);   
     return tableData;
   }
 
@@ -74,6 +76,7 @@ export class DataFetcher {
     for (const table of tables) {
       allData[table.name] = await this.fetchTableData(table.name);
     }
+    console.log(`Fetching Table data in DataFetcher...`);
     return allData;
   }
 
@@ -86,7 +89,6 @@ export class DataFetcher {
     }
   }
 }
-
 
 const TABLE_JOIN_MAP: any = {
   // Component: {
