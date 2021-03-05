@@ -13,7 +13,7 @@
         "lint": "eslint ./src/**/*.ts 1>&2",
         "blint": "npm run build && npm run lint",
         "start": "node lib/Main.js",
-        "edit": "node lib/edit.js",
+        "edit": " cd ../Extractor/extractor/ && RunExtractor.cmd --clean && RunExtractor.cmd --all && RunExtractor.cmd --copy && cd ../../Connector/ &&  node lib/edit.js",
         "insert": "node lib/insertElement.js"
     },
     "eslintConfig": {
