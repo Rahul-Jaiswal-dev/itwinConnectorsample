@@ -1,14 +1,21 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // Perform these steps before starting any debug sesssion : 
+
+    // Run the following 3 commands from Extractor/extractor folder
+    // 1. RunExtractor.cmd --clean 
+    // 2. RunExtractor.cmd --all 
+    // 3. RunExtractor.cmd --copy 
+
+    // Run the following command from connector root folder
+    // 4. npm run build
+
     "version": "0.2.0",
     "configurations": [
         {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/Connector/lib/Edit.js",
+          "program": "${workspaceFolder}/Connector/lib/Main.js",
              "args": [  "-- --output=debug.bim"],
             "outFiles": [
                 "${workspaceFolder}/Connector/lib/**/*.js"
