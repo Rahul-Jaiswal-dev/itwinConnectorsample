@@ -8,7 +8,7 @@ import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { BriefcaseDb, BriefcaseManager, ConcurrencyControl, DesktopAuthorizationClient, ECSqlStatement, IModelHost, IModelJsFs } from "@bentley/imodeljs-backend";
 import { DesktopAuthorizationClientConfiguration } from "@bentley/imodeljs-common";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { ConnectorTestUtils, TestIModelInfo } from "./test/ConnectorTestUtils";
+import { Utilities, ConnectorIModelInfo } from "./Utilities";
 import { HubUtility } from "./test/HubUtility";
 import { KnownTestLocations } from "./test/KnownTestLocations";
 import * as path from "path";
@@ -44,8 +44,8 @@ export async function main(process: NodeJS.Process): Promise<void> {
   try {
     let testProjectId: string | undefined;
     let requestContext: AuthorizedClientRequestContext | undefined;
-    let sampleIModel: TestIModelInfo;
-    await ConnectorTestUtils.startBackend();
+    let sampleIModel: ConnectorIModelInfo;
+    await Utilities.startBackend();
 
     // await IModelHost.startup();
     const accessToken: AccessToken | undefined = await signIn();
@@ -72,7 +72,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
       // console.log(`iModelName: ${iModelName}`);
       // await HubUtility.createIModel(requestContext, testProjectId!, iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
-      sampleIModel = await ConnectorTestUtils.getTestModelInfo(requestContext, testProjectId!, iModelName!);
+      sampleIModel = await Utilities.getTestModelInfo(requestContext, testProjectId!, iModelName!);
 
       // Purge briefcases that are close to reaching the acquire limit
       // const managerRequestContext = await TestUtility.getAuthorizedClientRequestContext(TestUsers.manager);
@@ -88,7 +88,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
   } catch (error) {
     process.stdout.write(error.message + "\n" + error.stack);
   } finally {
-    await ConnectorTestUtils.shutdownBackend();
+    await Utilities.shutdownBackend();
     IModelJsFs.purgeDirSync(KnownTestLocations.outputDir);
     IModelJsFs.unlinkSync(path.join(KnownTestLocations.assetsDir, "test.db"));
     process.exit();
@@ -120,7 +120,7 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   imodel.close();
 };
 
-const getEnv = async (testProjectId: string, sampleIModel: TestIModelInfo) => {
+const getEnv = async (testProjectId: string, sampleIModel: ConnectorIModelInfo) => {
   const bridgeJobDef = new BridgeJobDefArgs();
   const testSourcePath = path.join(KnownTestLocations.assetsDir, "test.db");
   bridgeJobDef.sourcePath = testSourcePath;

@@ -17,33 +17,7 @@ import { HubUtility } from "./HubUtility";
 import { BridgeLoggerCategory } from "@bentley/imodel-bridge/lib/BridgeLoggerCategory";
 import * as connectorElement from "../Elements";
 import { IModel } from "@bentley/imodeljs-common";
-
-export class TestIModelInfo {
-  private _name: string;
-  private _id: string;
-  private _localReadonlyPath: string;
-  private _localReadWritePath: string;
-  private _changeSets: ChangeSet[];
-
-  constructor(name: string) {
-    this._name = name;
-    this._id = "";
-    this._localReadonlyPath = "";
-    this._localReadWritePath = "";
-    this._changeSets = [];
-  }
-
-  get name(): string { return this._name; }
-  set name(name: string) { this._name = name; }
-  get id(): string { return this._id; }
-  set id(id: string) { this._id = id; }
-  get localReadonlyPath(): string { return this._localReadonlyPath; }
-  set localReadonlyPath(localReadonlyPath: string) { this._localReadonlyPath = localReadonlyPath; }
-  get localReadWritePath(): string { return this._localReadWritePath; }
-  set localReadWritePath(localReadWritePath: string) { this._localReadWritePath = localReadWritePath; }
-  get changeSets(): ChangeSet[] { return this._changeSets; }
-  set changeSets(changeSets: ChangeSet[]) { this._changeSets = changeSets; }
-}
+import {ConnectorIModelInfo } from "../Utilities"
 
 function getCount(imodel: IModelDb, className: string) {
   let count = 0;
@@ -101,8 +75,8 @@ export class ConnectorTestUtils {
     ConnectorTestUtils.initDebugLogLevels(true);
   }
 
-  public static async getTestModelInfo(requestContext: AuthorizedClientRequestContext, testProjectId: string, iModelName: string): Promise<TestIModelInfo> {
-    const iModelInfo = new TestIModelInfo(iModelName);
+  public static async getTestModelInfo(requestContext: AuthorizedClientRequestContext, testProjectId: string, iModelName: string): Promise<ConnectorIModelInfo> {
+    const iModelInfo = new ConnectorIModelInfo(iModelName);
     iModelInfo.id = await HubUtility.queryIModelIdByName(requestContext, testProjectId, iModelInfo.name);
 
    // iModelInfo.changeSets = await BriefcaseManager.imodelClient.changeSets.get(requestContext, iModelInfo.id);

@@ -5,21 +5,22 @@
 
 import { expect } from "chai";
 import * as path from "path";
-import { TestUsers, TestUtility } from "@bentley/oidc-signin-tool";
 import { BridgeJobDefArgs, BridgeRunner } from "@bentley/imodel-bridge";
 import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
-import { ConnectorTestUtils, TestIModelInfo } from "../ConnectorTestUtils";
+import { ConnectorTestUtils } from "../ConnectorTestUtils";
 import {  IModelJsFs } from "@bentley/imodeljs-backend";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { BentleyStatus,  Logger } from "@bentley/bentleyjs-core";
 import { KnownTestLocations } from "../KnownTestLocations";
 import { HubUtility } from "../HubUtility";
+import {ConnectorIModelInfo } from "../../Utilities"
+
 
 describe("Sample Connector Integration Test (Online)", () => {
 
   let testProjectId: string;
   let requestContext: AuthorizedClientRequestContext;
-  let sampleIModel: TestIModelInfo;
+  let sampleIModel: ConnectorIModelInfo;
   // const fs = require("fs");
   // let managerRequestContext: AuthorizedClientRequestContext;
 
