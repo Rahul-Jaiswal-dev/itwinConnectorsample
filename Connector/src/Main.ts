@@ -73,11 +73,13 @@ export async function main(process: NodeJS.Process): Promise<void> {
       await runConnector(bridgeJobDef, serverArgs, false, false);
     }
   } catch (error) {
-    process.stdout.write(error.message + "\n" + error.stack);
+    console.log(error.message + "\n" + error.stack);
   } finally {
     await Utilities.shutdownBackend();
-    IModelJsFs.purgeDirSync(KnownTestLocations.outputDir);
-    IModelJsFs.unlinkSync(path.join(KnownTestLocations.assetsDir, "test.db"));
+    if(IModelJsFs.existsSync(KnownTestLocations.outputDir))
+      IModelJsFs.purgeDirSync(KnownTestLocations.outputDir);
+    if(IModelJsFs.existsSync(path.join(KnownTestLocations.assetsDir, "test.db")))
+      IModelJsFs.unlinkSync(path.join(KnownTestLocations.assetsDir, "test.db"));
     process.exit();
   }
 }
@@ -103,7 +105,7 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   console.log(`Executing query: SELECT devicetype FROM cbd.Device`);
   for await (const row of imodel.query(`SELECT devicetype FROM cbd.Device`)) {
     console.log(row);
-  }
+ }
   imodel.close();
 };
 
