@@ -59,9 +59,9 @@ export class Utilities {
     }
   }
 
-  public static async getTestModelInfo(requestContext: AuthorizedClientRequestContext, testProjectId: string, iModelName: string): Promise<ConnectorIModelInfo> {
+  public static async getTestModelInfo(requestContext: AuthorizedClientRequestContext, projectId: string, iModelName: string): Promise<ConnectorIModelInfo> {
     const iModelInfo = new ConnectorIModelInfo(iModelName);
-    iModelInfo.id = await HubUtility.queryIModelIdByName(requestContext, testProjectId, iModelInfo.name);
+    iModelInfo.id = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelInfo.name);
 
    // iModelInfo.changeSets = await BriefcaseManager.imodelClient.changeSets.get(requestContext, iModelInfo.id);
     return iModelInfo;
