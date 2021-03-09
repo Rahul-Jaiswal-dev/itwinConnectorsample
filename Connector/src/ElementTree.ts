@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { Subject, DefinitionPartition, DefinitionModel, PhysicalPartition, PhysicalModel, SpatialLocationPartition, SpatialLocationModel, SpatialCategory,
-  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel } from "@bentley/imodeljs-backend";
+  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel, FunctionalPartition, FunctionalModel, FunctionalComponentElement } from "@bentley/imodeljs-backend";
 import * as ConnectorElements from "./Elements";
 import * as ConnectorRelationships from "./Relationships";
 import * as ConnectorRelatedElements from "./RelatedElements";
@@ -65,36 +65,31 @@ export const SAMPLE_ELEMENT_TREE3: any = {
         },
       },
     },
-}
+  },
 };
 
-// export const SAMPLE_ELEMENT_TREE2: any = {
-//   subjects: {
-//     Subject1: {
-//       ref: Subject,
-//       partitions: {
-//         DefinitionPartition1: {
-//           ref: DefinitionPartition,
-//           models: {
-//             DefinitionModel1: {
-//               ref: DefinitionModel,
-//               elements: {
-//                 SpatialCategory1: {
-//                   ref: SpatialCategory,
-//                 },
-//               },
-//               elementClasses: {
-//                 Type: {
-//                   ref: MyElements.Sheet1,
-//                 },
-//               },
-//             },
-//           },
-//         },
-//       }
-//     }
-//   }
-// };
+export const SAMPLE_ELEMENT_TREE4: any = {
+  subjects: {
+    Subject1: {
+      ref: Subject,
+      partitions: {
+        FunctionalPartition1: {
+          ref: FunctionalPartition,
+          models: {
+            FunctionalModel1: {
+              ref: FunctionalModel,
+              elements: {
+                Device: {
+                  ref: FunctionalComponentElement,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+};
 
 export const SAMPLE_ELEMENT_TREE: any = {
   subjects: {

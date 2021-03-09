@@ -12,7 +12,7 @@ import { Schema } from "@bentley/ecschema-metadata";
 import { ItemState, SourceItem, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
 import { DataFetcher } from "./DataFetcher";
 import { DataAligner } from "./DataAligner";
-import { SAMPLE_ELEMENT_TREE3 } from "./ElementTree";
+import { SAMPLE_ELEMENT_TREE3, SAMPLE_ELEMENT_TREE4 } from "./ElementTree";
 import { DynamicSchemaGenerator, SchemaSyncResults } from "./DynamicSchemaGenerator";
 import { CodeSpecs } from "./Elements";
 import { SensorSchema } from "./Schema";

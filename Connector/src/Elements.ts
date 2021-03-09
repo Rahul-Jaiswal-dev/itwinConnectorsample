@@ -3,7 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument,  PhysicalElement, SpatialElement } from "@bentley/imodeljs-backend";
+import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument,  PhysicalElement, SpatialElement, FunctionalComponentElement } from "@bentley/imodeljs-backend";
 import { Code, Placement3d } from "@bentley/imodeljs-common";
 import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";
@@ -190,6 +190,21 @@ export class Device extends InformationRecordElement {
     return props;
   }
 }
+
+// export class Device extends FunctionalComponentElement {
+//   public static get className(): string { return "Device"; }
+//   public static get tableName(): string { return "Device"; }
+//   public static get classFullName(): string { return "ConnectorDynamic:Device"; }
+//   public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+//     const props: any = {
+//       code,
+//       userLabel: elementData[`${this.className}.name`],
+//       model: modelId,
+//       classFullName: this.classFullName,
+//     };
+//     return props;
+//   }
+// }
 export class Connection extends InformationRecordElement {
   public static get className(): string { return "Connection"; }
   public static get tableName(): string { return "Connection"; }
