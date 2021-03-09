@@ -58,7 +58,7 @@ export class Utilities {
       Logger.configureLevels(require(loggingConfigFile));
     }
   }
-  
+
   public static async getTestModelInfo(requestContext: AuthorizedClientRequestContext, testProjectId: string, iModelName: string): Promise<ConnectorIModelInfo> {
     const iModelInfo = new ConnectorIModelInfo(iModelName);
     iModelInfo.id = await HubUtility.queryIModelIdByName(requestContext, testProjectId, iModelInfo.name);
@@ -79,5 +79,4 @@ export class Utilities {
   public static async shutdownBackend(): Promise<void> {
     await IModelHost.shutdown();
   }
-
 }

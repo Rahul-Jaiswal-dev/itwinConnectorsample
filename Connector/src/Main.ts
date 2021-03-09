@@ -2,14 +2,13 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { ClientRequestContext, DbResult, GuidString, Logger, OpenMode } from "@bentley/bentleyjs-core";
+import { ClientRequestContext, Logger, OpenMode } from "@bentley/bentleyjs-core";
 import { BridgeJobDefArgs, BridgeRunner } from "@bentley/imodel-bridge";
 import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
-import { BriefcaseDb, BriefcaseManager, ConcurrencyControl, DesktopAuthorizationClient, ECSqlStatement, IModelHost, IModelJsFs } from "@bentley/imodeljs-backend";
+import { BriefcaseDb, BriefcaseManager, DesktopAuthorizationClient, IModelJsFs } from "@bentley/imodeljs-backend";
 import { DesktopAuthorizationClientConfiguration } from "@bentley/imodeljs-common";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { Utilities, ConnectorIModelInfo } from "./Utilities";
-import { HubUtility } from "./test/HubUtility";
 import { KnownTestLocations } from "./test/KnownTestLocations";
 import * as path from "path";
 import dotenv = require("dotenv");
@@ -23,14 +22,10 @@ async function signIn(): Promise<AccessToken | undefined> {
     redirectUri: process.env.redirectUri!,
     scope: process.env.scope!,
   };
-  // console.log(`clientId: ${process.env.clientId}`);
-  // console.log(`redirectUri: ${process.env.redirectUri}`);
-  // console.log(`scope: ${process.env.scope}`);
 
   const client = new DesktopAuthorizationClient(config);
   const requestContext = new ClientRequestContext();
   await client.initialize(requestContext);
-  // console.log(`Executing signIn ended...`);
   return new Promise<AccessToken | undefined>((resolve, _reject) => {
     client.onUserStateChanged.addListener((token: AccessToken | undefined) => resolve(token));
     client.signIn(requestContext);
@@ -38,7 +33,6 @@ async function signIn(): Promise<AccessToken | undefined> {
 }
 
 export async function main(process: NodeJS.Process): Promise<void> {
-  console.log(`\n`);
   console.log(`Running Connector now...`);
   console.log(`Started main...`);
   try {
@@ -61,15 +55,9 @@ export async function main(process: NodeJS.Process): Promise<void> {
     }
     if (requestContext) {
       const projectName = process.env.projectName;
-      // console.log(`projectName: ${projectName}`);
-      // testProjectId = await HubUtility.queryProjectIdByName(requestContext, projectName!);
-      // if (!testProjectId) {
       testProjectId = process.env.testProjectId;
-      // console.log(`testProjectId: ${testProjectId}`);
-      // }
-
       const iModelName = process.env.iModelName;
-      // console.log(`iModelName: ${iModelName}`);
+
       // await HubUtility.createIModel(requestContext, testProjectId!, iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await Utilities.getTestModelInfo(requestContext, testProjectId!, iModelName!);
@@ -80,7 +68,6 @@ export async function main(process: NodeJS.Process): Promise<void> {
 
       const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(testProjectId!, sampleIModel);
       const intermediaryDb = process.env.intermediaryDb;
-      // console.log(`intermediaryDb: ${intermediaryDb}`);
       const sourcePath = path.join(KnownTestLocations.assetsDir, intermediaryDb!);
       IModelJsFs.copySync(sourcePath, testSourcePath, { overwrite: true });
       await runConnector(bridgeJobDef, serverArgs, false, false);
@@ -113,9 +100,10 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   expect(briefcaseEntry !== undefined);
   let imodel: BriefcaseDb;
   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
-  // ConnectorTestUtils.verifyIModel(imodel, bridgeJobDef, isUpdate, isSchemaUpdate);
   briefcaseEntry!.openMode = OpenMode.ReadWrite;
-  console.log(`Executing query: SELECT devicetype FROM cbd.Device from Main`);
+
+  console.log(`\nConnector synced the following sensor devices with iModel:`);
+  console.log(`Executing query: SELECT devicetype FROM cbd.Device`);
   for await (const row of imodel.query(`SELECT devicetype FROM cbd.Device`)) {
     console.log(row);
  }
@@ -126,10 +114,7 @@ const getEnv = async (testProjectId: string, sampleIModel: ConnectorIModelInfo) 
   const bridgeJobDef = new BridgeJobDefArgs();
   const testSourcePath = path.join(KnownTestLocations.assetsDir, "test.db");
   bridgeJobDef.sourcePath = testSourcePath;
-  // console.log(`_dirname: ${__dirname}`);
   bridgeJobDef.bridgeModule = path.join(__dirname, "./Connector.js");
-  // console.log(`bridgeJobDef.bridgeModule: ${bridgeJobDef.bridgeModule}`);
-  // "D:\\Work\\iot\\source-code\\Rahul\\itwinConnectorsample\\Connector\\lib\\Connector.js";
   const serverArgs = new ServerArgs();
   serverArgs.contextId = testProjectId;
   serverArgs.iModelId = sampleIModel.id;

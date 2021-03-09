@@ -11,16 +11,17 @@ goto usage
 
 :all
 	IF NOT DEFINED pythonCmd Set pythonCmd=python.exe
-	echo Creating the intermediary .db files........................
+	echo Creating the intermediary .db files...
 	IF NOT EXIST output mkdir output
 	%pythonCmd% extractor.py input/samplesheet.xlsx output/samplesheet.db # create
-	%pythonCmd% extractor.py input/SampleSheetV2.xlsx output/intermediary_v2.db # data change
-	%pythonCmd% extractor.py input/SampleSheetV3.xlsx output/intermediary_v3.db # schema change (addition)
-	%pythonCmd% extractor.py input/SampleSheetV4.xlsx output/intermediary_v4.db # schema change (deletion)
+	@REM %pythonCmd% extractor.py input/SampleSheetV2.xlsx output/intermediary_v2.db # data change
+	@REM %pythonCmd% extractor.py input/SampleSheetV3.xlsx output/intermediary_v3.db # schema change (addition)
+	@REM %pythonCmd% extractor.py input/SampleSheetV4.xlsx output/intermediary_v4.db # schema change (deletion)
 
 goto end
 
 :clean
+  echo Running Extractor now...
 	rmdir /s /q output
 	del ..\..\Connector\src\assets\*.db
 	del ..\..\Connector\src\test\assets\*.db
@@ -33,7 +34,7 @@ IF NOT EXIST ..\..\Connector\src\test\assets mkdir ..\..\Connector\src\test\asse
 IF NOT EXIST ..\..\Connector\src\test\output mkdir ..\..\Connector\src\test\output
 copy .\output\*.db  ..\..\Connector\src\assets\ 
 copy .\output\*.db  ..\..\Connector\src\test\assets\
-echo Created the intermediary .db files and copied to Connector........................
+echo Created the intermediary .db files and copied to Connector.
 goto end
 
 :usage

@@ -1,13 +1,14 @@
 {
     // Perform these steps before starting any debug sesssion : 
 
-    // Run the following 3 commands from Extractor/extractor folder
+    // Run the following 3 commands from Extractor/extractor folder before start debugging.
+    // These commands should be run from Command Prompt.
     // 1. RunExtractor.cmd --clean 
     // 2. RunExtractor.cmd --all 
     // 3. RunExtractor.cmd --copy 
 
-    // Run the following command from connector root folder
-    // 4. npm run build
+    // Run the following command from Connector root folder.
+    // 1. npm run build
 
     "version": "0.2.0",
     "configurations": [
