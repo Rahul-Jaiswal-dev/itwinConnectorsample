@@ -85,7 +85,7 @@ export class DataFetcher {
     //  case "Device":
       //    return "deviceid";
       default:
-        return "id";
+        return "deviceid";
     }
   }
 }

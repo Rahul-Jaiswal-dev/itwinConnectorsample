@@ -16,6 +16,7 @@ import { DynamicSchemaGenerator } from "./DynamicSchemaGenerator";
 import * as hash from "object-hash";
 import { PropertyRenameReverseMap } from "./schema/SchemaConfig";
 
+
 export class DataAligner {
 
   public imodel: IModelDb;
@@ -142,17 +143,27 @@ export class DataAligner {
     const categoryId = this.categoryCache[elementClass.categoryName];
     const primaryKey = this.dataFetcher.getTablePrimaryKey(tableName);
     const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
-
+  //  console.log(" CodeSpec \n  "+  JSON.stringify(codeSpec));
+  
     for (const elementData of tableData) {
       const guid = tableName + elementData[`${tableName}.${primaryKey}`];
       const code = new Code({ spec: codeSpec.id, scope: modelId, value: guid });
+    //  console.log("  Code \n" +  JSON.stringify(code)); 
       const sourceItem: SourceItem = { id: guid, checksum: hash.MD5(JSON.stringify(elementData)) };
       const changeResults: ChangeResults = this.connector.synchronizer.detectChanges(modelId, tableName, sourceItem);
+      console.log(changeResults.state);
+      
+      if(elementData[`${tableName}.${primaryKey}`] === ''){
+        console.log("Empty Row in Excel File");
+        continue;
+      }
 
       if (changeResults.state === ItemState.Unchanged) {
         this.connector.synchronizer.onElementSeen(changeResults.id!);
         continue;
       }
+   
+      console.log("Change Detected for " +  tableName + elementData[`${tableName}.${primaryKey}`] + " "  + (changeResults.state === 1? "New Element" :" Data Changed") )
 
       const props = elementClass.ref.createProps(modelId, code,  elementData);
       this.addForeignProps(props, elementClass, elementData);
@@ -169,7 +180,9 @@ export class DataAligner {
       if (elementClass.typeDefinition && changeResults.state === ItemState.New)
         this.updateTypeDefinition(element, elementClass.typeDefinition, elementData);
     }
-    // this.connector.synchronizer.detectDeletedElements();
+   
+   this.connector.synchronizer.detectDeletedElements();
+ 
   }
 
   public addForeignProps(props: any, elementClass: any, elementData: any) {
