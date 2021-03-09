@@ -13,8 +13,7 @@ import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-clie
 import { BentleyStatus,  Logger } from "@bentley/bentleyjs-core";
 import { KnownTestLocations } from "../KnownTestLocations";
 import { HubUtility } from "../HubUtility";
-import {ConnectorIModelInfo } from "../../Utilities"
-
+import { ConnectorIModelInfo } from "../../Utilities";
 
 describe("Sample Connector Integration Test (Online)", () => {
 

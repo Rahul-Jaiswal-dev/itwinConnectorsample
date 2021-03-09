@@ -10,7 +10,7 @@ B. Create a .env file at the project root with the following:
 # This file contains secrets - don't commit or share it!
 ###############################################################################
 
-testProjectId = ""
+projectId = ""
 
 projectName = ""
 

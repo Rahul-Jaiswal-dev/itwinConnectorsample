@@ -16,9 +16,9 @@ export class HubUtility {
     const iModels = await getIModelProjectAbstraction().queryIModels(requestContext, projectId, new IModelQuery().byName(iModelName));
     if (iModels.length === 0)
     return undefined;
-  if (iModels.length > 1)
+    if (iModels.length > 1)
     throw new Error(`Too many iModels with name ${iModelName} found`);
-  return iModels[0];
+    return iModels[0];
   }
 
   /**
@@ -45,7 +45,7 @@ export class HubUtility {
     const iModel: HubIModel | undefined = await HubUtility.queryIModelByName(requestContext, projectId, iModelName);
     if (!iModel || !iModel.id)
     throw new Error(`IModel ${iModelName} not found`);
-  return iModel.id!;
+    return iModel.id!;
 }
 
   private static async queryProjectByName(requestContext: AuthorizedClientRequestContext, projectName: string): Promise<Project | undefined> {
@@ -77,7 +77,7 @@ export class HubUtility {
   public static async purgeAcquiredBriefcases(requestContext: AuthorizedClientRequestContext, projectName: string, iModelName: string, acquireThreshold: number = 16): Promise<void> {
     // const projectId: string = await HubUtility.queryProjectIdByName(requestContext, projectName);
 
-    const projectId = process.env.testProjectId!;
+    const projectId = process.env.projectId!;
 
     const iModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
 
@@ -111,7 +111,7 @@ class TestIModelHubProject {
   }
 
   public async queryProject(requestContext: AuthorizedClientRequestContext, query: any | undefined): Promise<Project> {
-    console.log(requestContext+query );
+    console.log(requestContext + query );
     return new Project();
   }
   public async createIModel(requestContext: AuthorizedClientRequestContext, projectId: string, params: any): Promise<HubIModel> {

@@ -45,7 +45,7 @@ relationshipClasses: {
 }
 
 */
-export const SAMPLE_ELEMENT_TREE3: any={
+export const SAMPLE_ELEMENT_TREE3: any = {
   subjects: {
     Subject1: {
       ref: Subject,

@@ -36,7 +36,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
   console.log(`Running Connector now...`);
   console.log(`Started main...`);
   try {
-    let testProjectId: string | undefined;
+    let projectId: string | undefined;
     let requestContext: AuthorizedClientRequestContext | undefined;
     let sampleIModel: ConnectorIModelInfo;
     await Utilities.startBackend();
@@ -54,19 +54,19 @@ export async function main(process: NodeJS.Process): Promise<void> {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
     if (requestContext) {
-      const projectName = process.env.projectName;
-      testProjectId = process.env.testProjectId;
+      projectId = process.env.projectId;
+      console.log(`iModel project id: ${projectId}`);
       const iModelName = process.env.iModelName;
 
       // await HubUtility.createIModel(requestContext, testProjectId!, iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
-      sampleIModel = await Utilities.getTestModelInfo(requestContext, testProjectId!, iModelName!);
+      sampleIModel = await Utilities.getTestModelInfo(requestContext, projectId!, iModelName!);
 
       // Purge briefcases that are close to reaching the acquire limit
       // const managerRequestContext = await TestUtility.getAuthorizedClientRequestContext(TestUsers.manager);
       // await HubUtility.purgeAcquiredBriefcases(requestContext, testProjectId!, iModelName!);
 
-      const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(testProjectId!, sampleIModel);
+      const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(projectId!, sampleIModel);
       const intermediaryDb = process.env.intermediaryDb;
       const sourcePath = path.join(KnownTestLocations.assetsDir, intermediaryDb!);
       IModelJsFs.copySync(sourcePath, testSourcePath, { overwrite: true });
@@ -99,7 +99,7 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   let imodel: BriefcaseDb;
   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
   briefcaseEntry!.openMode = OpenMode.ReadWrite;
-  console.log(`\nConnector synced the following sensor devices with iModel:`);
+  console.log(`\nConnector synced the following sensor devices with iModel ${imodel.name}:`);
   console.log(`Executing query: SELECT devicetype FROM cbd.Device`);
   for await (const row of imodel.query(`SELECT devicetype FROM cbd.Device`)) {
     console.log(row);
@@ -107,13 +107,13 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   imodel.close();
 };
 
-const getEnv = async (testProjectId: string, sampleIModel: ConnectorIModelInfo) => {
+const getEnv = async (projectId: string, sampleIModel: ConnectorIModelInfo) => {
   const bridgeJobDef = new BridgeJobDefArgs();
   const testSourcePath = path.join(KnownTestLocations.assetsDir, "test.db");
   bridgeJobDef.sourcePath = testSourcePath;
   bridgeJobDef.bridgeModule = path.join(__dirname, "./Connector.js");
   const serverArgs = new ServerArgs();
-  serverArgs.contextId = testProjectId;
+  serverArgs.contextId = projectId;
   serverArgs.iModelId = sampleIModel.id;
   serverArgs.getToken = async (): Promise<AccessToken> => {
     return dd.a ? dd.a : new AccessToken();
