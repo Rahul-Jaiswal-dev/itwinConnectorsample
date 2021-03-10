@@ -144,7 +144,7 @@ export class DataAligner {
     const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
     //  console.log(" CodeSpec \n  "+  JSON.stringify(codeSpec));
 
-    console.log(`\n Excel data:`);
+    console.log(`\n Printing data from intermediary db:`);
     for (const elementData of tableData) {
       console.log(JSON.stringify(elementData));
       const guid = tableName + elementData[`${tableName}.${primaryKey}`];
