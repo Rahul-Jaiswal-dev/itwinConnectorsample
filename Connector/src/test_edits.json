@@ -1,0 +1,17 @@
+{
+  "name": "basic edit test",
+  "description": "This is a basic editing test",
+  "url": "https://connect-imodelweb.bentley.com/imodeljs/?projectId=9726dd76-e4ec-4378-a581-a47c1284bc94&iModelId=13ca8338-0ee1-485d-aead-777c9329d96e",
+  "edits": {
+    "elements": [
+      {
+        "operation": "modify",
+        "id": "0x12",
+        "properties": {
+          "codeValue": "bananas",
+          "userLabel": "A bananas"
+        }
+      }
+    ]
+  }
+}

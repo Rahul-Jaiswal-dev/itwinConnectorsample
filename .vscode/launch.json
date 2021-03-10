@@ -1,34 +1,42 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    // Perform these steps before starting any debug sesssion : 
+
+    // Run the following 3 commands from Extractor/extractor folder before start debugging.
+    // These commands should be run from Command Prompt.
+    // 1. RunExtractor.cmd --clean 
+    // 2. RunExtractor.cmd --all 
+    // 3. RunExtractor.cmd --copy 
+
+    // Run the following command from Connector root folder.
+    // 1. npm run build
+
     "version": "0.2.0",
     "configurations": [
-
         {
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/COBie-connector/lib/Main.js",
+          "program": "${workspaceFolder}/Connector/lib/main.js",
              "args": [  "-- --output=debug.bim"],
             "outFiles": [
-                "${workspaceFolder}/COBie-connector/lib/**/*.js"
+                "${workspaceFolder}/Connector/lib/**/*.js"
             ],
             "skipFiles": [
                 "<node_internals>/**"
             ],
+            "envFile": "${workspaceFolder}/Connector/.env",
         },
         {
             "name": "Debug Tests",
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/Connector/src/test/unit/",
             "type": "pwa-node",
             "request": "launch",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
-                "test"
-              ],
+              "test"
+            ],
             "outFiles": [
-              "${workspaceFolder}/COBie-connector/lib/**/*.js"
+              "${workspaceFolder}/lib/**/*.js"
             ]
         },       
     ]

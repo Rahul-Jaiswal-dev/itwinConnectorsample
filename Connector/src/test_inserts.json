@@ -1,0 +1,17 @@
+{
+  "name": "basic edit test",
+  "description": "This is a basic editing test",
+  "url": "https://connect-imodelweb.bentley.com/imodeljs/?projectId= a89b6542-1989-4a58-9dc5-2944b39ef774&iModelId=13d76eaa-bf8c-493c-8851-6e93c2c5d8e6",
+  "edits": {
+    "elements": [
+      {
+        "operation": "insert",
+        "properties": {
+          "classFullName": "ConnectorDynamic:Device",
+          "model": "0x13",
+          "value":"myString"
+        }
+      }
+    ]
+  }
+}
