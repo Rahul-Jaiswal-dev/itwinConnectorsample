@@ -13,6 +13,7 @@ import { KnownTestLocations } from "./test/KnownTestLocations";
 import * as path from "path";
 import dotenv = require("dotenv");
 import { expect } from "chai";
+import { HubUtility } from "./test/HubUtility";
 dotenv.config();
 
 async function signIn(): Promise<AccessToken | undefined> {
@@ -71,14 +72,15 @@ export async function main(process: NodeJS.Process): Promise<void> {
       const sourcePath = path.join(KnownTestLocations.assetsDir, intermediaryDb!);
       IModelJsFs.copySync(sourcePath, testSourcePath, { overwrite: true });
       await runConnector(bridgeJobDef, serverArgs, false, false);
+      // await HubUtility.purgeAcquiredBriefcases(requestContext, projectId!, iModelName!);
     }
   } catch (error) {
     console.log(error.message + "\n" + error.stack);
   } finally {
     await Utilities.shutdownBackend();
-    if(IModelJsFs.existsSync(KnownTestLocations.outputDir))
+    if (IModelJsFs.existsSync(KnownTestLocations.outputDir))
       IModelJsFs.purgeDirSync(KnownTestLocations.outputDir);
-    if(IModelJsFs.existsSync(path.join(KnownTestLocations.assetsDir, "test.db")))
+    if (IModelJsFs.existsSync(path.join(KnownTestLocations.assetsDir, "test.db")))
       IModelJsFs.unlinkSync(path.join(KnownTestLocations.assetsDir, "test.db"));
     process.exit();
   }

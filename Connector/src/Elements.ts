@@ -176,7 +176,22 @@ export class System extends GroupInformationElement {
  * InformationRecordElement
  */
 
-export class Device extends InformationRecordElement {
+// export class Device extends InformationRecordElement {
+//   public static get className(): string { return "Device"; }
+//   public static get tableName(): string { return "Device"; }
+//   public static get classFullName(): string { return "ConnectorDynamic:Device"; }
+//   public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+//     const props: any = {
+//       code,
+//       userLabel: elementData[`${this.className}.name`],
+//       model: modelId,
+//       classFullName: this.classFullName,
+//     };
+//     return props;
+//   }
+// }
+
+export class Device extends FunctionalComponentElement {
   public static get className(): string { return "Device"; }
   public static get tableName(): string { return "Device"; }
   public static get classFullName(): string { return "ConnectorDynamic:Device"; }
@@ -191,20 +206,6 @@ export class Device extends InformationRecordElement {
   }
 }
 
-// export class Device extends FunctionalComponentElement {
-//   public static get className(): string { return "Device"; }
-//   public static get tableName(): string { return "Device"; }
-//   public static get classFullName(): string { return "ConnectorDynamic:Device"; }
-//   public static createProps(modelId: Id64String, code: Code,  elementData: any) {
-//     const props: any = {
-//       code,
-//       userLabel: elementData[`${this.className}.name`],
-//       model: modelId,
-//       classFullName: this.classFullName,
-//     };
-//     return props;
-//   }
-// }
 export class Connection extends InformationRecordElement {
   public static get className(): string { return "Connection"; }
   public static get tableName(): string { return "Connection"; }

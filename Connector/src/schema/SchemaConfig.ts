@@ -153,7 +153,7 @@ export const ConnectorEntityPropMap: { [className: string]: EntityClassProps } =
 //  },
  Device: {
     name: "Device",
-    baseClass: "BisCore:InformationRecordElement",
+    baseClass: "Functional:FunctionalComponentElement",
   },
 };
 

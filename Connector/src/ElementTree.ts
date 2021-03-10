@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { Subject, DefinitionPartition, DefinitionModel, PhysicalPartition, PhysicalModel, SpatialLocationPartition, SpatialLocationModel, SpatialCategory,
-  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel, FunctionalPartition, FunctionalModel, FunctionalComponentElement } from "@bentley/imodeljs-backend";
+  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel, FunctionalPartition, FunctionalModel, FunctionalComponentElement, SpatialElement } from "@bentley/imodeljs-backend";
 import * as ConnectorElements from "./Elements";
 import * as ConnectorRelationships from "./Relationships";
 import * as ConnectorRelatedElements from "./RelatedElements";
@@ -78,11 +78,22 @@ export const SAMPLE_ELEMENT_TREE4: any = {
           models: {
             FunctionalModel1: {
               ref: FunctionalModel,
-              elements: {
+              elementClasses: {
                 Device: {
-                  ref: FunctionalComponentElement,
+                  ref: ConnectorElements.Device,
                 },
               },
+              // relationshipClasses: {
+              //   ComponentConnectsToComponent1: {
+              //     ref: ConnectorRelationships.ComponentConnectsToComponent1,
+              //     sourceRef: ConnectorElements.Device,
+              //     sourceModelName: "FunctionalModel1",
+              //     sourceKey: "Device.id",
+              //     targetRef: SpatialElement,
+              //     targetModelName: "SpatialElementModel1",
+              //     targetKey: "Device.id",
+              //   },
+                 // },
             },
           },
         },

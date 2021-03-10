@@ -3,7 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { ElementRefersToElements, ElementGroupsMembers } from "@bentley/imodeljs-backend";
+import { ElementRefersToElements, ElementGroupsMembers, PhysicalElementFulfillsFunction } from "@bentley/imodeljs-backend";
 import { Id64String } from "@bentley/bentleyjs-core";
 
 export class ComponentConnectsToComponent extends ElementRefersToElements {
@@ -12,6 +12,15 @@ export class ComponentConnectsToComponent extends ElementRefersToElements {
   public static get classFullName(): string { return "ConnectorDynamic:ComponentConnectsToComponent"; }
   public static createProps(sourceId: Id64String, targetId: Id64String) {
     return { sourceId, targetId, classFullName: ComponentConnectsToComponent.classFullName };
+  }
+}
+
+export class ComponentConnectsToComponent1 extends PhysicalElementFulfillsFunction {
+  public static get className(): string { return "ComponentConnectsToComponent1"; }
+  public static get tableName(): string { return "Connection"; }
+  public static get classFullName(): string { return "ConnectorDynamic:ComponentConnectsToComponent1"; }
+  public static createProps(sourceId: Id64String, targetId: Id64String) {
+    return { sourceId, targetId, classFullName: ComponentConnectsToComponent1.classFullName };
   }
 }
 
