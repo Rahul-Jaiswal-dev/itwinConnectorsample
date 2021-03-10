@@ -144,7 +144,7 @@ export class DataAligner {
     const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
     //  console.log(" CodeSpec \n  "+  JSON.stringify(codeSpec));
 
-    console.log(`\n Excel data: \n`);
+    console.log(`\n Printing data from intermediary db:`);
     for (const elementData of tableData) {
       console.log(JSON.stringify(elementData));
       const guid = tableName + elementData[`${tableName}.${primaryKey}`];
@@ -169,7 +169,7 @@ export class DataAligner {
         msg = "Updating existing sensor";
       }
       const devicetype = "device type '" + elementData[`${tableName}.devicetype`] + "'";
-      console.log(`${msg} for ${devicetype} in table "${tableName}"`);
+      console.log(`${msg} for ${devicetype} in table '${tableName}'`);
 
       const props = elementClass.ref.createProps(modelId, code,  elementData);
       this.addForeignProps(props, elementClass, elementData);
