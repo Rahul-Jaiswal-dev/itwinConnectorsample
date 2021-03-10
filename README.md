@@ -1,6 +1,6 @@
 # iTwin Connector
 
-iTwin connectors enables a wide range of both Bentley and third-party design applications to contribute to an iTwin.
+iTwin connector enables a wide range of both Bentley and third-party design applications to contribute data to an iTwin.
 
 ## Steps to run Connector
 
@@ -39,7 +39,10 @@ redirectUri = ""
 
 scope = "openid email profile organization imodelhub context-registry-service:read-only product-settings-service projectwise-share urlps-third-party"
 
+```
 
-B. Run the following command from Connector root folder
+B. Run the following script from Connector root folder
+
+```sh
 
 npm run start
