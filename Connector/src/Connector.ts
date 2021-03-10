@@ -31,8 +31,10 @@ export class Connector extends IModelBridge {
   public async openSourceData(sourcePath: string): Promise<BentleyStatus> {
     this.sourceDataPath = sourcePath;
     const sourceDataStatus = this.getSourceDataStatus();
-    this.sourceDataState = sourceDataStatus.itemState;
+    if(sourceDataStatus !== undefined)
+      this.sourceDataState = sourceDataStatus.itemState;
     if (this.sourceDataState === ItemState.Unchanged) return BentleyStatus.ERROR;
+    console.log("sourceDataState " + this.sourceDataState);
     this.dataFetcher = new DataFetcher(sourcePath);
     await this.dataFetcher.initialize();
     return BentleyStatus.SUCCESS;
@@ -93,7 +95,7 @@ export class Connector extends IModelBridge {
     insert(CodeSpecs.Connector);
   }
 
-  public getSourceDataStatus(): SynchronizationResults {
+  public getSourceDataStatus(): SynchronizationResults | undefined {
     let timeStamp = Date.now();
     if (!this.sourceDataPath) throw new Error("we should not be in this method if the source file has not yet been opened");
     const stat = IModelJsFs.lstatSync(this.sourceDataPath);
@@ -102,11 +104,14 @@ export class Connector extends IModelBridge {
       id: this.sourceDataPath!,
       version: timeStamp.toString(),
     };
-    const sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
-    if (undefined === sourceDataStatus) {
-      const error = `Failed to retrieve a RepositoryLink for ${this.sourceDataPath}`;
-      throw new IModelError(IModelStatus.BadArg, error, Logger.logError, loggerCategory);
+    let sourceDataStatus: SynchronizationResults| undefined;
+    try{
+     sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
     }
+    catch(error)
+    {
+      this.sourceDataState= ItemState.Changed;
+   }
     return sourceDataStatus;
   }
 
