@@ -8,13 +8,11 @@ iTwin connector enables a wide range of both Bentley and third-party design appl
 
 #### Instructions
 
-```sh
 
 1. Requires Python 3 (e.g. 3.9.1) [Python Downloads](https://www.python.org/downloads/)
 2. Run "pip install -r requirements.txt" from Extractor root folder to install dependencies
 3. Enter device data in [Excel format](https://github.com/Rahul-Jaiswal-dev/itwinConnectorsample/blob/DocumentationUpdate/Extractor/extractor/input).
 
-```
 
 ### Run Connector
 
