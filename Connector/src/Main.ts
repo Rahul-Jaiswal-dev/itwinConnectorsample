@@ -76,10 +76,9 @@ export async function main(process: NodeJS.Process): Promise<void> {
       const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(projectId!, sampleIModel);
       let intermediaryDb = process.env.IMJS_DATA_SOURCE;
       if(intermediaryDb)
-           //intermediaryDb = intermediaryDb.substring(0,intermediaryDb.indexOf("."))+".db";
-           intermediaryDb = intermediaryDb.replace("xlsx","db");
+        intermediaryDb = intermediaryDb.replace("xlsx","db");
       if(!intermediaryDb || !IModelJsFs.existsSync(path.join(KnownTestLocations.assetsDir,intermediaryDb)))
-          throw new Error("File not found.....")
+        throw new Error("File not found.....")
       const sourcePath = path.join(KnownTestLocations.assetsDir, intermediaryDb!);
       IModelJsFs.copySync(sourcePath, testSourcePath, { overwrite: true });
       await runConnector(bridgeJobDef, serverArgs, false, false);

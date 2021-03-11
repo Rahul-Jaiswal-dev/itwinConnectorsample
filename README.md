@@ -22,13 +22,9 @@ iTwin connector enables a wide range of both Bentley and third-party design appl
 
 ### Add Device data in Excel format
 
-```sh
-
 Enter device data in [Excel format](https://github.com/Rahul-Jaiswal-dev/itwinConnectorsample/edit/master/Extractor/extractor/input).
 
 There is already sample data provided in Excel file. Modify this particular file <PATH_TO_PROJECT_ROOT_FOLDER/Extractor/extractor/input/samplesheet.xlsx> to change the data.
-
-```
 
 ### Run Connector
 
