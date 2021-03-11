@@ -66,7 +66,7 @@ export class DataFetcher {
     queryBuilder.push(`group by "${tableName}.id"`);
 
     const query = queryBuilder.join(" ");
-    const tableData = await this.sourceDb.all(query);   
+    const tableData = await this.sourceDb.all(query);
     return tableData;
   }
 
