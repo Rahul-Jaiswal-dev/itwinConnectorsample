@@ -39,6 +39,9 @@ def create_objects(sheet):
         for cell, header in zip(row, header_row):
             key = clean_value(header)
             value = clean_value(cell)
+            if key == "Deviceid":
+               partitioned_string = value.partition('.')
+               value= partitioned_string[0]
             obj[key] = str(value)
         objects.append(obj)
 

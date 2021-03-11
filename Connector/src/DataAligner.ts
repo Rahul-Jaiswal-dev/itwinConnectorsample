@@ -144,9 +144,8 @@ export class DataAligner {
     const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
     //  console.log(" CodeSpec \n  "+  JSON.stringify(codeSpec));
 
-    console.log(`\n Printing data from intermediary db:`);
+    console.log(`\nPrinting data from intermediary db:`);
     for (const elementData of tableData) {
-      console.log(JSON.stringify(elementData));
       const guid = tableName + elementData[`${tableName}.${primaryKey}`];
       const code = new Code({ spec: codeSpec.id, scope: modelId, value: guid });
       //  console.log("  Code \n" +  JSON.stringify(code));
@@ -160,6 +159,7 @@ export class DataAligner {
 
       if (changeResults.state === ItemState.Unchanged) {
         this.connector.synchronizer.onElementSeen(changeResults.id!);
+        console.log(JSON.stringify(elementData, null, 2));
         continue;
       }
       let msg = "";
@@ -170,6 +170,7 @@ export class DataAligner {
       }
       const devicetype = "device type '" + elementData[`${tableName}.devicetype`] + "'";
       console.log(`${msg} for ${devicetype} in table '${tableName}'`);
+      console.log(JSON.stringify(elementData, null, 2));
 
       const props = elementClass.ref.createProps(modelId, code,  elementData);
       this.addForeignProps(props, elementClass, elementData);

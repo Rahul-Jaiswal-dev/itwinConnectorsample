@@ -34,7 +34,7 @@ export class Connector extends IModelBridge {
     if(sourceDataStatus !== undefined)
       this.sourceDataState = sourceDataStatus.itemState;
     if (this.sourceDataState === ItemState.Unchanged) return BentleyStatus.ERROR;
-    console.log("sourceDataState " + this.sourceDataState);
+    // console.log("sourceDataState " + this.sourceDataState);
     this.dataFetcher = new DataFetcher(sourcePath);
     await this.dataFetcher.initialize();
     return BentleyStatus.SUCCESS;

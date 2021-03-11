@@ -77,7 +77,7 @@ export class HubUtility {
   public static async purgeAcquiredBriefcases(requestContext: AuthorizedClientRequestContext, projectName: string, iModelName: string, acquireThreshold: number = 16): Promise<void> {
     // const projectId: string = await HubUtility.queryProjectIdByName(requestContext, projectName);
 
-    const projectId = process.env.projectId!;
+    const projectId = process.env.IMJS_CONTEXT_ID!;
 
     const iModelId: GuidString = await HubUtility.queryIModelIdByName(requestContext, projectId, iModelName);
 
