@@ -3,15 +3,16 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { Logger, LogLevel } from "@bentley/bentleyjs-core";
-import { ChangeSet } from "@bentley/imodelhub-client";
-import { IModelHost, IModelHostConfiguration, IModelJsFs } from "@bentley/imodeljs-backend";
+import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
+import { ClientRequestContext, GuidString, Logger, LogLevel } from "@bentley/bentleyjs-core";
+import { ChangeSet, HubIModel } from "@bentley/imodelhub-client";
+import { BriefcaseManager, DesktopAuthorizationClient, IModelHost, IModelHostConfiguration, IModelJsFs } from "@bentley/imodeljs-backend";
 import * as path from "path";
 import { IModelBankArgs, IModelBankUtils } from "@bentley/imodel-bridge/lib/IModelBankUtils";
 import { IModelHubUtils } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { HubUtility } from "./test/HubUtility";
 import { KnownTestLocations } from "./test/KnownTestLocations";
+import { DesktopAuthorizationClientConfiguration } from "@bentley/imodeljs-common";
 
 export class ConnectorIModelInfo {
   private _name: string;
@@ -80,3 +81,37 @@ export class Utilities {
     await IModelHost.shutdown();
   }
 }
+
+  export class ConnectorHelper {
+
+    public static accessToken: AccessToken | undefined;
+  
+    public static async getiModel(requestContext: AuthorizedClientRequestContext  , projectId: string , iModelId:GuidString ): Promise<HubIModel>
+    {
+      var iModel: HubIModel;
+      const iModelsIniModelHub = await BriefcaseManager.imodelClient.iModels.get(requestContext, projectId);
+      iModelsIniModelHub.forEach((value) => {
+        if (value.id == iModelId) 
+            iModel = value;
+      });
+      return iModel!;
+    }
+    
+    public static async signIn(): Promise<AccessToken | undefined> {
+      console.log(`Executing signIn...`);
+      const config: DesktopAuthorizationClientConfiguration = {
+        clientId: process.env.IMJS_CLIENT_ID!,
+        redirectUri: process.env.IMJS_REDIRECT_URI!,
+        scope: process.env.IMJS_SCOPE!,
+      };
+    
+      const client = new DesktopAuthorizationClient(config);
+      const requestContext = new ClientRequestContext();
+      await client.initialize(requestContext);
+      return new Promise<AccessToken | undefined>((resolve, _reject) => {
+        client.onUserStateChanged.addListener((token: AccessToken | undefined) => resolve(token));
+        client.signIn(requestContext);
+      });
+    }
+  }
+
