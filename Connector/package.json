@@ -14,7 +14,7 @@
         "blint": "npm run build && npm run lint",
         "start": "cd ../Extractor/extractor/ && RunExtractor.cmd --clean && RunExtractor.cmd --all && RunExtractor.cmd --copy && cd ../../Connector/ && npm run clean && npm run build && node lib/main.js",
         "insert": "node lib/insertElement.js",
-        "purge"  : "node lib/PurgeBriefcase.js"
+        "purge": "node lib/PurgeBriefcase.js"
     },
     "eslintConfig": {
         "extends": "./node_modules/@bentley/build-tools/.eslintrc.js",
@@ -50,6 +50,7 @@
         "bunyan": "^1.8.13",
         "bunyan-seq": "^0.2.0",
         "draco3d": "^1.3.6",
+        "node-persist": "^3.1.0",
         "open": "^7.1.0",
         "request-promise": "^4.2.6",
         "sqlite": "^4.0.12",
