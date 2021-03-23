@@ -44,7 +44,7 @@ IMJS_IMODEL_ID = <IMODEL_ID>
 # Excel file resides at <PATH_TO_PROJECT_ROOT_FOLDER/Extractor/extractor/input/samplesheet.xlsx>
 IMJS_DATA_SOURCE = samplesheet.xlsx
 
-IMJS_CLIENT_ID = <CLIENT_ID>
+IMJS_CLIENT_ID = imodeljs-electron-test
 
 IMJS_REDIRECT_URI = http://localhost:3000/signin-callback
 

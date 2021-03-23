@@ -2,37 +2,18 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { ClientRequestContext, GuidString, Logger, OpenMode } from "@bentley/bentleyjs-core";
+import { ClientRequestContext, Logger, OpenMode } from "@bentley/bentleyjs-core";
 import { BridgeJobDefArgs, BridgeRunner } from "@bentley/imodel-bridge";
 import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
-import { BriefcaseDb, BriefcaseManager, DesktopAuthorizationClient, IModelJsFs } from "@bentley/imodeljs-backend";
-import { DesktopAuthorizationClientConfiguration } from "@bentley/imodeljs-common";
+import { BriefcaseDb, BriefcaseManager, IModelJsFs } from "@bentley/imodeljs-backend";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { Utilities, ConnectorIModelInfo } from "./Utilities";
+import { Utilities, ConnectorIModelInfo, ConnectorHelper } from "./Utilities";
 import { KnownTestLocations } from "./test/KnownTestLocations";
 import * as path from "path";
 import dotenv = require("dotenv");
-import { expect } from "chai";
-import { HubUtility } from "./test/HubUtility";
-import { HubIModel } from "@bentley/imodelhub-client";
 dotenv.config();
 
-async function signIn(): Promise<AccessToken | undefined> {
-  console.log(`Executing signIn...`);
-  const config: DesktopAuthorizationClientConfiguration = {
-    clientId: process.env.IMJS_CLIENT_ID!,
-    redirectUri: process.env.IMJS_REDIRECT_URI!,
-    scope: process.env.IMJS_SCOPE!,
-  };
-
-  const client = new DesktopAuthorizationClient(config);
-  const requestContext = new ClientRequestContext();
-  await client.initialize(requestContext);
-  return new Promise<AccessToken | undefined>((resolve, _reject) => {
-    client.onUserStateChanged.addListener((token: AccessToken | undefined) => resolve(token));
-    client.signIn(requestContext);
-  });
-}
+const { contextId , iModelId ,dataSource } =  ConnectorHelper.getenvVariables();
 
 export async function main(process: NodeJS.Process): Promise<void> {
   console.log(`Running Connector now...`);
@@ -43,23 +24,20 @@ export async function main(process: NodeJS.Process): Promise<void> {
     let requestContext: AuthorizedClientRequestContext | undefined;
     let sampleIModel: ConnectorIModelInfo;
     await Utilities.startBackend();
-
-    // await IModelHost.startup();
-    const accessToken: AccessToken | undefined = await signIn();
-    ConnectorHelper.accessToken = accessToken;
+    await ConnectorHelper.signIn();
     if (!IModelJsFs.existsSync(KnownTestLocations.outputDir))
       IModelJsFs.mkdirSync(KnownTestLocations.outputDir);
 
     try {
-      if (accessToken)
-        requestContext = await new AuthorizedClientRequestContext(accessToken);
+      if (ConnectorHelper.accessToken)
+        requestContext = await new AuthorizedClientRequestContext(ConnectorHelper.accessToken);
     } catch (error) {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
     if (requestContext) {
-      projectId = process.env.IMJS_CONTEXT_ID;
+      projectId = contextId;
       console.log(`iModel project id: ${projectId}`);
-      const iModel  = await ConnectorHelper.getiModel(requestContext,projectId!,process.env.IMJS_IMODEL_ID!);
+      const iModel  = await ConnectorHelper.getiModel(requestContext,projectId!,iModelId!);
       if(iModel && iModel.name)
         iModelName = iModel.name;
       else
@@ -68,13 +46,8 @@ export async function main(process: NodeJS.Process): Promise<void> {
       // await HubUtility.createIModel(requestContext, testProjectId!, iModelName!);
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await Utilities.getTestModelInfo(requestContext, projectId!, iModelName);
-
-      // Purge briefcases that are close to reaching the acquire limit
-      // const managerRequestContext = await TestUtility.getAuthorizedClientRequestContext(TestUsers.manager);
-      // await HubUtility.purgeAcquiredBriefcases(requestContext, testProjectId!, iModelName!);
-
       const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(projectId!, sampleIModel);
-      let intermediaryDb = process.env.IMJS_DATA_SOURCE;
+      let intermediaryDb =  dataSource;
       if(intermediaryDb)
         intermediaryDb = intermediaryDb.replace("xlsx","db");
       if(!intermediaryDb || !IModelJsFs.existsSync(path.join(KnownTestLocations.assetsDir,intermediaryDb)))
@@ -82,7 +55,6 @@ export async function main(process: NodeJS.Process): Promise<void> {
       const sourcePath = path.join(KnownTestLocations.assetsDir, intermediaryDb!);
       IModelJsFs.copySync(sourcePath, testSourcePath, { overwrite: true });
       await runConnector(bridgeJobDef, serverArgs, false, false);
-      // await HubUtility.purgeAcquiredBriefcases(requestContext, projectId!, iModelName!);
     }
   } catch (error) {
     console.log(error.message + "\n" + error.stack);
@@ -109,7 +81,7 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   // expect(status === BentleyStatus.SUCCESS);
   const briefcases = BriefcaseManager.getBriefcases();
   const briefcaseEntry = BriefcaseManager.findBriefcaseByKey(briefcases[0].key);
-  expect(briefcaseEntry !== undefined);
+  //expect(briefcaseEntry !== undefined);
   let imodel: BriefcaseDb;
   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
   briefcaseEntry!.openMode = OpenMode.ReadWrite;
@@ -135,18 +107,4 @@ const getEnv = async (projectId: string, sampleIModel: ConnectorIModelInfo) => {
   return { testSourcePath, bridgeJobDef, serverArgs };
 };
 
- class ConnectorHelper {
-
-  public static accessToken: AccessToken | undefined;
-
-  public static async getiModel(requestContext: AuthorizedClientRequestContext  , projectId: string , iModelId:GuidString ): Promise<HubIModel>
-  {
-    var iModel: HubIModel;
-    const iModelsIniModelHub = await BriefcaseManager.imodelClient.iModels.get(requestContext, projectId);
-    iModelsIniModelHub.forEach((value) => {
-      if (value.id == iModelId) 
-          iModel = value;
-    });
-    return iModel!;
-  }
-}
+ 

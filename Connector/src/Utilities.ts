@@ -3,16 +3,19 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { Logger, LogLevel } from "@bentley/bentleyjs-core";
-import { ChangeSet } from "@bentley/imodelhub-client";
-import { IModelHost, IModelHostConfiguration, IModelJsFs } from "@bentley/imodeljs-backend";
+import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
+import { ClientRequestContext, GuidString, Logger, LogLevel } from "@bentley/bentleyjs-core";
+import { ChangeSet, HubIModel } from "@bentley/imodelhub-client";
+import { BriefcaseManager, DesktopAuthorizationClient, IModelHost, IModelHostConfiguration, IModelJsFs } from "@bentley/imodeljs-backend";
 import * as path from "path";
 import { IModelBankArgs, IModelBankUtils } from "@bentley/imodel-bridge/lib/IModelBankUtils";
 import { IModelHubUtils } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { HubUtility } from "./test/HubUtility";
 import { KnownTestLocations } from "./test/KnownTestLocations";
-
+import { DesktopAuthorizationClientConfiguration } from "@bentley/imodeljs-common";
+import dotenv = require("dotenv");
+dotenv.config();
+var storage= require("node-persist");
 export class ConnectorIModelInfo {
   private _name: string;
   private _id: string;
@@ -80,3 +83,61 @@ export class Utilities {
     await IModelHost.shutdown();
   }
 }
+
+  export class ConnectorHelper {
+
+    public static accessToken: AccessToken | undefined;
+    
+    public static async getiModel(requestContext: AuthorizedClientRequestContext  , projectId: string , iModelId:GuidString ): Promise<HubIModel>
+    {
+      var iModel: HubIModel;
+      const iModelsIniModelHub = await BriefcaseManager.imodelClient.iModels.get(requestContext, projectId);
+      iModelsIniModelHub.forEach((value) => {
+        if (value.id == iModelId) 
+            iModel = value;
+      });
+      return iModel!;
+    }
+
+    public static async signIn(): Promise<void> {
+      console.log(`Executing signIn...`);
+      await storage.init();
+      let accessToken : AccessToken | undefined;
+      let cachedAccessToken=  await storage.getItem("accessToken");
+      if(cachedAccessToken  && cachedAccessToken.time > (new Date().valueOf() + 10*60*1000))
+           accessToken  = AccessToken.fromTokenString(cachedAccessToken.token);
+      else{
+        accessToken= await ConnectorHelper.signInClient();
+        await storage.setItem("accessToken",  { token: accessToken?.toTokenString(), time : accessToken?.getExpiresAt()?.valueOf()});
+      }
+      ConnectorHelper.accessToken= accessToken;
+    }
+
+  public static async signInClient(): Promise<AccessToken | undefined> {
+      const config: DesktopAuthorizationClientConfiguration = {
+        clientId: this.getenvVariables().clientId!,
+        redirectUri: this.getenvVariables().redirectUri!,
+        scope: this.getenvVariables().scope!,
+      };
+    
+      const client = new DesktopAuthorizationClient(config);
+      const requestContext = new ClientRequestContext();
+      await client.initialize(requestContext);
+      return new Promise<AccessToken | undefined>((resolve, _reject) => {
+        client.onUserStateChanged.addListener((token: AccessToken | undefined) => resolve(token));
+        client.signIn(requestContext);
+      });
+    }
+    public static getenvVariables() {
+     
+      const envvariables = { clientId: process.env.IMJS_CLIENT_ID, contextId:process.env.IMJS_CONTEXT_ID,
+       iModelId: process.env.IMJS_IMODEL_ID ,dataSource: process.env.IMJS_DATA_SOURCE ,  redirectUri: process.env.IMJS_REDIRECT_URI ,
+      scope: process.env.IMJS_SCOPE };
+      if(envvariables.clientId && envvariables.contextId && envvariables.dataSource  && envvariables.iModelId && envvariables.redirectUri && envvariables.scope)
+         return envvariables;
+      else
+         throw new Error(".env file values are  missing.............")
+    }
+    
+  }
+
