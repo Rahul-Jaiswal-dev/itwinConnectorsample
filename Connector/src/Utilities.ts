@@ -13,7 +13,9 @@ import { IModelHubUtils } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { HubUtility } from "./test/HubUtility";
 import { KnownTestLocations } from "./test/KnownTestLocations";
 import { DesktopAuthorizationClientConfiguration } from "@bentley/imodeljs-common";
-
+import dotenv = require("dotenv");
+dotenv.config();
+var storage= require("node-persist");
 export class ConnectorIModelInfo {
   private _name: string;
   private _id: string;
@@ -85,7 +87,7 @@ export class Utilities {
   export class ConnectorHelper {
 
     public static accessToken: AccessToken | undefined;
-  
+    
     public static async getiModel(requestContext: AuthorizedClientRequestContext  , projectId: string , iModelId:GuidString ): Promise<HubIModel>
     {
       var iModel: HubIModel;
@@ -96,13 +98,26 @@ export class Utilities {
       });
       return iModel!;
     }
-    
-    public static async signIn(): Promise<AccessToken | undefined> {
+
+    public static async signIn(): Promise<void> {
       console.log(`Executing signIn...`);
+      await storage.init();
+      let accessToken : AccessToken | undefined;
+      let cachedAccessToken=  await storage.getItem("accessToken");
+      if(cachedAccessToken  && cachedAccessToken.time > (new Date().valueOf() + 10*60*1000))
+           accessToken  = AccessToken.fromTokenString(cachedAccessToken.token);
+      else{
+        accessToken= await ConnectorHelper.signInClient();
+        await storage.setItem("accessToken",  { token: accessToken?.toTokenString(), time : accessToken?.getExpiresAt()?.valueOf()});
+      }
+      ConnectorHelper.accessToken= accessToken;
+    }
+
+  public static async signInClient(): Promise<AccessToken | undefined> {
       const config: DesktopAuthorizationClientConfiguration = {
-        clientId: process.env.IMJS_CLIENT_ID!,
-        redirectUri: process.env.IMJS_REDIRECT_URI!,
-        scope: process.env.IMJS_SCOPE!,
+        clientId: this.getenvVariables().clientId!,
+        redirectUri: this.getenvVariables().redirectUri!,
+        scope: this.getenvVariables().scope!,
       };
     
       const client = new DesktopAuthorizationClient(config);
@@ -113,5 +128,16 @@ export class Utilities {
         client.signIn(requestContext);
       });
     }
+    public static getenvVariables() {
+     
+      const envvariables = { clientId: process.env.IMJS_CLIENT_ID, contextId:process.env.IMJS_CONTEXT_ID,
+       iModelId: process.env.IMJS_IMODEL_ID ,dataSource: process.env.IMJS_DATA_SOURCE ,  redirectUri: process.env.IMJS_REDIRECT_URI ,
+      scope: process.env.IMJS_SCOPE };
+      if(envvariables.clientId && envvariables.contextId && envvariables.dataSource  && envvariables.iModelId && envvariables.redirectUri && envvariables.scope)
+         return envvariables;
+      else
+         throw new Error(".env file values are  missing.............")
+    }
+    
   }
 

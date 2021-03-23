@@ -8,6 +8,7 @@ import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-clie
 import { Utilities, ConnectorHelper } from "./Utilities";
 import dotenv = require("dotenv");
 dotenv.config();
+const { contextId , iModelId  } =  ConnectorHelper.getenvVariables();
 
 export async function main(process: NodeJS.Process): Promise<void> {
   console.log(`Purging all briefcases...`);
@@ -16,25 +17,23 @@ export async function main(process: NodeJS.Process): Promise<void> {
     let iModelName : string = "";
     let requestContext: AuthorizedClientRequestContext | undefined;
     await Utilities.startBackend();
-    const accessToken: AccessToken | undefined = await ConnectorHelper.signIn();
-    ConnectorHelper.accessToken = accessToken;
-
+    await ConnectorHelper.signIn();
     try {
-      if (accessToken)
-        requestContext = await new AuthorizedClientRequestContext(accessToken);
+      if (ConnectorHelper.accessToken)
+        requestContext = await new AuthorizedClientRequestContext(ConnectorHelper.accessToken);
     } catch (error) {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
     if (requestContext) {
-      projectId = process.env.IMJS_CONTEXT_ID;
+      projectId =contextId;
       console.log(`iModel project id: ${projectId}`);
-      const iModel  = await ConnectorHelper.getiModel(requestContext,projectId!,process.env.IMJS_IMODEL_ID!);
+      const iModel  = await ConnectorHelper.getiModel(requestContext,projectId!,iModelId!);
       if(iModel && iModel.name)
         iModelName = iModel.name;
       else
         throw new Error("iModel not found..") 
       console.log("iModelName" + iModelName)
-      await BriefcaseManager.deleteAllBriefcases(requestContext, process.env.IMJS_IMODEL_ID!);
+      await BriefcaseManager.deleteAllBriefcases(requestContext, iModelId!);
   }
 }
 catch (error) {

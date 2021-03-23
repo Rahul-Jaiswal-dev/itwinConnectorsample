@@ -13,6 +13,7 @@ import * as path from "path";
 import dotenv = require("dotenv");
 dotenv.config();
 
+const { contextId , iModelId ,dataSource } =  ConnectorHelper.getenvVariables();
 
 export async function main(process: NodeJS.Process): Promise<void> {
   console.log(`Running Connector now...`);
@@ -23,22 +24,20 @@ export async function main(process: NodeJS.Process): Promise<void> {
     let requestContext: AuthorizedClientRequestContext | undefined;
     let sampleIModel: ConnectorIModelInfo;
     await Utilities.startBackend();
-
-    const accessToken: AccessToken | undefined = await ConnectorHelper.signIn();
-    ConnectorHelper.accessToken = accessToken;
+    await ConnectorHelper.signIn();
     if (!IModelJsFs.existsSync(KnownTestLocations.outputDir))
       IModelJsFs.mkdirSync(KnownTestLocations.outputDir);
 
     try {
-      if (accessToken)
-        requestContext = await new AuthorizedClientRequestContext(accessToken);
+      if (ConnectorHelper.accessToken)
+        requestContext = await new AuthorizedClientRequestContext(ConnectorHelper.accessToken);
     } catch (error) {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
     if (requestContext) {
-      projectId = process.env.IMJS_CONTEXT_ID;
+      projectId = contextId;
       console.log(`iModel project id: ${projectId}`);
-      const iModel  = await ConnectorHelper.getiModel(requestContext,projectId!,process.env.IMJS_IMODEL_ID!);
+      const iModel  = await ConnectorHelper.getiModel(requestContext,projectId!,iModelId!);
       if(iModel && iModel.name)
         iModelName = iModel.name;
       else
@@ -48,7 +47,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
       // const targetIModelId = await HubUtility.queryIModelByName(requestContext, testProjectId, iModelName);
       sampleIModel = await Utilities.getTestModelInfo(requestContext, projectId!, iModelName);
       const { testSourcePath, bridgeJobDef, serverArgs } = await getEnv(projectId!, sampleIModel);
-      let intermediaryDb = process.env.IMJS_DATA_SOURCE;
+      let intermediaryDb =  dataSource;
       if(intermediaryDb)
         intermediaryDb = intermediaryDb.replace("xlsx","db");
       if(!intermediaryDb || !IModelJsFs.existsSync(path.join(KnownTestLocations.assetsDir,intermediaryDb)))
