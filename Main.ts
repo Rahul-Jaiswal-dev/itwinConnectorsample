@@ -7,11 +7,9 @@ import { BridgeJobDefArgs, BridgeRunner } from "@bentley/imodel-bridge";
 import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
 import { BriefcaseDb, BriefcaseManager, IModelJsFs } from "@bentley/imodeljs-backend";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { Utilities, ConnectorIModelInfo, ConnectorHelper } from "./Utilities";
-import { KnownTestLocations } from "./test/KnownTestLocations";
+import { Utilities, ConnectorIModelInfo, ConnectorHelper } from "./Connector/src/Utilities";
+import { KnownTestLocations } from "./Connector/src/test/KnownTestLocations";
 import * as path from "path";
-import dotenv = require("dotenv");
-dotenv.config();
 
 const { contextId , iModelId ,dataSource } =  ConnectorHelper.getenvVariables();
 
@@ -97,7 +95,7 @@ const getEnv = async (projectId: string, sampleIModel: ConnectorIModelInfo) => {
   const bridgeJobDef = new BridgeJobDefArgs();
   const testSourcePath = path.join(KnownTestLocations.assetsDir, "test.db");
   bridgeJobDef.sourcePath = testSourcePath;
-  bridgeJobDef.bridgeModule = path.join(__dirname, "./Connector.js");
+  bridgeJobDef.bridgeModule = path.join(__dirname, "./Connector/src/Connector.js");
   const serverArgs = new ServerArgs();
   serverArgs.contextId = projectId;
   serverArgs.iModelId = sampleIModel.id;
