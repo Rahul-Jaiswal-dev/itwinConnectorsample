@@ -35,7 +35,7 @@ export class DataAligner {
     const loader = new IModelSchemaLoader(this.imodel);
     const existingSchema = loader.tryGetSchema("IoTDevice");
     console.log(`DataAligner:constructor...`);
-    console.log(existingSchema?.toJSON());
+    console.log(existingSchema?.toJSON().items);
     this.schemaItems = existingSchema!.toJSON().items!;
     this.categoryCache = {};
     this.modelCache = {};
@@ -200,6 +200,7 @@ export class DataAligner {
     const { properties } = this.schemaItems[className];
     for (const prop of properties) {
       const attribute = prop.name in PropertyRenameReverseMap ? PropertyRenameReverseMap[prop.name] : prop.name;
+      console.log("Trying " +  prop.name + " 1 " + `${className}.${attribute}`+ " 2 " + elementData[`${className}.${attribute}`]);
       props[prop.name] = elementData[`${className}.${attribute}`];
     }
   }
