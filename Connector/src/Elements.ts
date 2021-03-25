@@ -194,7 +194,7 @@ export class System extends GroupInformationElement {
 export class Device extends FunctionalComponentElement {
   public static get className(): string { return "Device"; }
   public static get tableName(): string { return "Device"; }
-  public static get classFullName(): string { return "ConnectorDynamic:Device"; }
+  public static get classFullName(): string { return "IoTDevice:Device"; }
   public static createProps(modelId: Id64String, code: Code,  elementData: any) {
     const props: any = {
       code,

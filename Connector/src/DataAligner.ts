@@ -5,7 +5,7 @@
 
 import { Id64String } from "@bentley/bentleyjs-core";
 import { Code, CodeSpec, Placement3d, AxisAlignedBox3d } from "@bentley/imodeljs-common";
-import { IModelDb, SpatialCategory, DrawingCategory } from "@bentley/imodeljs-backend";
+import { IModelDb, SpatialCategory, DrawingCategory, IModelSchemaLoader } from "@bentley/imodeljs-backend";
 import { ItemState, SourceItem, ChangeResults, SynchronizationResults } from "@bentley/imodel-bridge/lib/Synchronizer";
 import * as connectorElements from "./Elements";
 import * as ConnectorRelationships from "./Relationships";
@@ -32,7 +32,11 @@ export class DataAligner {
     this.dataFetcher = connector.dataFetcher!;
     this.imodel = connector.synchronizer.imodel;
     this.schemaGenerator = connector.schemaGenerator!;
-    this.schemaItems = connector.dynamicSchema!.toJSON().items!;
+    const loader = new IModelSchemaLoader(this.imodel);
+    const existingSchema = loader.tryGetSchema("IoTDevice");
+    console.log(`DataAligner:constructor...`);
+    console.log(existingSchema?.toJSON());
+    this.schemaItems = existingSchema!.toJSON().items!;
     this.categoryCache = {};
     this.modelCache = {};
     this.elementCache = {};
@@ -192,6 +196,7 @@ export class DataAligner {
 
   public addForeignProps(props: any, elementClass: any, elementData: any) {
     const { className } = elementClass.ref;
+    console.log(`Reached addForeignProps`);
     const { properties } = this.schemaItems[className];
     for (const prop of properties) {
       const attribute = prop.name in PropertyRenameReverseMap ? PropertyRenameReverseMap[prop.name] : prop.name;

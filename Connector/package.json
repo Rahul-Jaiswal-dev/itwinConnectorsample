@@ -12,7 +12,8 @@
         "clean": "rimraf lib",
         "lint": "eslint ./src/**/*.ts 1>&2",
         "blint": "npm run build && npm run lint",
-        "start": "cd ../Extractor/extractor/ && RunExtractor.cmd --clean && RunExtractor.cmd --all && RunExtractor.cmd --copy && cd ../../Connector/ && npm run clean && npm run build && node lib/main.js",
+        "extractor": "cd ../Extractor/extractor/ && RunExtractor.cmd --clean && RunExtractor.cmd --all && RunExtractor.cmd --copy && cd ../../Connector/ && npm run clean && npm run build",
+        "start": "npm run extractor && node lib/main.js",
         "insert": "node lib/insertElement.js",
         "purge": "node lib/PurgeBriefcase.js"
     },

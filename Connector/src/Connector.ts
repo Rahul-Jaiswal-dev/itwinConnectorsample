@@ -69,6 +69,7 @@ export class Connector extends IModelBridge {
     const results: SchemaSyncResults = await schemaGenerator.synchronizeSchema(this.synchronizer.imodel);
     if (results.schemaState !== ItemState.Unchanged) {
       const schemaString = await schemaGenerator.schemaToString(results.dynamicSchema);
+      // console.log(`importDynamicSchema: ${schemaString}`);
       // const xmlstring = '<?xml version="1.0" encoding="UTF-8"?><ECSchema schemaName="IoT" alias="iot" version="01.00.00" xmlns="http://www.bentley.com/schemas/Bentley.ECXML.3.1" description="The IoT schema defines common base classes to be used for IoT sensor devices."><ECSchemaReference name="CoreCustomAttributes" version="01.00.03" alias="CoreCA"/><ECSchemaReference name="BisCore" version="01.00.12" alias="bis"/><ECSchemaReference name="Functional" version="01.00.03" alias="func"/><ECCustomAttributes><ProductionStatus xmlns="CoreCustomAttributes.01.00.03"><SupportedUse>NotForProduction</SupportedUse></ProductionStatus></ECCustomAttributes><ECEntityClass typeName="Device" modifier="Abstract" displayLabel="Device" description="A iot:Device models an IoT sensor device Entity which will not be sub-modeled at a finer granularity and does not have child parts."><BaseClass>FunctionalComponentElement</BaseClass><ECProperty propertyName="Deviceid" typeName="string" /><ECProperty propertyName="Devicetype" typeName="string" /><ECProperty propertyName="type_of_quantity_observed" typeName="string" /><ECProperty propertyName="units_for_quantities_being_observed" typeName="string" /></ECEntityClass></ECSchema>';
       await this.synchronizer.imodel.importSchemaStrings(requestContext, [schemaString]);
     }
@@ -80,7 +81,10 @@ export class Connector extends IModelBridge {
   }
 
   public async updateExistingData() {
-    if (this.sourceDataState === ItemState.Unchanged) return;
+    if (this.sourceDataState === ItemState.Unchanged) {
+      console.log(`Connector:updateExistingData() - ItemState.Unchanged`);
+      return;
+    }
     if (!this.dataFetcher) throw new Error("No DataFetcher available for DataAligner.");
     if (!this.schemaGenerator) throw new Error("No DynamicSchemaGenerator available for DataAligner.");
 
