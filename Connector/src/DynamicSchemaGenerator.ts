@@ -20,7 +20,7 @@ export class DynamicSchemaGenerator {
   }
 
   public async synchronizeSchema(imodel: IModelDb): Promise<SchemaSyncResults> {
-    console.log(` Executing DynamicSchemaGenerator synchronizeSchema...`);
+    // console.log(` Executing DynamicSchemaGenerator synchronizeSchema...`);
     const createBaseClasses = async (editor: SchemaContextEditor, schema: Schema) => {
       for (const entityProp of ConnectorBaseEntityProps) {
         const baseInsertResult = await editor.entities.createFromProps(schema.schemaKey, entityProp);
@@ -44,7 +44,7 @@ export class DynamicSchemaGenerator {
 
     const createEntityclasses = async (editor: SchemaContextEditor, schema: Schema) => {
       const tables = await this.dataFetcher.fetchTables();
-      console.log(schema.toJSON());
+      // console.log(schema.toJSON());
       for (const table of tables) {
         const entityClassProps = ConnectorEntityPropMap[table.name];
         if (!entityClassProps) continue;

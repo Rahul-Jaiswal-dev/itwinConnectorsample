@@ -46,7 +46,7 @@ export class Connector extends IModelBridge {
       const spatialCompositionSchemaPath = path.join(__dirname, "./schema/SpatialComposition.ecschema.xml");
       const buildingSpatialSchemaPath = path.join(__dirname, "./schema/BuildingSpatial.ecschema.xml");
       const iotSchemaPath = path.join(__dirname, "./schema/IoTDevice.ecschema.xml");
-      console.log(iotSchemaPath);
+      console.log(`Importing IoTDevice schema from ${iotSchemaPath} path...`);
       await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath, iotSchemaPath]);
     }
   }
@@ -61,10 +61,10 @@ export class Connector extends IModelBridge {
       console.log(`The state of the given SourceItem against the iModelDb is changed.`);
       SensorSchema.registerSchema();
     }
-    console.log(`Started importing dynamic schema...`);
+    // console.log(`Started importing dynamic schema...`);
 
     const schemaGenerator = new DynamicSchemaGenerator(this.dataFetcher!);
-    console.log(` DynamicSchemaGenerator object created.`);
+    // console.log(` DynamicSchemaGenerator object created.`);
     this.schemaGenerator = schemaGenerator;
     const results: SchemaSyncResults = await schemaGenerator.synchronizeSchema(this.synchronizer.imodel);
     if (results.schemaState !== ItemState.Unchanged) {
