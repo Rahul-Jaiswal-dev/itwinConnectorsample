@@ -48,7 +48,6 @@ export class Connector extends IModelBridge {
       const iotSchemaPath = path.join(__dirname, "./schema/IoTDevice.ecschema.xml");
       console.log(iotSchemaPath);
       await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath, iotSchemaPath]);
-      await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath]);
     }
   }
 

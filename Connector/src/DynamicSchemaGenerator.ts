@@ -44,6 +44,7 @@ export class DynamicSchemaGenerator {
 
     const createEntityclasses = async (editor: SchemaContextEditor, schema: Schema) => {
       const tables = await this.dataFetcher.fetchTables();
+      console.log(schema.toJSON());
       for (const table of tables) {
         const entityClassProps = ConnectorEntityPropMap[table.name];
         if (!entityClassProps) continue;

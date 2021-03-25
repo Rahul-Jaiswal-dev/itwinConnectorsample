@@ -21,7 +21,7 @@ export class DataAligner {
   public imodel: IModelDb;
   public connector: Connector;
   public dataFetcher: DataFetcher;
-  public schemaGenerator: DynamicSchemaGenerator | undefined;
+  public schemaGenerator: DynamicSchemaGenerator;
   public schemaItems: {[className: string]: any};
   public categoryCache: {[categoryName: string]: Id64String};
   public modelCache: {[modelName: string]: Id64String};
@@ -173,7 +173,7 @@ export class DataAligner {
       console.log(JSON.stringify(elementData, null, 2));
 
       const props = elementClass.ref.createProps(modelId, code,  elementData);
-      // this.addForeignProps(props, elementClass, elementData);
+      this.addForeignProps(props, elementClass, elementData);
       if (props.placement) this.updateExtent(props.placement);
 
       const existingElementId = this.imodel.elements.queryElementIdByCode(code);
@@ -190,14 +190,14 @@ export class DataAligner {
     this.connector.synchronizer.detectDeletedElements();
   }
 
-  // public addForeignProps(props: any, elementClass: any, elementData: any) {
-    // const { className } = elementClass.ref;
-    // const { properties } = this.schemaItems[className];
-    // for (const prop of properties) {
-    //   const attribute = prop.name in PropertyRenameReverseMap ? PropertyRenameReverseMap[prop.name] : prop.name;
-    //   props[prop.name] = elementData[`${className}.${attribute}`];
-    // }
-  // }
+  public addForeignProps(props: any, elementClass: any, elementData: any) {
+    const { className } = elementClass.ref;
+    const { properties } = this.schemaItems[className];
+    for (const prop of properties) {
+      const attribute = prop.name in PropertyRenameReverseMap ? PropertyRenameReverseMap[prop.name] : prop.name;
+      props[prop.name] = elementData[`${className}.${attribute}`];
+    }
+  }
 
   public updateTypeDefinition(element: any, typeClass: any, elementData: any) {
     const typeCode = this.getCode(typeClass.ref.className, this.modelCache[typeClass.modelName], elementData[typeClass.key]);
