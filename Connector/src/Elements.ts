@@ -9,7 +9,7 @@ import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";
 
 export enum CodeSpecs {
-  Connector = "ConnectorDynamic",
+  Connector = "IoTDevice",
 }
 
 function addPlacement(props: any, elementData: any) {
