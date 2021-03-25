@@ -74,16 +74,19 @@ export class DynamicSchemaGenerator {
       const funcSchema = loader.getSchema("Functional");
       const buildingSpatialSchema = loader.getSchema("BuildingSpatial");
       const spatialComppositionSchema = loader.getSchema("SpatialComposition");
+      const iotSchema = loader.getSchema("IoTDevice");
 
       await context.addSchema(newSchema);
       await context.addSchema(bisSchema);
       await context.addSchema(funcSchema);
       await context.addSchema(buildingSpatialSchema);
       await context.addSchema(spatialComppositionSchema);
+      await context.addSchema(iotSchema);
       await (newSchema as MutableSchema).addReference(bisSchema); // TODO remove this hack later
       await (newSchema as MutableSchema).addReference(funcSchema);
       await (newSchema as MutableSchema).addReference(buildingSpatialSchema);
       await (newSchema as MutableSchema).addReference(spatialComppositionSchema);
+      await (newSchema as MutableSchema).addReference(iotSchema);
 
       await createBaseClasses(editor, newSchema);
       await createEntityclasses(editor, newSchema);
