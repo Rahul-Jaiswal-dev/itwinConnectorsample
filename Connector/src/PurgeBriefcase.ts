@@ -5,7 +5,9 @@
 import { Logger } from "@bentley/bentleyjs-core";
 import { BriefcaseManager } from "@bentley/imodeljs-backend";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
-import { Utilities, ConnectorHelper } from "./Connector/src/Utilities";
+import { Utilities, ConnectorHelper } from "./Utilities";
+import dotenv = require("dotenv");
+dotenv.config();
 const { contextId , iModelId  } =  ConnectorHelper.getenvVariables();
 
 export async function main(process: NodeJS.Process): Promise<void> {

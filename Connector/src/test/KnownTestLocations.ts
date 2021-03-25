@@ -14,8 +14,9 @@ export class KnownTestLocations {
     if (imodeljsMobile !== undefined) {
       return path.join(__dirname  , "./assets/samplesheet.db");
     }
+
     // Assume that we are running in nodejs
-    return path.join(__dirname, "./assets");
+    return path.join(__dirname, "assets");
   }
 
   /** The directory where tests can write. */
