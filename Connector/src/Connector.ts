@@ -115,8 +115,7 @@ export class Connector extends IModelBridge {
     let sourceDataStatus: SynchronizationResults | undefined;
     try {
       sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
-    }
-    catch (error) {
+    } catch (error) {
       this.sourceDataState = ItemState.Changed;
     }
     return sourceDataStatus;

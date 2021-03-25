@@ -4,10 +4,10 @@
     <ECSchemaReference name="BisCore" version="01.00.12" alias="bis"/>
     <ECSchemaReference name="Functional" version="01.00.03" alias="func"/>   
 
-    <ECEntityClass typeName="Device" modifier="Abstract" displayLabel="Device" description="An iot:Device models an IoT sensor device Entity which will not be sub-modeled at a finer granularity and does not have 'child' parts.">
+    <ECEntityClass typeName="Device" modifier="None" displayLabel="Device" description="An iot:Device models an IoT sensor device Entity which will not be sub-modeled at a finer granularity and does not have 'child' parts.">
         <BaseClass>func:FunctionalComponentElement</BaseClass>
-        <ECProperty propertyName="Deviceid" typeName="string" />
-        <ECProperty propertyName="Devicetype" typeName="string" />
+        <ECProperty propertyName="deviceid" typeName="string" />
+        <ECProperty propertyName="devicetype" typeName="string" />
         <ECProperty propertyName="type_of_quantity_observed" typeName="string" />
         <ECProperty propertyName="units_for_quantities_being_observed" typeName="string" />   
     </ECEntityClass>

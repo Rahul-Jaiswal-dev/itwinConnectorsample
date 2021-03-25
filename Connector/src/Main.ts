@@ -81,13 +81,13 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   // expect(status === BentleyStatus.SUCCESS);
   const briefcases = BriefcaseManager.getBriefcases();
   const briefcaseEntry = BriefcaseManager.findBriefcaseByKey(briefcases[0].key);
-  //expect(briefcaseEntry !== undefined);
+  // expect(briefcaseEntry !== undefined);
   let imodel: BriefcaseDb;
   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
   briefcaseEntry!.openMode = OpenMode.ReadWrite;
   console.log(`\nConnector synced the following sensor devices with iModel ${imodel.name}:`);
-  console.log(`Executing query: SELECT devicetype FROM cbd.Device`);
-  for await (const row of imodel.query(`SELECT devicetype FROM cbd.Device`)) {
+  console.log(`Executing query: SELECT devicetype FROM iot.device`);
+  for await (const row of imodel.query(`SELECT devicetype FROM iot.device`)) {
     console.log(row);
  }
   imodel.close();
