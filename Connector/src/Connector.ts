@@ -25,13 +25,13 @@ export class Connector extends IModelBridge {
   public schemaGenerator?: DynamicSchemaGenerator;
   public dynamicSchema?: Schema;
 
-  public initialize(_params: any) {}
-  public async initializeJob(): Promise<void> {}
+  public initialize(_params: any) { }
+  public async initializeJob(): Promise<void> { }
 
   public async openSourceData(sourcePath: string): Promise<BentleyStatus> {
     this.sourceDataPath = sourcePath;
     const sourceDataStatus = this.getSourceDataStatus();
-    if(sourceDataStatus !== undefined)
+    if (sourceDataStatus !== undefined)
       this.sourceDataState = sourceDataStatus.itemState;
     if (this.sourceDataState === ItemState.Unchanged) return BentleyStatus.ERROR;
     // console.log("sourceDataState " + this.sourceDataState);
@@ -41,7 +41,7 @@ export class Connector extends IModelBridge {
   }
 
   public async importDomainSchema(_requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
-   if (this.sourceDataState === ItemState.New) {
+    if (this.sourceDataState === ItemState.New) {
       const functionalSchemaPath = path.join(__dirname, "./schema/Functional.ecschema.xml");
       const spatialCompositionSchemaPath = path.join(__dirname, "./schema/SpatialComposition.ecschema.xml");
       const buildingSpatialSchemaPath = path.join(__dirname, "./schema/BuildingSpatial.ecschema.xml");
@@ -71,7 +71,7 @@ export class Connector extends IModelBridge {
       const schemaString = await schemaGenerator.schemaToString(results.dynamicSchema);
       // const xmlstring = '<?xml version="1.0" encoding="UTF-8"?><ECSchema schemaName="IoT" alias="iot" version="01.00.00" xmlns="http://www.bentley.com/schemas/Bentley.ECXML.3.1" description="The IoT schema defines common base classes to be used for IoT sensor devices."><ECSchemaReference name="CoreCustomAttributes" version="01.00.03" alias="CoreCA"/><ECSchemaReference name="BisCore" version="01.00.12" alias="bis"/><ECSchemaReference name="Functional" version="01.00.03" alias="func"/><ECCustomAttributes><ProductionStatus xmlns="CoreCustomAttributes.01.00.03"><SupportedUse>NotForProduction</SupportedUse></ProductionStatus></ECCustomAttributes><ECEntityClass typeName="Device" modifier="Abstract" displayLabel="Device" description="A iot:Device models an IoT sensor device Entity which will not be sub-modeled at a finer granularity and does not have child parts."><BaseClass>FunctionalComponentElement</BaseClass><ECProperty propertyName="Deviceid" typeName="string" /><ECProperty propertyName="Devicetype" typeName="string" /><ECProperty propertyName="type_of_quantity_observed" typeName="string" /><ECProperty propertyName="units_for_quantities_being_observed" typeName="string" /></ECEntityClass></ECSchema>';
       await this.synchronizer.imodel.importSchemaStrings(requestContext, [schemaString]);
-   }
+    }
     this.dynamicSchema = results.dynamicSchema;
   }
 
@@ -108,14 +108,13 @@ export class Connector extends IModelBridge {
       id: this.sourceDataPath!,
       version: timeStamp.toString(),
     };
-    let sourceDataStatus: SynchronizationResults| undefined;
-    try{
-     sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
+    let sourceDataStatus: SynchronizationResults | undefined;
+    try {
+      sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
     }
-    catch(error)
-    {
-      this.sourceDataState= ItemState.Changed;
-   }
+    catch (error) {
+      this.sourceDataState = ItemState.Changed;
+    }
     return sourceDataStatus;
   }
 

@@ -10,7 +10,7 @@ iTwin connector enables a wide range of both Bentley and third-party design appl
 
 1. Requires Python 3 (e.g. 3.9.1) [Python Downloads](https://www.python.org/downloads/)
 
-2. Go to Extractor root folder <PATH_TO_PROJECT_ROOT_FOLDER/Extractor>
+2. Go to Extractor root folder <PATH_TO_PROJECT_ROOT_FOLDER/Connector/Extractor>
 
 3. Run following command using Command Prompt from Extractor root folder to install dependencies.
 
@@ -23,13 +23,13 @@ iTwin connector enables a wide range of both Bentley and third-party design appl
 
 ### Add Device data in Excel format
 
-Enter device data in [Excel format](https://github.com/Rahul-Jaiswal-dev/itwinConnectorsample/edit/master/Extractor/extractor/input).
+Enter device data in Excel format.
 
-There is already sample data provided in Excel file. Modify this particular file <PATH_TO_PROJECT_ROOT_FOLDER/Extractor/extractor/input/samplesheet.xlsx> to change the data.
+There is already sample data provided in Excel file. Modify this particular file <PATH_TO_PROJECT_ROOT_FOLDER/input/samplesheet.xlsx> to change the data.
 
 ### Run Connector
 
-A. Go to Connector root folder <PATH_TO_PROJECT_ROOT_FOLDER/Connector> and create an .env file with the following content.
+A. In the Project root folder <PATH_TO_PROJECT_ROOT_FOLDER> and create an .env file with the following content.
 
 ```sh
 
@@ -41,7 +41,7 @@ IMJS_CONTEXT_ID = <CONTEXT_ID>
 
 IMJS_IMODEL_ID = <IMODEL_ID>
 
-# Excel file resides at <PATH_TO_PROJECT_ROOT_FOLDER/Extractor/extractor/input/samplesheet.xlsx>
+# Excel file resides at <PATH_TO_PROJECT_ROOT_FOLDER/input/samplesheet.xlsx>
 IMJS_DATA_SOURCE = samplesheet.xlsx
 
 IMJS_CLIENT_ID = imodeljs-electron-test
@@ -52,7 +52,7 @@ IMJS_SCOPE = openid email profile organization imodelhub context-registry-servic
 
 ```
 
-B. Run the following script from Connector root folder <PATH_TO_PROJECT_ROOT_FOLDER/Connector> using Command Prompt.
+B. Run the following script from Project root folder <PATH_TO_PROJECT_ROOT_FOLDER> using Command Prompt.
 
 ```sh
 
