@@ -16,14 +16,15 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/lib/main.js",
+          "program": "${workspaceFolder}/Connector/lib/main.js",
+             "args": [  "-- --output=debug.bim"],
             "outFiles": [
-                "${workspaceFolder}/lib/**/*.js"
+                "${workspaceFolder}/Connector/lib/**/*.js"
             ],
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "envFile": "${workspaceFolder}/.env",
+            "envFile": "${workspaceFolder}/Connector/.env",
         },
         {
             "name": "Debug Tests",
