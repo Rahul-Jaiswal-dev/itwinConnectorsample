@@ -43,14 +43,14 @@ export class Connector extends IModelBridge {
       const spatialCompositionSchemaPath = path.join(__dirname, "./schema/SpatialComposition.ecschema.xml");
       const buildingSpatialSchemaPath = path.join(__dirname, "./schema/BuildingSpatial.ecschema.xml");
       const iotSchemaPath = path.join(__dirname, "./schema/IoTDevice.ecschema.xml");
-      console.log(iotSchemaPath);
+      console.log(`Importing IoTDevice schema from ${iotSchemaPath} path...`);
       await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath, iotSchemaPath]);
     }
   }
 
   public async importDynamicSchema(requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
-   console.log(requestContext.activityId);
-    // const x = requestContext;
+     // console.log(requestContext.activityId);
+    const x = requestContext;
     // if (this.sourceDataState === ItemState.Unchanged) {
     //   console.log(`The state of the given SourceItem against the iModelDb is unchanged.`);
     //   return;
@@ -84,7 +84,7 @@ export class Connector extends IModelBridge {
       return;
     }
     if (!this.dataFetcher) throw new Error("No DataFetcher available for DataAligner.");
-   // if (!this.schemaGenerator) throw new Error("No DynamicSchemaGenerator available for DataAligner.");
+  //  if (!this.schemaGenerator) throw new Error("No DynamicSchemaGenerator available for DataAligner.");
 
     const aligner = new DataAligner(this);
     console.log(`Started DataAligner...`);
@@ -113,8 +113,7 @@ export class Connector extends IModelBridge {
     let sourceDataStatus: SynchronizationResults | undefined;
     try {
       sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
-    }
-    catch (error) {
+    } catch (error) {
       this.sourceDataState = ItemState.Changed;
     }
     return sourceDataStatus;

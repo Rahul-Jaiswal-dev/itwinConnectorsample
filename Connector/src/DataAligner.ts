@@ -30,8 +30,8 @@ export class DataAligner {
     this.imodel = connector.synchronizer.imodel;
     const loader = new IModelSchemaLoader(this.imodel);
     const existingSchema = loader.tryGetSchema("IoTDevice");
-    console.log(`DataAligner:constructor...`);
-    console.log(existingSchema?.toJSON().items);
+      console.log(`Printing IoTDevice schema as json...`);
+      console.log(existingSchema?.toJSON().items);
     this.schemaItems = existingSchema!.toJSON().items!;
     this.categoryCache = {};
     this.modelCache = {};
@@ -164,12 +164,12 @@ export class DataAligner {
       }
       let msg = "";
       if (changeResults.state === 1) {
-        msg = "Adding new sensor";
+        msg = "is ready to be added in iModel.";
       } else {
-        msg = "Updating existing sensor";
+        msg = "is ready to be updated in iModel.";
       }
-      const devicetype = "device type '" + elementData[`${tableName}.devicetype`] + "'";
-      console.log(`${msg} for ${devicetype} in table '${tableName}'`);
+      const devicetype = "Device type '" + elementData[`${tableName}.devicetype`] + "'";
+      console.log(`${devicetype} in table ${tableName} from intermediary db ${msg}`);
       console.log(JSON.stringify(elementData, null, 2));
 
       const props = elementClass.ref.createProps(modelId, code,  elementData);
@@ -195,8 +195,7 @@ export class DataAligner {
     console.log(`Reached addForeignProps`);
     const { properties } = this.schemaItems[className];
     for (const prop of properties) {
-      const attribute = prop.name;
-      console.log("Trying " +  prop.name + " 1 " + `${className}.${attribute}`+ " 2 " + elementData[`${className}.${attribute}`]);
+        const attribute = prop.name;
       props[prop.name] = elementData[`${className}.${attribute}`];
     }
   }

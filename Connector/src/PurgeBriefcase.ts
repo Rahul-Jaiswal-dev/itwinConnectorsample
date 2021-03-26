@@ -14,7 +14,7 @@ export async function main(process: NodeJS.Process): Promise<void> {
   console.log(`Purging all briefcases...`);
   try {
     let projectId: string | undefined;
-    let iModelName : string = "";
+    let iModelName: string = "";
     let requestContext: AuthorizedClientRequestContext | undefined;
     await Utilities.startBackend();
     await ConnectorHelper.signIn();
@@ -25,14 +25,14 @@ export async function main(process: NodeJS.Process): Promise<void> {
       Logger.logError("Error", `Failed with error: ${error}`);
     }
     if (requestContext) {
-      projectId =contextId;
+      projectId = contextId;
       console.log(`iModel project id: ${projectId}`);
       const iModel  = await ConnectorHelper.getiModel(requestContext,projectId!,iModelId!);
       if(iModel && iModel.name)
         iModelName = iModel.name;
       else
-        throw new Error("iModel not found..") 
-      console.log("iModelName" + iModelName)
+        throw new Error("iModel not found..");
+      console.log("iModelName: " + iModelName);
       await BriefcaseManager.deleteAllBriefcases(requestContext, iModelId!);
   }
 }
