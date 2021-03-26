@@ -4,29 +4,29 @@
     <ECSchemaReference name="BisCore" version="01.00.12" alias="bis"/>
     <ECSchemaReference name="Functional" version="01.00.03" alias="func"/>   
 
-    <ECEntityClass typeName="Device" modifier="Abstract" displayLabel="Device" description="An iot:Device models an IoT sensor device Entity which will not be sub-modeled at a finer granularity and does not have 'child' parts.">
-        <BaseClass>func:FunctionalComponentElement</BaseClass>
+     <ECEntityClass typeName="Device" modifier="Sealed" displayLabel="Device" description="An iot:Device models an IoT sensor device Entity which will not be sub-modeled at a finer granularity and does not have 'child' parts.">
+     <BaseClass>func:FunctionalComponentElement</BaseClass>
         <ECProperty propertyName="deviceid" typeName="string" />
         <ECProperty propertyName="devicetype" typeName="string" />
         <ECProperty propertyName="type_of_quantity_observed" typeName="string" />
-        <ECProperty propertyName="units_for_quantity_quantities_being_observed" typeName="string" />   
+        <ECProperty propertyName="units_for_quantities_being_observed" typeName="string" />   
     </ECEntityClass>
 
-     <ECEntityClass typeName="Datapoint" modifier="Abstract" displayLabel="Datapoint">
+    <ECEntityClass typeName="Datapoint" modifier="None" displayLabel="Datapoint">
         <BaseClass>func:FunctionalComponentElement</BaseClass>        
     </ECEntityClass>
 
-    <ECEntityClass typeName="ObservableDatapoint" modifier="Abstract" displayLabel="ObservableDatapoint">
+    <ECEntityClass typeName="ObservableDatapoint" modifier="None" displayLabel="ObservableDatapoint">
         <BaseClass>Datapoint</BaseClass>  
         <ECProperty propertyName="Name" typeName="string" />
         <ECProperty propertyName="Unit" typeName="string" />     
     </ECEntityClass>
 
-    <ECEntityClass typeName="TemperatureDatapoint" modifier="Abstract" displayLabel="TemperatureDatapoint">
+    <ECEntityClass typeName="TemperatureDatapoint" modifier="Sealed" displayLabel="TemperatureDatapoint">
         <BaseClass>ObservableDatapoint</BaseClass>       
     </ECEntityClass>
 
-    <ECEntityClass typeName="PressureDatapoint" modifier="Abstract" displayLabel="PressureDatapoint">
+    <ECEntityClass typeName="PressureDatapoint" modifier="Sealed" displayLabel="PressureDatapoint">
         <BaseClass>ObservableDatapoint</BaseClass>       
     </ECEntityClass>
 

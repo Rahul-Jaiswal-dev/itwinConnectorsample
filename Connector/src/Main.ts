@@ -87,7 +87,7 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   briefcaseEntry!.openMode = OpenMode.ReadWrite;
   console.log(`\nConnector synced the following sensor devices with iModel ${imodel.name}:`);
   console.log(`Executing query: SELECT devicetype FROM cbd.Device`);
-  for await (const row of imodel.query(`SELECT devicetype FROM cbd.Device`)) {
+  for await (const row of imodel.query(`SELECT devicetype FROM iot.Device`)) {
     console.log(row);
  }
   imodel.close();

@@ -12,16 +12,13 @@ import * as ConnectorRelationships from "./Relationships";
 import * as connectorRelatedElements from "./RelatedElements";
 import { Connector } from "./Connector";
 import { DataFetcher } from "./DataFetcher";
-import { DynamicSchemaGenerator } from "./DynamicSchemaGenerator";
 import * as hash from "object-hash";
-import { PropertyRenameReverseMap } from "./schema/SchemaConfig";
 
 export class DataAligner {
 
   public imodel: IModelDb;
   public connector: Connector;
   public dataFetcher: DataFetcher;
-  public schemaGenerator: DynamicSchemaGenerator;
   public schemaItems: {[className: string]: any};
   public categoryCache: {[categoryName: string]: Id64String};
   public modelCache: {[modelName: string]: Id64String};
@@ -31,7 +28,6 @@ export class DataAligner {
     this.connector = connector;
     this.dataFetcher = connector.dataFetcher!;
     this.imodel = connector.synchronizer.imodel;
-    this.schemaGenerator = connector.schemaGenerator!;
     const loader = new IModelSchemaLoader(this.imodel);
     const existingSchema = loader.tryGetSchema("IoTDevice");
     console.log(`DataAligner:constructor...`);
@@ -199,7 +195,7 @@ export class DataAligner {
     console.log(`Reached addForeignProps`);
     const { properties } = this.schemaItems[className];
     for (const prop of properties) {
-      const attribute = prop.name in PropertyRenameReverseMap ? PropertyRenameReverseMap[prop.name] : prop.name;
+      const attribute = prop.name;
       console.log("Trying " +  prop.name + " 1 " + `${className}.${attribute}`+ " 2 " + elementData[`${className}.${attribute}`]);
       props[prop.name] = elementData[`${className}.${attribute}`];
     }
