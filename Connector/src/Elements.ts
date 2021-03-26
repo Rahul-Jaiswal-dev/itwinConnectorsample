@@ -198,6 +198,66 @@ export class Device extends FunctionalComponentElement {
   public static createProps(modelId: Id64String, code: Code,  elementData: any) {
     const props: any = {
       code,
+      userLabel: elementData[`${this.className}.deviceid`],
+      model: modelId,
+      classFullName: this.classFullName,
+    };
+    return props;
+  }
+}
+
+export class Datapoint extends FunctionalComponentElement {
+  public static get className(): string { return "Datapoint"; }
+  public static get tableName(): string { return "Datapoint"; }
+  public static get classFullName(): string { return "IoTDevice:Datapoint"; }
+  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.name`],
+      model: modelId,
+      classFullName: this.classFullName,
+    };
+    return props;
+  }
+}
+
+export class ObservableDatapoint extends Datapoint {
+  public static get className(): string { return "ObservableDatapoint"; }
+  public static get tableName(): string { return "ObservableDatapoint"; }
+  public static get classFullName(): string { return "IoTDevice:ObservableDatapoint"; }
+  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.name`],
+      model: modelId,
+      classFullName: this.classFullName,
+    };
+    return props;
+  }
+}
+
+export class TemperatureDatapoint extends ObservableDatapoint {
+  public static get className(): string { return "TemperatureDatapoint"; }
+  public static get tableName(): string { return "TemperatureDatapoint"; }
+  public static get classFullName(): string { return "IoTDevice:TemperatureDatapoint"; }
+  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.name`],
+      model: modelId,
+      classFullName: this.classFullName,
+    };
+    return props;
+  }
+}
+
+export class PressureDatapoint extends ObservableDatapoint {
+  public static get className(): string { return "PressureDatapoint"; }
+  public static get tableName(): string { return "PressureDatapoint"; }
+  public static get classFullName(): string { return "IoTDevice:PressureDatapoint"; }
+  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+    const props: any = {
+      code,
       userLabel: elementData[`${this.className}.name`],
       model: modelId,
       classFullName: this.classFullName,

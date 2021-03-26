@@ -45,28 +45,6 @@ relationshipClasses: {
 }
 
 */
-export const SAMPLE_ELEMENT_TREE3: any = {
-  subjects: {
-    Subject1: {
-      ref: Subject,
-      partitions: {
-        InformationRecordPartition1: {
-          ref: InformationRecordPartition,
-          models: {
-            InformationRecordModel1: {
-              ref: InformationRecordModel,
-              elementClasses: {
-                Device: {
-                  ref: ConnectorElements.Device,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-};
 
 export const SAMPLE_ELEMENT_TREE4: any = {
   subjects: {
@@ -81,6 +59,12 @@ export const SAMPLE_ELEMENT_TREE4: any = {
               elementClasses: {
                 Device: {
                   ref: ConnectorElements.Device,
+                },
+                TemperatureDatapoint: {
+                  ref: ConnectorElements.TemperatureDatapoint,
+                },
+                PressureDatapoint: {
+                  ref: ConnectorElements.PressureDatapoint,
                 },
               },
               // relationshipClasses: {

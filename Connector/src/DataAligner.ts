@@ -30,8 +30,8 @@ export class DataAligner {
     this.imodel = connector.synchronizer.imodel;
     const loader = new IModelSchemaLoader(this.imodel);
     const existingSchema = loader.tryGetSchema("IoTDevice");
-      console.log(`Printing IoTDevice schema as json...`);
-      console.log(existingSchema?.toJSON().items);
+    console.log(`Here is imported IoTDevice schema as json...`);
+    console.log(existingSchema?.toJSON().items);
     this.schemaItems = existingSchema!.toJSON().items!;
     this.categoryCache = {};
     this.modelCache = {};
@@ -194,9 +194,11 @@ export class DataAligner {
     const { className } = elementClass.ref;
     console.log(`Reached addForeignProps`);
     const { properties } = this.schemaItems[className];
+    // console.log(`${JSON.stringify(properties)}`);
+    // console.log(`${JSON.stringify(elementData)}`);
     for (const prop of properties) {
         const attribute = prop.name;
-      props[prop.name] = elementData[`${className}.${attribute}`];
+        props[prop.name] = elementData[`${className}.${attribute}`];
     }
   }
 

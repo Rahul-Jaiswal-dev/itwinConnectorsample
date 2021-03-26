@@ -18,16 +18,18 @@
 
     <ECEntityClass typeName="ObservableDatapoint" modifier="None" displayLabel="ObservableDatapoint">
         <BaseClass>Datapoint</BaseClass>  
-        <ECProperty propertyName="Name" typeName="string" />
-        <ECProperty propertyName="Unit" typeName="string" />     
+        <ECProperty propertyName="name" typeName="string" />
+        <ECProperty propertyName="unit" typeName="string" />     
     </ECEntityClass>
 
     <ECEntityClass typeName="TemperatureDatapoint" modifier="Sealed" displayLabel="TemperatureDatapoint">
-        <BaseClass>ObservableDatapoint</BaseClass>       
+        <BaseClass>ObservableDatapoint</BaseClass>
+        <ECProperty propertyName="deviceid" typeName="string" />       
     </ECEntityClass>
 
     <ECEntityClass typeName="PressureDatapoint" modifier="Sealed" displayLabel="PressureDatapoint">
-        <BaseClass>ObservableDatapoint</BaseClass>       
+        <BaseClass>ObservableDatapoint</BaseClass> 
+        <ECProperty propertyName="deviceid" typeName="string" />        
     </ECEntityClass>
 
     <ECRelationshipClass typeName="DatapointObservesSpatialElement" strength="referencing" modifier="None">
