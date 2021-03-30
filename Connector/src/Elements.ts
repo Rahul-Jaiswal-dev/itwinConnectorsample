@@ -231,6 +231,8 @@ export class ObservableDatapoint extends Datapoint {
       userLabel: elementData[`${this.className}.name`],
       model: modelId,
       classFullName: this.classFullName,
+      name: elementData[`${this.className}.name`],
+      unit: elementData[`${this.className}.unit`],
     };
     return props;
   }
@@ -246,6 +248,8 @@ export class TemperatureDatapoint extends ObservableDatapoint {
       userLabel: elementData[`${this.className}.name`],
       model: modelId,
       classFullName: this.classFullName,
+      name: elementData[`${this.className}.name`],
+      unit: elementData[`${this.className}.unit`],
     };
     return props;
   }
@@ -261,6 +265,8 @@ export class PressureDatapoint extends ObservableDatapoint {
       userLabel: elementData[`${this.className}.name`],
       model: modelId,
       classFullName: this.classFullName,
+      name: elementData[`${this.className}.name`],
+      unit: elementData[`${this.className}.unit`],
     };
     return props;
   }
