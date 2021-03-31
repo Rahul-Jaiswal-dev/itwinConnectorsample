@@ -12,6 +12,12 @@
         <ECProperty propertyName="units_for_quantities_being_observed" typeName="string" />   
     </ECEntityClass>
 
+      <ECEntityClass typeName="DevicePhysical" modifier="Sealed" displayLabel="DevicePhysical" description="An iot:DevicePhysical.">
+        <BaseClass>bis:SpatialElement</BaseClass>
+        <ECProperty propertyName="devicephysicalid" typeName="string" />
+        <ECProperty propertyName="devicephysicalname" typeName="string" />
+    </ECEntityClass>
+
      <ECEntityClass typeName="Datapoint" modifier="None" displayLabel="Datapoint">
         <BaseClass>func:FunctionalComponentElement</BaseClass>        
     </ECEntityClass>

@@ -126,11 +126,12 @@ export class DataAligner {
         const updatedElement = relationshipClass.ref.addRelatedElement(sourceElement, targetElement, relatedElement);
         updatedElement.update();
       } else if (relationshipClass.ref.className in ConnectorRelationships) {
-        if (!sourceId || !targetId) continue;
+       // if (!sourceId || !targetId) continue;
         const relationship = this.imodel.relationships.tryGetInstance(relationshipClass.ref.classFullName, { sourceId, targetId });
         if (relationship) continue;
-        // const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
-       //  const relationshipId = this.imodel.relationships.insertInstance(relationshipProps);
+        console.log("Escape");
+         const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
+         this.imodel.relationships.insertInstance(relationshipProps);
       }
     }
   }
@@ -219,7 +220,16 @@ export class DataAligner {
   }
 
   public getCode(tableName: string, modelId: Id64String, keyValue: string) {
+    if(keyValue.startsWith("T-"))
+    {
+      tableName="TemperatureDatapoint";
+    }
+    else if(keyValue.startsWith("P-"))
+    {
+      tableName="PressureDatapoint";
+    }
     const codeValue = `${tableName}${keyValue}`;
+    console.log("UpdateRelationship " + codeValue);
     const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
     return new Code({spec: codeSpec.id, scope: modelId, value: codeValue});
   }
