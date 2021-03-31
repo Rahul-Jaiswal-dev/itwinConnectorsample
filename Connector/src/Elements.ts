@@ -194,7 +194,7 @@ export class System extends GroupInformationElement {
 export class DevicePhysical extends SpatialElement {
   public static get className(): string { return "DevicePhysical"; }
   public static get tableName(): string { return "DevicePhysical"; }
-  public static get classFullName(): string { return "bis:SpatialElement"; }
+  public static get classFullName(): string { return "IoTDevice:DevicePhysical"; }
   public static createProps(modelId: Id64String, code: Code, elementClass: any,  categoryId: Id64String) {
     const props: any = {
       code,
