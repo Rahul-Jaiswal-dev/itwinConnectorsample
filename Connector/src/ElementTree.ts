@@ -67,17 +67,17 @@ export const SAMPLE_ELEMENT_TREE4: any = {
                   ref: ConnectorElements.PressureDatapoint,
                 },
               },
-              // relationshipClasses: {
-              //   ComponentConnectsToComponent1: {
-              //     ref: ConnectorRelationships.ComponentConnectsToComponent1,
-              //     sourceRef: ConnectorElements.Device,
-              //     sourceModelName: "FunctionalModel1",
-              //     sourceKey: "Device.devicetype",
-              //     targetRef: SpatialElement,
-              //     targetModelName: "SpatialElementModel1",
-              //     targetKey: "Device.devicetype",
-              //   },
-                 // },
+              relationshipClasses: {
+                ComponentConnectsToComponent1: {
+                  ref: ConnectorRelationships.DatapointObservesSpatialElement,
+                  sourceRef: ConnectorElements.ObservableDatapoint,
+                  sourceModelName: "FunctionalModel1",
+                  sourceKey: "DatapointObservesSpatialElement.name",
+                  targetRef: SpatialElement,
+                  targetModelName: "FunctionalModel1",
+                  targetKey: "DatapointObservesSpatialElement.deviceid",
+                },
+              },
             },
           },
         },
