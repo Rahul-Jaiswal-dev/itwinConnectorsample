@@ -195,15 +195,15 @@ export class DevicePhysical extends SpatialElement {
   public static get className(): string { return "DevicePhysical"; }
   public static get tableName(): string { return "DevicePhysical"; }
   public static get classFullName(): string { return "bis:SpatialElement"; }
-  public static createProps(modelId: Id64String, code: Code, elementClass: any, elementData: any, categoryId: Id64String) {
+  public static createProps(modelId: Id64String, code: Code, elementClass: any,  categoryId: Id64String) {
     const props: any = {
       code,
-      userLabel: elementData[`${this.className}.devicephysicalid`],
+      // userLabel: elementData[`${this.className}.devicephysicalid`],
       category: categoryId,
       model: modelId,
       classFullName: this.classFullName,
     };
-    addPlacement(props, elementData);
+    // addPlacement(props, elementData);
     console.log(elementClass);
  //   props.footprintArea = elementData["DevicePhysical.grossarea"];
     return props;
