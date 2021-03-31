@@ -126,12 +126,12 @@ export class DataAligner {
         const updatedElement = relationshipClass.ref.addRelatedElement(sourceElement, targetElement, relatedElement);
         updatedElement.update();
       } else if (relationshipClass.ref.className in ConnectorRelationships) {
-       // if (!sourceId || !targetId) continue;
+        if (!sourceId || !targetId) continue;
         const relationship = this.imodel.relationships.tryGetInstance(relationshipClass.ref.classFullName, { sourceId, targetId });
         if (relationship) continue;
         console.log("Escape");
-         const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
-         this.imodel.relationships.insertInstance(relationshipProps);
+        const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
+        this.imodel.relationships.insertInstance(relationshipProps);
       }
     }
   }
@@ -172,8 +172,12 @@ export class DataAligner {
       const devicetype = "Device type '" + elementData[`${tableName}.devicetype`] + "'";
       console.log(`${devicetype} in table ${tableName} from intermediary db ${msg}`);
       console.log(JSON.stringify(elementData, null, 2));
-
-      const props = elementClass.ref.createProps(modelId, code,  elementData);
+      let props;
+      if (elementClass.ref.className === "DevicePhysical") {
+        props = elementClass.ref.createProps(modelId, code, elementData, categoryId);
+      } else {
+        props = elementClass.ref.createProps(modelId, code, elementData);
+      }
       this.addForeignProps(props, elementClass, elementData);
       if (props.placement) this.updateExtent(props.placement);
 

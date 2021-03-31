@@ -51,6 +51,19 @@ export const SAMPLE_ELEMENT_TREE4: any = {
     Subject1: {
       ref: Subject,
       partitions: {
+        DefinitionPartition1: {
+          ref: DefinitionPartition,
+          models: {
+            DefinitionModel1: {
+              ref: DefinitionModel,
+              elements: {
+                SpatialCategory1: {
+                  ref: SpatialCategory,
+                },
+              },
+            },
+          },
+        },
         SpatialLocationPartition1: {
           ref: SpatialLocationPartition,
           models: {
@@ -59,6 +72,7 @@ export const SAMPLE_ELEMENT_TREE4: any = {
               elementClasses: {
                 DevicePhysical: {
                   ref: ConnectorElements.DevicePhysical,
+                  categoryName: "SpatialCategory1",
                 },
               },
               relationshipClasses: {},

@@ -195,16 +195,16 @@ export class DevicePhysical extends SpatialElement {
   public static get className(): string { return "DevicePhysical"; }
   public static get tableName(): string { return "DevicePhysical"; }
   public static get classFullName(): string { return "IoTDevice:DevicePhysical"; }
-  public static createProps(modelId: Id64String, code: Code, elementClass: any,  categoryId: Id64String) {
+  public static createProps(modelId: Id64String, code: Code, elementData: any, categoryId: Id64String) {
     const props: any = {
       code,
-      // userLabel: elementData[`${this.className}.devicephysicalid`],
+      userLabel: elementData[`${this.className}.devicephysicalid`],
       category: categoryId,
       model: modelId,
       classFullName: this.classFullName,
     };
     // addPlacement(props, elementData);
-    console.log(elementClass);
+    // console.log(elementClass);
  //   props.footprintArea = elementData["DevicePhysical.grossarea"];
     return props;
   }
@@ -214,7 +214,7 @@ export class Device extends FunctionalComponentElement {
   public static get className(): string { return "Device"; }
   public static get tableName(): string { return "Device"; }
   public static get classFullName(): string { return "IoTDevice:Device"; }
-  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
     const props: any = {
       code,
       userLabel: elementData[`${this.className}.deviceid`],
@@ -229,7 +229,7 @@ export class Datapoint extends FunctionalComponentElement {
   public static get className(): string { return "Datapoint"; }
   public static get tableName(): string { return "Datapoint"; }
   public static get classFullName(): string { return "IoTDevice:Datapoint"; }
-  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
     const props: any = {
       code,
       userLabel: elementData[`${this.className}.name`],
@@ -244,7 +244,7 @@ export class ObservableDatapoint extends Datapoint {
   public static get className(): string { return "ObservableDatapoint"; }
   public static get tableName(): string { return "ObservableDatapoint"; }
   public static get classFullName(): string { return "IoTDevice:ObservableDatapoint"; }
-  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
     const props: any = {
       code,
       userLabel: elementData[`${this.className}.name`],
