@@ -38,14 +38,12 @@ export class Connector extends IModelBridge {
   }
 
   public async importDomainSchema(_requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
-    if (this.sourceDataState === ItemState.New) {
       const functionalSchemaPath = path.join(__dirname, "./schema/Functional.ecschema.xml");
       const spatialCompositionSchemaPath = path.join(__dirname, "./schema/SpatialComposition.ecschema.xml");
       const buildingSpatialSchemaPath = path.join(__dirname, "./schema/BuildingSpatial.ecschema.xml");
       const iotSchemaPath = path.join(__dirname, "./schema/IoTDevice.ecschema.xml");
       console.log(`Importing IoTDevice schema from ${iotSchemaPath} path...`);
       await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath, iotSchemaPath]);
-    }
   }
 
   public async importDynamicSchema(requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
