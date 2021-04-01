@@ -19,11 +19,11 @@ export class DataAligner {
   public imodel: IModelDb;
   public connector: Connector;
   public dataFetcher: DataFetcher;
-  public schemaItems: {[className: string]: any};
-  public categoryCache: {[categoryName: string]: Id64String};
-  public modelCache: {[modelName: string]: Id64String};
-  public elementCache: {[identifier: string]: Id64String};
-  public isgenericPhysicalObjectPresent: boolean =false;
+  public schemaItems: { [className: string]: any };
+  public categoryCache: { [categoryName: string]: Id64String };
+  public modelCache: { [modelName: string]: Id64String };
+  public elementCache: { [identifier: string]: Id64String };
+  public isGenericPhysicalObjectPresent: boolean = false;
 
   constructor(connector: Connector) {
     this.connector = connector;
@@ -117,22 +117,18 @@ export class DataAligner {
       const sourceModelId = this.modelCache[relationshipClass.sourceModelName];
       const sourceCode = this.getCode(relationshipClass.sourceRef.className, sourceModelId, elementData[relationshipClass.sourceKey]);
       const sourceId = this.imodel.elements.queryElementIdByCode(sourceCode)!;
-      if(relationshipClass.ref.className === "DatapointObservesSpatialElement" && this.isgenericPhysicalObjectPresent){
-            for await (const row of this.imodel.query(`Select EcInstanceId from Generic.PhysicalObject`)) {
-              const Keys= Object.keys(row);
-              let targetId : string= row[Keys[0]];
-              const existingData = this.imodel.relationships.tryGetInstance(relationshipClass.ref.classFullName, { sourceId, targetId });
-              if(!existingData){
-                const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
-                this.imodel.relationships.insertInstance(relationshipProps);
-                break; // For N:1 DataPoint: GenericPhysicalObject
-              }
-           }
-           continue;
-          }
-      const targetModelId = this.modelCache[relationshipClass.targetModelName];
-      const targetCode = this.getCode(relationshipClass.targetRef.className, targetModelId, elementData[relationshipClass.targetKey]);
-      const targetId = this.imodel.elements.queryElementIdByCode(targetCode)!;
+      let targetId;
+      if (relationshipClass.ref.className === "DatapointObservesSpatialElement" ) {
+        for await (const row of this.imodel.query(`Select EcInstanceId from Generic.PhysicalObject`)) {
+          const keys = Object.keys(row);
+          targetId = row[keys[0]];
+          break;
+        }
+      } else {
+        const targetModelId = this.modelCache[relationshipClass.targetModelName];
+        const targetCode = this.getCode(relationshipClass.targetRef.className, targetModelId, elementData[relationshipClass.targetKey]);
+        targetId = this.imodel.elements.queryElementIdByCode(targetCode)!;
+      }
       if (relationshipClass.ref.className in connectorRelatedElements) {
         const sourceElement = this.imodel.elements.getElement(sourceId);
         const targetElement = this.imodel.elements.getElement(targetId);
@@ -152,12 +148,12 @@ export class DataAligner {
 
   public async updateElementClass(modelId: any, elementClass: any) {
     console.log(`     Executing DataAligner updateElementClass...`);
-    if(elementClass.ref.className === "DevicePhysical"){
-    for await (const row of this.imodel.query(`Select * from Generic.PhysicalObject`)) {
-      this.isgenericPhysicalObjectPresent =true;
-      return;
-    }
-  }
+    // if (elementClass.ref.className === "DevicePhysical") {
+    //   for await (const row of this.imodel.query(`Select * from Generic.PhysicalObject`)) {
+    //     this.isGenericPhysicalObjectPresent = true;
+    //     return;
+    //   }
+    // }
     const tableName = elementClass.ref.tableName;
     const tableData = await this.dataFetcher.fetchTableData(tableName);
     const categoryId = this.categoryCache[elementClass.categoryName];
@@ -222,8 +218,8 @@ export class DataAligner {
     // console.log(`${JSON.stringify(properties)}`);
     // console.log(`${JSON.stringify(elementData)}`);
     for (const prop of properties) {
-        const attribute = prop.name;
-        props[prop.name] = elementData[`${className}.${attribute}`];
+      const attribute = prop.name;
+      props[prop.name] = elementData[`${className}.${attribute}`];
     }
   }
 
@@ -244,17 +240,14 @@ export class DataAligner {
   }
 
   public getCode(tableName: string, modelId: Id64String, keyValue: string) {
-    if(keyValue.startsWith("T-"))
-    {
-      tableName="TemperatureDatapoint";
-    }
-    else if(keyValue.startsWith("P-"))
-    {
-      tableName="PressureDatapoint";
+    if (keyValue.startsWith("T-")) {
+      tableName = "TemperatureDatapoint";
+    } else if (keyValue.startsWith("P-")) {
+      tableName = "PressureDatapoint";
     }
     const codeValue = `${tableName}${keyValue}`;
     console.log("UpdateRelationship " + codeValue);
     const codeSpec: CodeSpec = this.imodel.codeSpecs.getByName(connectorElements.CodeSpecs.Connector);
-    return new Code({spec: codeSpec.id, scope: modelId, value: codeValue});
+    return new Code({ spec: codeSpec.id, scope: modelId, value: codeValue });
   }
 }
