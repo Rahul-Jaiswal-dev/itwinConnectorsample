@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { Subject, DefinitionPartition, DefinitionModel, PhysicalPartition, PhysicalModel, SpatialLocationPartition, SpatialLocationModel, SpatialCategory,
-  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel, FunctionalPartition, FunctionalModel, FunctionalComponentElement, SpatialElement } from "@bentley/imodeljs-backend";
+  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel, FunctionalPartition, FunctionalModel, FunctionalComponentElement, SpatialElement, GenericDocument, PhysicalObject } from "@bentley/imodeljs-backend";
 import * as ConnectorElements from "./Elements";
 import * as ConnectorRelationships from "./Relationships";
 import * as ConnectorRelatedElements from "./RelatedElements";
@@ -70,10 +70,10 @@ export const SAMPLE_ELEMENT_TREE4: any = {
             SpatialLocationModel1: {
               ref: SpatialLocationModel,
               elementClasses: {
-                DevicePhysical: {
-                  ref: ConnectorElements.DevicePhysical,
-                  categoryName: "SpatialCategory1",
-                },
+                // DevicePhysical: {
+                //   ref: ConnectorElements.DevicePhysical,
+                //   categoryName: "SpatialCategory1",
+                // },
               },
               relationshipClasses: {},
             },
@@ -101,9 +101,9 @@ export const SAMPLE_ELEMENT_TREE4: any = {
                   sourceRef: ConnectorElements.ObservableDatapoint,
                   sourceModelName: "FunctionalModel1",
                   sourceKey: "DatapointObservesSpatialElement.name",
-                  targetRef: ConnectorElements.DevicePhysical,
-                  targetModelName: "SpatialLocationModel1", // Assume that Spatial Model and Spatial  Elements are present
-                  targetKey: "DatapointObservesSpatialElement.devicephysicalid", // TODO: Need to define Spatial Elements Table and Tree  Items
+                  targetRef: "",
+                  targetModelName: "", // Assume that Spatial Model and Spatial  Elements are present
+                  targetKey: "", // TODO: Need to define Spatial Elements Table and Tree  Items
                 },
               },
             },

@@ -31,9 +31,13 @@ export class DataAligner {
     this.imodel = connector.synchronizer.imodel;
     const loader = new IModelSchemaLoader(this.imodel);
     const existingSchema = loader.tryGetSchema("IoTDevice");
+    // const existingGenericSchema = loader.tryGetSchema("Generic");
     console.log(`Here is imported IoTDevice schema as json...`);
     console.log(existingSchema?.toJSON().items);
     this.schemaItems = existingSchema!.toJSON().items!;
+    // for (const key of Object.keys(existingGenericSchema!.toJSON().items!)) {
+    //   this.schemaItems[key] = existingGenericSchema!.toJSON().items![key];
+    // }
     this.categoryCache = {};
     this.modelCache = {};
     this.elementCache = {};
@@ -139,7 +143,7 @@ export class DataAligner {
         if (!sourceId || !targetId) continue;
         const relationship = this.imodel.relationships.tryGetInstance(relationshipClass.ref.classFullName, { sourceId, targetId });
         if (relationship) continue;
-        console.log("Escape");
+        // console.log("Escape");
         const relationshipProps = relationshipClass.ref.createProps(sourceId, targetId);
         this.imodel.relationships.insertInstance(relationshipProps);
       }
@@ -180,6 +184,7 @@ export class DataAligner {
         continue;
       }
       let msg = "";
+      // if (tableName === "Device") {
       if (changeResults.state === 1) {
         msg = "is ready to be added in iModel.";
       } else {
@@ -187,6 +192,7 @@ export class DataAligner {
       }
       const devicetype = "Device type '" + elementData[`${tableName}.devicetype`] + "'";
       console.log(`${devicetype} in table ${tableName} from intermediary db ${msg}`);
+     // }
       console.log(JSON.stringify(elementData, null, 2));
       let props;
       if (elementClass.ref.className === "DevicePhysical") {

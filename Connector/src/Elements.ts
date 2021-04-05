@@ -191,24 +191,24 @@ export class System extends GroupInformationElement {
 //   }
 // }
 
-export class DevicePhysical extends SpatialElement {
-  public static get className(): string { return "DevicePhysical"; }
-  public static get tableName(): string { return "DevicePhysical"; }
-  public static get classFullName(): string { return "IoTDevice:DevicePhysical"; }
-  public static createProps(modelId: Id64String, code: Code, elementData: any, categoryId: Id64String) {
-    const props: any = {
-      code,
-      userLabel: elementData[`${this.className}.devicephysicalid`],
-      category: categoryId,
-      model: modelId,
-      classFullName: this.classFullName,
-    };
-    // addPlacement(props, elementData);
-    // console.log(elementClass);
- //   props.footprintArea = elementData["DevicePhysical.grossarea"];
-    return props;
-  }
-}
+// export class DevicePhysical extends SpatialElement {
+//   public static get className(): string { return "DevicePhysical"; }
+//   public static get tableName(): string { return "DevicePhysical"; }
+//   public static get classFullName(): string { return "IoTDevice:DevicePhysical"; }
+//   public static createProps(modelId: Id64String, code: Code, elementData: any, categoryId: Id64String) {
+//     const props: any = {
+//       code,
+//       userLabel: elementData[`${this.className}.devicephysicalid`],
+//       category: categoryId,
+//       model: modelId,
+//       classFullName: this.classFullName,
+//     };
+//     // addPlacement(props, elementData);
+//     // console.log(elementClass);
+//  //   props.footprintArea = elementData["DevicePhysical.grossarea"];
+//     return props;
+//   }
+// }
 
 export class Device extends FunctionalComponentElement {
   public static get className(): string { return "Device"; }

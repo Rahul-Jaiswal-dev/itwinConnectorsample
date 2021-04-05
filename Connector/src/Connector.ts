@@ -42,8 +42,9 @@ export class Connector extends IModelBridge {
       const spatialCompositionSchemaPath = path.join(__dirname, "./schema/SpatialComposition.ecschema.xml");
       const buildingSpatialSchemaPath = path.join(__dirname, "./schema/BuildingSpatial.ecschema.xml");
       const iotSchemaPath = path.join(__dirname, "./schema/IoTDevice.ecschema.xml");
+      const genericSchemaPath = path.join(__dirname, "./schema/Generic.ecschema.xml");
       console.log(`Importing IoTDevice schema from ${iotSchemaPath} path...`);
-      await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath, iotSchemaPath]);
+      await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath, iotSchemaPath, genericSchemaPath]);
   }
 
   public async importDynamicSchema(requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
