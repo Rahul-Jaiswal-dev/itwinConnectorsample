@@ -35,11 +35,11 @@
 
     <ECRelationshipClass typeName="DatapointObservesSpatialElement" strength="referencing" modifier="None">
         <BaseClass>bis:ElementRefersToElements</BaseClass>
-        <Source multiplicity="(0..1)" roleLabel="observes" polymorphic="true">
+        <Source multiplicity="(0..*)" roleLabel="observes" polymorphic="true">
             <Class class="ObservableDatapoint"/>
         </Source>
-        <Target multiplicity="(0..*)" roleLabel="is observed by" polymorphic="true">
-            <Class class="bis:SpatialElement"/>
+        <Target multiplicity="(0..1)" roleLabel="is observed by" polymorphic="true">
+            <Class class="generic:PhysicalObject"/>
         </Target>
     </ECRelationshipClass>
 </ECSchema>

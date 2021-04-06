@@ -65,15 +65,15 @@ export const SAMPLE_ELEMENT_TREE4: any = {
           },
         },
         SpatialLocationPartition1: {
-          ref: SpatialLocationPartition,
+          ref: PhysicalPartition,
           models: {
-            SpatialLocationModel1: {
-              ref: SpatialLocationModel,
+            PhysicalModel1: {
+              ref: PhysicalModel,
               elementClasses: {
-                // DevicePhysical: {
-                //   ref: ConnectorElements.DevicePhysical,
-                //   categoryName: "SpatialCategory1",
-                // },
+                DevicePhysical: {
+                  ref: ConnectorElements.PhysicalObject,
+                  categoryName: "SpatialCategory1",
+                },
               },
               relationshipClasses: {},
             },
@@ -101,9 +101,9 @@ export const SAMPLE_ELEMENT_TREE4: any = {
                   sourceRef: ConnectorElements.ObservableDatapoint,
                   sourceModelName: "FunctionalModel1",
                   sourceKey: "DatapointObservesSpatialElement.name",
-                  targetRef: "",
-                  targetModelName: "", // Assume that Spatial Model and Spatial  Elements are present
-                  targetKey: "", // TODO: Need to define Spatial Elements Table and Tree  Items
+                  targetRef: ConnectorElements.PhysicalObject,
+                  targetModelName: "PhysicalModel1",
+                  targetKey: "DatapointObservesSpatialElement.devicephysicalid", 
                 },
               },
             },

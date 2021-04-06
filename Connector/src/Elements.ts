@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument,  PhysicalElement, SpatialElement, FunctionalComponentElement } from "@bentley/imodeljs-backend";
-import { Code, Placement3d } from "@bentley/imodeljs-common";
+import { BackgroundFill, Code, ColorDef, FillDisplay, GeometryClass, Placement3d } from "@bentley/imodeljs-common";
 import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";
 
@@ -191,24 +191,28 @@ export class System extends GroupInformationElement {
 //   }
 // }
 
-// export class DevicePhysical extends SpatialElement {
-//   public static get className(): string { return "DevicePhysical"; }
-//   public static get tableName(): string { return "DevicePhysical"; }
-//   public static get classFullName(): string { return "IoTDevice:DevicePhysical"; }
-//   public static createProps(modelId: Id64String, code: Code, elementData: any, categoryId: Id64String) {
-//     const props: any = {
-//       code,
-//       userLabel: elementData[`${this.className}.devicephysicalid`],
-//       category: categoryId,
-//       model: modelId,
-//       classFullName: this.classFullName,
-//     };
-//     // addPlacement(props, elementData);
-//     // console.log(elementClass);
-//  //   props.footprintArea = elementData["DevicePhysical.grossarea"];
-//     return props;
-//   }
-// }
+export class PhysicalObject {
+  public static get className(): string { return "PhysicalObject"; }
+  public static get tableName(): string { return "PhysicalObject"; }
+  public static get classFullName(): string { return "Generic:PhysicalObject"; }
+  public static createProps(modelId: Id64String, code: Code, elementData: any, categoryId: Id64String) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.devicephysicalid`],
+      category: categoryId,
+      model: modelId,
+      classFullName: this.classFullName,
+      placement: {origin:{x:0 , y:0,z:0} , angles: { yaw: 0, pitch: 0, roll: 0 }},
+      geom : [{appearance:{color:ColorDef.computeTbgrFromComponents(255, 0,0,1) ,geometryClass: GeometryClass.Primary} ,
+              fill: {display:FillDisplay.Always ,backgroundFill : BackgroundFill.Solid , color:ColorDef.computeTbgrFromComponents(255, 0,0,1) } ,
+              cylinder: { start: {x:0 , y:0 , z: 0} ,end:{x:10 , y:10, z:0} , radius: 10}}]
+    };
+    // addPlacement(props, elementData);
+    // console.log(elementClass);
+ //   props.footprintArea = elementData["DevicePhysical.grossarea"];
+    return props;
+  }
+}
 
 export class Device extends FunctionalComponentElement {
   public static get className(): string { return "Device"; }

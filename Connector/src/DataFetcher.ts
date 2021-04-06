@@ -88,8 +88,8 @@ export class DataFetcher {
         return "name";
       case "PressureDatapoint":
         return "name";
-      // case "DevicePhysical" :
-      //   return "devicephysicalid"; 
+      case "PhysicalObject" :
+        return "devicephysicalid"; 
       default:
         return "deviceid";
     }
