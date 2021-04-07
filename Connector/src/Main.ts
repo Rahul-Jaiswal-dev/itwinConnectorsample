@@ -2,10 +2,10 @@
  * Copyright (c) Bentley Systems, Incorporated. All rights reserved.
  * See LICENSE.md in the project root for license terms and full copyright notice.
  *--------------------------------------------------------------------------------------------*/
-import { ClientRequestContext, Logger, OpenMode } from "@bentley/bentleyjs-core";
+import { ClientRequestContext, DbResult, Logger, OpenMode } from "@bentley/bentleyjs-core";
 import { BridgeJobDefArgs, BridgeRunner } from "@bentley/imodel-bridge";
 import { ServerArgs } from "@bentley/imodel-bridge/lib/IModelHubUtils";
-import { BriefcaseDb, BriefcaseManager, IModelJsFs } from "@bentley/imodeljs-backend";
+import { BriefcaseDb, BriefcaseManager, IModelJsFs, ECSqlStatement } from "@bentley/imodeljs-backend";
 import { AccessToken, AuthorizedClientRequestContext } from "@bentley/itwin-client";
 import { Utilities, ConnectorIModelInfo, ConnectorHelper } from "./Utilities";
 import { KnownTestLocations } from "./test/KnownTestLocations";
@@ -85,11 +85,37 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   let imodel: BriefcaseDb;
   imodel = await BriefcaseDb.open(new ClientRequestContext(), briefcases[0].key, { openAsReadOnly: true });
   briefcaseEntry!.openMode = OpenMode.ReadWrite;
-  console.log(`\nConnector synced the following sensor devices with iModel ${imodel.name}:`);
-  console.log(`Executing query: SELECT devicetype FROM iot.device`);
-  for await (const row of imodel.query(`SELECT devicetype FROM iot.device`)) {
+  console.log(`\nConnector synced the following sensors with iModel ${imodel.name}:`);
+  console.log(`Executing query: SELECT * FROM iot.device`);
+  for await (const row of imodel.query(`SELECT * FROM iot.device`)) {
     console.log(row);
- }
+  }
+  console.log(`\nExecuting query: SELECT * FROM iot.TemperatureDatapoint`);
+  for await (const row of imodel.query(`SELECT * FROM iot.TemperatureDatapoint`)) {
+    console.log(row);
+  }
+  console.log(`\nExecuting query: SELECT * FROM iot.PressureDatapoint`);
+  for await (const row of imodel.query(`SELECT * FROM iot.PressureDatapoint`)) {
+    console.log(row);
+  }
+  let elementId;
+  try {
+    console.log(`\nExecuting query: SELECT * FROM Generic.PhysicalObject Where ECInstanceId = ${elementId}`);
+    imodel.withPreparedStatement(`Select EcInstanceId from Generic.PhysicalObject`, (stmt: ECSqlStatement) => {
+      while (stmt.step() === DbResult.BE_SQLITE_ROW) {
+        elementId = stmt.getValue(0).getId();
+      }
+    });
+    for await (const row of imodel.query(`SELECT * FROM Generic.PhysicalObject Where ECInstanceId = ${elementId}`)) {
+      console.log(row);
+    }
+  } catch (error) {
+    console.log("Error in querying Generic.PhysicalObject.");
+  }
+  console.log(`\nExecuting query: SELECT * FROM iot.DatapointObservesSpatialElement`);
+  for await (const row of imodel.query(`SELECT * FROM iot.DatapointObservesSpatialElement`)) {
+    console.log(row);
+  }
   imodel.close();
 };
 
@@ -106,5 +132,3 @@ const getEnv = async (projectId: string, sampleIModel: ConnectorIModelInfo) => {
   };
   return { testSourcePath, bridgeJobDef, serverArgs };
 };
-
- 
