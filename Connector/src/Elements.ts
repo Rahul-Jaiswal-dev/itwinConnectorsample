@@ -3,7 +3,7 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument,  PhysicalElement, SpatialElement, FunctionalComponentElement } from "@bentley/imodeljs-backend";
+import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument, PhysicalElement, SpatialElement, FunctionalComponentElement } from "@bentley/imodeljs-backend";
 import { BackgroundFill, Code, ColorDef, FillDisplay, GeometryClass, Placement3d } from "@bentley/imodeljs-common";
 import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";
@@ -125,7 +125,7 @@ export class Type extends PhysicalType {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -148,7 +148,7 @@ export class Zone extends GroupInformationElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -167,7 +167,7 @@ export class System extends GroupInformationElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -202,14 +202,16 @@ export class PhysicalObject {
       category: categoryId,
       model: modelId,
       classFullName: this.classFullName,
-      placement: {origin:{x:0 , y:0,z:0} , angles: { yaw: 0, pitch: 0, roll: 0 }},
-      geom : [{appearance:{color:ColorDef.computeTbgrFromComponents(255, 0,0,1) ,geometryClass: GeometryClass.Primary} ,
-              fill: {display:FillDisplay.Always ,backgroundFill : BackgroundFill.Solid , color:ColorDef.computeTbgrFromComponents(255, 0,0,1) } ,
-              cylinder: { start: {x:0 , y:0 , z: 0} ,end:{x:10 , y:10, z:0} , radius: 10}}]
+      placement: { origin: { x: 0, y: 0, z: 0 }, angles: { yaw: 0, pitch: 0, roll: 0 } },
+      geom: [{
+        appearance: { color: ColorDef.computeTbgrFromComponents(255, 0, 0, 1), geometryClass: GeometryClass.Primary },
+        fill: { display: FillDisplay.Always, backgroundFill: BackgroundFill.Solid, color: ColorDef.computeTbgrFromComponents(255, 0, 0, 1) },
+        cylinder: { start: { x: 0, y: 0, z: 0 }, end: { x: 10, y: 10, z: 0 }, radius: 10 },
+      }],
     };
     // addPlacement(props, elementData);
     // console.log(elementClass);
- //   props.footprintArea = elementData["DevicePhysical.grossarea"];
+    //   props.footprintArea = elementData["DevicePhysical.grossarea"];
     return props;
   }
 }
@@ -265,7 +267,7 @@ export class TemperatureDatapoint extends ObservableDatapoint {
   public static get className(): string { return "TemperatureDatapoint"; }
   public static get tableName(): string { return "TemperatureDatapoint"; }
   public static get classFullName(): string { return "IoTDevice:TemperatureDatapoint"; }
-  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
     const props: any = {
       code,
       userLabel: elementData[`${this.className}.name`],
@@ -282,7 +284,7 @@ export class PressureDatapoint extends ObservableDatapoint {
   public static get className(): string { return "PressureDatapoint"; }
   public static get tableName(): string { return "PressureDatapoint"; }
   public static get classFullName(): string { return "IoTDevice:PressureDatapoint"; }
-  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
     const props: any = {
       code,
       userLabel: elementData[`${this.className}.name`],
@@ -306,7 +308,7 @@ export class Connection extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -322,7 +324,7 @@ export class Assembly extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -338,7 +340,7 @@ export class Attribute extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -354,7 +356,7 @@ export class Contact extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -370,7 +372,7 @@ export class Impact extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -386,7 +388,7 @@ export class Issue extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -402,7 +404,7 @@ export class Spare extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -434,7 +436,7 @@ export class Resource extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -456,8 +458,8 @@ export class Document extends BisCoreDocument {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
-    
+    console.log(elementClass + categoryId);
+
     return props;
   }
 }

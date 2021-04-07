@@ -153,19 +153,19 @@ export class DataAligner {
 
   public async updateElementClass(modelId: any, elementClass: any) {
     console.log(`     Executing DataAligner updateElementClass...`);
-    let tableData :any =[];
-    let rowsCount:number=0;
+    let tableData: any = [];
+    let rowsCount: number = 0;
     if (elementClass.ref.className === "PhysicalObject") {
       this.imodel.withPreparedStatement(`Select EcInstanceId from Generic.PhysicalObject`, (stmt: ECSqlStatement) => {
         while (stmt.step() === DbResult.BE_SQLITE_ROW) {
           this.elementId = stmt.getValue(0).getId();
-          this.isGenericPhysicalObjectPresent =true;
+          this.isGenericPhysicalObjectPresent = true;
           rowsCount++;
-          if(rowsCount === 2)
-          break;
+          if (rowsCount === 2)
+            break;
         }
       });
-      if(this.isGenericPhysicalObjectPresent && rowsCount === 2 ){ //Make sure the PhysicalObject does not get deleted
+      if (this.isGenericPhysicalObjectPresent && rowsCount === 2) { // Make sure the PhysicalObject does not get deleted
         return;
       } else {
         tableData = [{ "PhysicalObject.devicephysicalid": "4.0" }];

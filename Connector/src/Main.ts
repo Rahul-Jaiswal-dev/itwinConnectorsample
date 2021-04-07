@@ -100,7 +100,7 @@ const runConnector = async (bridgeJobDef: BridgeJobDefArgs, serverArgs: ServerAr
   }
   let elementId;
   try {
-    console.log(`\nExecuting query: SELECT * FROM Generic.PhysicalObject Where ECInstanceId = ${elementId}`);
+    console.log(`\nExecuting query: SELECT * FROM Generic.PhysicalObject Where ECInstanceId = <elementId>`);
     imodel.withPreparedStatement(`Select EcInstanceId from Generic.PhysicalObject`, (stmt: ECSqlStatement) => {
       while (stmt.step() === DbResult.BE_SQLITE_ROW) {
         elementId = stmt.getValue(0).getId();
