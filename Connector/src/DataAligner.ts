@@ -36,8 +36,11 @@ export class DataAligner {
     console.log(`Here is imported IoTDevice schema as json...`);
     console.log(existingSchema?.toJSON().items);
     this.schemaItems = existingSchema!.toJSON().items!;
-    for (let key in existingGenericSchema!.toJSON().items!) {
-      this.schemaItems[key] = existingGenericSchema!.toJSON().items![key];
+    const obj = existingGenericSchema!.toJSON().items!;
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        this.schemaItems[key] = existingGenericSchema!.toJSON().items![key];
+      }
     }
     this.isGenericPhysicalObjectPresent = false;
     this.categoryCache = {};
@@ -126,13 +129,12 @@ export class DataAligner {
       const sourceId = this.imodel.elements.queryElementIdByCode(sourceCode)!;
       let targetId;
       if (relationshipClass.ref.className === "DatapointObservesSpatialElement" && this.isGenericPhysicalObjectPresent) {
-            targetId= this.elementId;
-            
+        targetId = this.elementId;
       } else {
         const targetModelId = this.modelCache[relationshipClass.targetModelName];
         const targetCode = this.getCode(relationshipClass.targetRef.className, targetModelId, elementData[relationshipClass.targetKey]);
         targetId = this.imodel.elements.queryElementIdByCode(targetCode)!;
-        }
+      }
       if (relationshipClass.ref.className in connectorRelatedElements) {
         const sourceElement = this.imodel.elements.getElement(sourceId);
         const targetElement = this.imodel.elements.getElement(targetId!);
@@ -151,24 +153,24 @@ export class DataAligner {
 
   public async updateElementClass(modelId: any, elementClass: any) {
     console.log(`     Executing DataAligner updateElementClass...`);
-    let tableData :any =[];
+    let tableData: any = [];
     if (elementClass.ref.className === "PhysicalObject") {
       this.imodel.withPreparedStatement(`Select EcInstanceId from Generic.PhysicalObject`, (stmt: ECSqlStatement) => {
         while (stmt.step() === DbResult.BE_SQLITE_ROW) {
-         this.elementId = stmt.getValue(0).getId();
-         this.isGenericPhysicalObjectPresent =true;
-         break;
+          this.elementId = stmt.getValue(0).getId();
+          this.isGenericPhysicalObjectPresent = true;
+          break;
         }
       });
-      if(this.isGenericPhysicalObjectPresent)
-              return;
-      else
-      tableData=[{"PhysicalObject.devicephysicalid":"4.0"}];       
+      if (this.isGenericPhysicalObjectPresent) {
+        return;
+      } else {
+        tableData = [{ "PhysicalObject.devicephysicalid": "4.0" }];
+      }
     }
-   
     const tableName = elementClass.ref.tableName;
-    if(tableData.length === 0){
-       tableData = await this.dataFetcher.fetchTableData(tableName);
+    if (tableData.length === 0) {
+      tableData = await this.dataFetcher.fetchTableData(tableName);
     }
     const categoryId = this.categoryCache[elementClass.categoryName];
     const primaryKey = this.dataFetcher.getTablePrimaryKey(tableName);
@@ -201,7 +203,7 @@ export class DataAligner {
         msg = "is ready to be updated in iModel.";
       }
       const devicetype = "Device type '" + elementData[`${tableName}.devicetype`] + "'";
-      console.log(`${devicetype} in table ${tableName} from intermediary db ${msg}`);
+      // console.log(`${devicetype} in table ${tableName} from intermediary db ${msg}`);
       // }
       console.log(JSON.stringify(elementData, null, 2));
       let props;
@@ -222,29 +224,27 @@ export class DataAligner {
       this.elementCache[guid] = element.id;
 
       if (elementClass.typeDefinition && changeResults.state === ItemState.New)
-       this.updateTypeDefinition(element, elementClass.typeDefinition, elementData);
+        this.updateTypeDefinition(element, elementClass.typeDefinition, elementData);
     }
     this.connector.synchronizer.detectDeletedElements();
   }
 
   public addForeignProps(props: any, elementClass: any, elementData: any) {
-    try{
-    const { className } = elementClass.ref;
-    console.log(`Reached addForeignProps`);
-    const { properties } = this.schemaItems[className];
-    // console.log(`${JSON.stringify(properties)}`);
-    // console.log(`${JSON.stringify(elementData)}`);
-    if (properties) {
-      for (const prop of properties) {
-        const attribute = prop.name;
-        props[prop.name] = elementData[`${className}.${attribute}`];
+    try {
+      const { className } = elementClass.ref;
+      // console.log(`Reached addForeignProps`);
+      const { properties } = this.schemaItems[className];
+      // console.log(`${JSON.stringify(properties)}`);
+      // console.log(`${JSON.stringify(elementData)}`);
+      if (properties) {
+        for (const prop of properties) {
+          const attribute = prop.name;
+          props[prop.name] = elementData[`${className}.${attribute}`];
+        }
       }
+    } catch (error) {
+      console.log("Error in addForeignProps for  " + elementClass.ref.className);
     }
-  }
-  catch(error)
-  {
-console.log("Error in addForeignProps for  " + elementClass.ref.className)
-  }
   }
 
   public updateTypeDefinition(element: any, typeClass: any, elementData: any) {
