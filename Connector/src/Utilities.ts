@@ -133,9 +133,11 @@ export class ConnectorHelper {
       iModelId: process.env.IMJS_IMODEL_ID, dataSource: process.env.IMJS_DATA_SOURCE, redirectUri: process.env.IMJS_REDIRECT_URI,
       scope: process.env.IMJS_SCOPE,
     };
-    if (envvariables.clientId && envvariables.contextId && envvariables.dataSource && envvariables.iModelId && envvariables.redirectUri && envvariables.scope)
+    if (envvariables.clientId && envvariables.contextId && envvariables.dataSource && envvariables.iModelId && envvariables.redirectUri && envvariables.scope){
+      envvariables.contextId = envvariables.contextId.trim();
+      envvariables.iModelId = envvariables.iModelId.trim();
       return envvariables;
-    else
+    } else
       throw new Error(".env file values are  missing.............");
   }
 }

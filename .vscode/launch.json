@@ -16,8 +16,8 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-          "program": "${workspaceFolder}/Connector/lib/main.js",
-             "args": [  "-- --output=debug.bim"],
+            "program": "${workspaceFolder}/Connector/lib/main.js",
+            "args": [  "-- --output=debug.bim"],
             "outFiles": [
                 "${workspaceFolder}/Connector/lib/**/*.js"
             ],

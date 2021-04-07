@@ -4,7 +4,7 @@
 *--------------------------------------------------------------------------------------------*/
 
 import { Subject, DefinitionPartition, DefinitionModel, PhysicalPartition, PhysicalModel, SpatialLocationPartition, SpatialLocationModel, SpatialCategory,
-  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel, FunctionalPartition, FunctionalModel, FunctionalComponentElement, SpatialElement } from "@bentley/imodeljs-backend";
+  InformationRecordPartition, InformationRecordModel, DocumentPartition, DocumentListModel, GroupInformationPartition, GroupModel, FunctionalPartition, FunctionalModel, FunctionalComponentElement, SpatialElement, GenericDocument, PhysicalObject } from "@bentley/imodeljs-backend";
 import * as ConnectorElements from "./Elements";
 import * as ConnectorRelationships from "./Relationships";
 import * as ConnectorRelatedElements from "./RelatedElements";
@@ -45,34 +45,40 @@ relationshipClasses: {
 }
 
 */
-export const SAMPLE_ELEMENT_TREE3: any = {
-  subjects: {
-    Subject1: {
-      ref: Subject,
-      partitions: {
-        InformationRecordPartition1: {
-          ref: InformationRecordPartition,
-          models: {
-            InformationRecordModel1: {
-              ref: InformationRecordModel,
-              elementClasses: {
-                Device: {
-                  ref: ConnectorElements.Device,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-};
 
 export const SAMPLE_ELEMENT_TREE4: any = {
   subjects: {
     Subject1: {
       ref: Subject,
       partitions: {
+        DefinitionPartition1: {
+          ref: DefinitionPartition,
+          models: {
+            DefinitionModel1: {
+              ref: DefinitionModel,
+              elements: {
+                SpatialCategory1: {
+                  ref: SpatialCategory,
+                },
+              },
+            },
+          },
+        },
+        SpatialLocationPartition1: {
+          ref: PhysicalPartition,
+          models: {
+            PhysicalModel1: {
+              ref: PhysicalModel,
+              elementClasses: {
+                DevicePhysical: {
+                  ref: ConnectorElements.PhysicalObject,
+                  categoryName: "SpatialCategory1",
+                },
+              },
+              relationshipClasses: {},
+            },
+          },
+        },
         FunctionalPartition1: {
           ref: FunctionalPartition,
           models: {
@@ -82,18 +88,24 @@ export const SAMPLE_ELEMENT_TREE4: any = {
                 Device: {
                   ref: ConnectorElements.Device,
                 },
+                TemperatureDatapoint: {
+                  ref: ConnectorElements.TemperatureDatapoint,
+                },
+                PressureDatapoint: {
+                  ref: ConnectorElements.PressureDatapoint,
+                },
               },
-              // relationshipClasses: {
-              //   ComponentConnectsToComponent1: {
-              //     ref: ConnectorRelationships.ComponentConnectsToComponent1,
-              //     sourceRef: ConnectorElements.Device,
-              //     sourceModelName: "FunctionalModel1",
-              //     sourceKey: "Device.devicetype",
-              //     targetRef: SpatialElement,
-              //     targetModelName: "SpatialElementModel1",
-              //     targetKey: "Device.devicetype",
-              //   },
-                 // },
+              relationshipClasses: {
+                DatapointObservesSpatialElement: {
+                  ref: ConnectorRelationships.DatapointObservesSpatialElement,
+                  sourceRef: ConnectorElements.ObservableDatapoint,
+                  sourceModelName: "FunctionalModel1",
+                  sourceKey: "DatapointObservesSpatialElement.name",
+                  targetRef: ConnectorElements.PhysicalObject,
+                  targetModelName: "PhysicalModel1",
+                  targetKey: "DatapointObservesSpatialElement.devicephysicalid", 
+                },
+              },
             },
           },
         },

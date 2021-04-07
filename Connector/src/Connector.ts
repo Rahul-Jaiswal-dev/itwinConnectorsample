@@ -13,25 +13,22 @@ import { ItemState, SourceItem, SynchronizationResults } from "@bentley/imodel-b
 import { DataFetcher } from "./DataFetcher";
 import { DataAligner } from "./DataAligner";
 import { SAMPLE_ELEMENT_TREE4 } from "./ElementTree";
-import { DynamicSchemaGenerator, SchemaSyncResults } from "./DynamicSchemaGenerator";
 import { CodeSpecs } from "./Elements";
-import { SensorSchema } from "./Schema";
 import * as path from "path";
 
 export class Connector extends IModelBridge {
   public sourceDataState: ItemState = ItemState.New;
   public sourceDataPath?: string;
   public dataFetcher?: DataFetcher;
-  public schemaGenerator?: DynamicSchemaGenerator;
   public dynamicSchema?: Schema;
 
-  public initialize(_params: any) {}
-  public async initializeJob(): Promise<void> {}
+  public initialize(_params: any) { }
+  public async initializeJob(): Promise<void> { }
 
   public async openSourceData(sourcePath: string): Promise<BentleyStatus> {
     this.sourceDataPath = sourcePath;
     const sourceDataStatus = this.getSourceDataStatus();
-    if(sourceDataStatus !== undefined)
+    if (sourceDataStatus !== undefined)
       this.sourceDataState = sourceDataStatus.itemState;
     if (this.sourceDataState === ItemState.Unchanged) return BentleyStatus.ERROR;
     // console.log("sourceDataState " + this.sourceDataState);
@@ -41,34 +38,39 @@ export class Connector extends IModelBridge {
   }
 
   public async importDomainSchema(_requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
-    if (this.sourceDataState === ItemState.New) {
-      const functionalSchemaPath = path.join(__dirname, "./schema/Functional.ecschema.xml");
+    const functionalSchemaPath = path.join(__dirname, "./schema/Functional.ecschema.xml");
       const spatialCompositionSchemaPath = path.join(__dirname, "./schema/SpatialComposition.ecschema.xml");
       const buildingSpatialSchemaPath = path.join(__dirname, "./schema/BuildingSpatial.ecschema.xml");
-      await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath]);
-    }
+      const iotSchemaPath = path.join(__dirname, "./schema/IoTDevice.ecschema.xml");
+      const genericSchemaPath = path.join(__dirname, "./schema/Generic.ecschema.xml");
+      console.log(`Importing IoTDevice schema from ${iotSchemaPath} path...`);
+      await this.synchronizer.imodel.importSchemas(_requestContext, [functionalSchemaPath, spatialCompositionSchemaPath, buildingSpatialSchemaPath, genericSchemaPath  , iotSchemaPath ]);
   }
 
   public async importDynamicSchema(requestContext: AuthorizedClientRequestContext | ClientRequestContext): Promise<any> {
-    if (this.sourceDataState === ItemState.Unchanged) {
-      console.log(`The state of the given SourceItem against the iModelDb is unchanged.`);
-      return;
-    }
-    if (this.sourceDataState === ItemState.New) {
-      console.log(`The state of the given SourceItem against the iModelDb is changed.`);
-      SensorSchema.registerSchema();
-    }
-    console.log(`Started importing dynamic schema...`);
+     // console.log(requestContext.activityId);
+    const x = requestContext;
+    // if (this.sourceDataState === ItemState.Unchanged) {
+    //   console.log(`The state of the given SourceItem against the iModelDb is unchanged.`);
+    //   return;
+    // }
+    // if (this.sourceDataState === ItemState.New) {
+    //   console.log(`The state of the given SourceItem against the iModelDb is changed.`);
+    //   SensorSchema.registerSchema();
+    // }
+    // console.log(`Started importing dynamic schema...`);
 
-    const schemaGenerator = new DynamicSchemaGenerator(this.dataFetcher!);
-    console.log(` DynamicSchemaGenerator object created.`);
-    this.schemaGenerator = schemaGenerator;
-    const results: SchemaSyncResults = await schemaGenerator.synchronizeSchema(this.synchronizer.imodel);
-    if (results.schemaState !== ItemState.Unchanged) {
-      const schemaString = await schemaGenerator.schemaToString(results.dynamicSchema);
-      await this.synchronizer.imodel.importSchemaStrings(requestContext, [schemaString]);
-    }
-    this.dynamicSchema = results.dynamicSchema;
+    // const schemaGenerator = new DynamicSchemaGenerator(this.dataFetcher!);
+    // console.log(` DynamicSchemaGenerator object created.`);
+    // this.schemaGenerator = schemaGenerator;
+    // const results: SchemaSyncResults = await schemaGenerator.synchronizeSchema(this.synchronizer.imodel);
+    // if (results.schemaState !== ItemState.Unchanged) {
+    //   const schemaString = await schemaGenerator.schemaToString(results.dynamicSchema);
+    //   // console.log(`importDynamicSchema: ${schemaString}`);
+    //   // const xmlstring = '<?xml version="1.0" encoding="UTF-8"?><ECSchema schemaName="IoT" alias="iot" version="01.00.00" xmlns="http://www.bentley.com/schemas/Bentley.ECXML.3.1" description="The IoT schema defines common base classes to be used for IoT sensor devices."><ECSchemaReference name="CoreCustomAttributes" version="01.00.03" alias="CoreCA"/><ECSchemaReference name="BisCore" version="01.00.12" alias="bis"/><ECSchemaReference name="Functional" version="01.00.03" alias="func"/><ECCustomAttributes><ProductionStatus xmlns="CoreCustomAttributes.01.00.03"><SupportedUse>NotForProduction</SupportedUse></ProductionStatus></ECCustomAttributes><ECEntityClass typeName="Device" modifier="Abstract" displayLabel="Device" description="A iot:Device models an IoT sensor device Entity which will not be sub-modeled at a finer granularity and does not have child parts."><BaseClass>FunctionalComponentElement</BaseClass><ECProperty propertyName="Deviceid" typeName="string" /><ECProperty propertyName="Devicetype" typeName="string" /><ECProperty propertyName="type_of_quantity_observed" typeName="string" /><ECProperty propertyName="units_for_quantities_being_observed" typeName="string" /></ECEntityClass></ECSchema>';
+    //   await this.synchronizer.imodel.importSchemaStrings(requestContext, [schemaString]);
+    // }
+    // this.dynamicSchema = results.dynamicSchema;
   }
 
   public async importDefinitions(): Promise<any> {
@@ -76,9 +78,12 @@ export class Connector extends IModelBridge {
   }
 
   public async updateExistingData() {
-    if (this.sourceDataState === ItemState.Unchanged) return;
+    if (this.sourceDataState === ItemState.Unchanged) {
+      console.log(`Connector:updateExistingData() - ItemState.Unchanged`);
+      return;
+    }
     if (!this.dataFetcher) throw new Error("No DataFetcher available for DataAligner.");
-    if (!this.schemaGenerator) throw new Error("No DynamicSchemaGenerator available for DataAligner.");
+  //  if (!this.schemaGenerator) throw new Error("No DynamicSchemaGenerator available for DataAligner.");
 
     const aligner = new DataAligner(this);
     console.log(`Started DataAligner...`);
@@ -104,14 +109,12 @@ export class Connector extends IModelBridge {
       id: this.sourceDataPath!,
       version: timeStamp.toString(),
     };
-    let sourceDataStatus: SynchronizationResults| undefined;
-    try{
-     sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
+    let sourceDataStatus: SynchronizationResults | undefined;
+    try {
+      sourceDataStatus = this.synchronizer.recordDocument(IModelDb.rootSubjectId, sourceItem);
+    } catch (error) {
+      this.sourceDataState = ItemState.Changed;
     }
-    catch(error)
-    {
-      this.sourceDataState= ItemState.Changed;
-   }
     return sourceDataStatus;
   }
 

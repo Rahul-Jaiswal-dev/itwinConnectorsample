@@ -82,8 +82,14 @@ export class DataFetcher {
 
   public getTablePrimaryKey(tableName: string) {
     switch (tableName) {
-    //  case "Device":
-      //    return "deviceid";
+      case "Device":
+        return "deviceid";
+      case "TemperatureDatapoint":
+        return "name";
+      case "PressureDatapoint":
+        return "name";
+      case "PhysicalObject" :
+        return "devicephysicalid"; 
       default:
         return "deviceid";
     }

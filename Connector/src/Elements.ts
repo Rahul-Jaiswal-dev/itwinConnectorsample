@@ -3,13 +3,13 @@
 * See LICENSE.md in the project root for license terms and full copyright notice.
 *--------------------------------------------------------------------------------------------*/
 
-import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument,  PhysicalElement, SpatialElement, FunctionalComponentElement } from "@bentley/imodeljs-backend";
-import { Code, Placement3d } from "@bentley/imodeljs-common";
+import { IModelDb, InformationRecordElement, PhysicalType, GroupInformationElement, Document as BisCoreDocument, PhysicalElement, SpatialElement, FunctionalComponentElement } from "@bentley/imodeljs-backend";
+import { BackgroundFill, Code, ColorDef, FillDisplay, GeometryClass, Placement3d } from "@bentley/imodeljs-common";
 import { Point3d, YawPitchRollAngles, Range3d } from "@bentley/geometry-core";
 import { Id64String } from "@bentley/bentleyjs-core";
 
 export enum CodeSpecs {
-  Connector = "ConnectorDynamic",
+  Connector = "IoTDevice",
 }
 
 function addPlacement(props: any, elementData: any) {
@@ -125,7 +125,7 @@ export class Type extends PhysicalType {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -148,7 +148,7 @@ export class Zone extends GroupInformationElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -167,7 +167,7 @@ export class System extends GroupInformationElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -191,16 +191,107 @@ export class System extends GroupInformationElement {
 //   }
 // }
 
+export class PhysicalObject {
+  public static get className(): string { return "PhysicalObject"; }
+  public static get tableName(): string { return "PhysicalObject"; }
+  public static get classFullName(): string { return "Generic:PhysicalObject"; }
+  public static createProps(modelId: Id64String, code: Code, elementData: any, categoryId: Id64String) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.devicephysicalid`],
+      category: categoryId,
+      model: modelId,
+      classFullName: this.classFullName,
+      placement: { origin: { x: 0, y: 0, z: 0 }, angles: { yaw: 0, pitch: 0, roll: 0 } },
+      geom: [{
+        appearance: { color: ColorDef.computeTbgrFromComponents(255, 0, 0, 1), geometryClass: GeometryClass.Primary },
+        fill: { display: FillDisplay.Always, backgroundFill: BackgroundFill.Solid, color: ColorDef.computeTbgrFromComponents(255, 0, 0, 1) },
+        cylinder: { start: { x: 0, y: 0, z: 0 }, end: { x: 10, y: 10, z: 0 }, radius: 10 },
+      }],
+    };
+    // addPlacement(props, elementData);
+    // console.log(elementClass);
+    //   props.footprintArea = elementData["DevicePhysical.grossarea"];
+    return props;
+  }
+}
+
 export class Device extends FunctionalComponentElement {
   public static get className(): string { return "Device"; }
   public static get tableName(): string { return "Device"; }
-  public static get classFullName(): string { return "ConnectorDynamic:Device"; }
-  public static createProps(modelId: Id64String, code: Code,  elementData: any) {
+  public static get classFullName(): string { return "IoTDevice:Device"; }
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.deviceid`],
+      model: modelId,
+      classFullName: this.classFullName,
+    };
+    return props;
+  }
+}
+
+export class Datapoint extends FunctionalComponentElement {
+  public static get className(): string { return "Datapoint"; }
+  public static get tableName(): string { return "Datapoint"; }
+  public static get classFullName(): string { return "IoTDevice:Datapoint"; }
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
     const props: any = {
       code,
       userLabel: elementData[`${this.className}.name`],
       model: modelId,
       classFullName: this.classFullName,
+    };
+    return props;
+  }
+}
+
+export class ObservableDatapoint extends Datapoint {
+  public static get className(): string { return "ObservableDatapoint"; }
+  public static get tableName(): string { return "ObservableDatapoint"; }
+  public static get classFullName(): string { return "IoTDevice:ObservableDatapoint"; }
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.name`],
+      model: modelId,
+      classFullName: this.classFullName,
+      name: elementData[`${this.className}.name`],
+      unit: elementData[`${this.className}.unit`],
+    };
+    return props;
+  }
+}
+
+export class TemperatureDatapoint extends ObservableDatapoint {
+  public static get className(): string { return "TemperatureDatapoint"; }
+  public static get tableName(): string { return "TemperatureDatapoint"; }
+  public static get classFullName(): string { return "IoTDevice:TemperatureDatapoint"; }
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.name`],
+      model: modelId,
+      classFullName: this.classFullName,
+      name: elementData[`${this.className}.name`],
+      unit: elementData[`${this.className}.unit`],
+    };
+    return props;
+  }
+}
+
+export class PressureDatapoint extends ObservableDatapoint {
+  public static get className(): string { return "PressureDatapoint"; }
+  public static get tableName(): string { return "PressureDatapoint"; }
+  public static get classFullName(): string { return "IoTDevice:PressureDatapoint"; }
+  public static createProps(modelId: Id64String, code: Code, elementData: any) {
+    const props: any = {
+      code,
+      userLabel: elementData[`${this.className}.name`],
+      model: modelId,
+      classFullName: this.classFullName,
+      name: elementData[`${this.className}.name`],
+      unit: elementData[`${this.className}.unit`],
     };
     return props;
   }
@@ -217,7 +308,7 @@ export class Connection extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -233,7 +324,7 @@ export class Assembly extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -249,7 +340,7 @@ export class Attribute extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -265,7 +356,7 @@ export class Contact extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -281,7 +372,7 @@ export class Impact extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -297,7 +388,7 @@ export class Issue extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -313,7 +404,7 @@ export class Spare extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -345,7 +436,7 @@ export class Resource extends InformationRecordElement {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
+    console.log(elementClass + categoryId);
     return props;
   }
 }
@@ -367,8 +458,8 @@ export class Document extends BisCoreDocument {
       model: modelId,
       classFullName: this.classFullName,
     };
-    console.log(elementClass+ categoryId);
-    
+    console.log(elementClass + categoryId);
+
     return props;
   }
 }
